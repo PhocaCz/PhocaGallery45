@@ -7,6 +7,9 @@
 # Phoca Gallery
 
 
+![PhocaGallery](https://i.imgur.com/H1xIgE2.png)
+
+![PhocaGallery](https://i.imgur.com/d6XNC1C.png)
 
 Phoca Gallery is an powerful image gallery extension for Joomla! CMS.
 
