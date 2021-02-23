@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" method="upgrade" version="4.0">
+	<name>com_phocagallery</name>
+	<author>Jan Pavelka (www.phoca.cz)</author>
+	<creationDate>23/02/2021</creationDate>
+	<authorEmail></authorEmail>
+	<authorUrl>https://www.phoca.cz</authorUrl>
+	<copyright>Jan Pavelka</copyright>
+	<license>GNU/GPL</license>
+	<version>4.5.0Alpha</version>
+	<description>COM_PHOCAGALLERY_XML_DESCRIPTION</description>
+	<scriptfile>script.php</scriptfile>
+	<projectName>PhocaGallery45</projectName>
+
+	<install>
+		<sql>
+			<file driver="mysql" charset="utf8">install/sql/mysql/install.utf8.sql</file>
+		</sql>
+	</install>
+
+	<uninstall>
+		<sql>
+			<file driver="mysql" charset="utf8">install/sql/mysql/uninstall.utf8.sql</file>
+		</sql>
+	</uninstall>
+
+	<update>
+		<schemas>
+			<schemapath type="mysql">update/sql/mysql</schemapath>
+		</schemas>
+	</update>
+
+	<files folder="site">
+		<folder>helpers</folder>
+		<folder>views</folder>
+		<folder>controllers</folder>
+		<folder>models</folder>
+		<folder>layouts</folder>
+		<filename>router.php</filename>
+		<filename>index.html</filename>
+		<filename>router2.php</filename>
+		<filename>phocagallery.php</filename>
+		<filename>controller.php</filename>
+		<filename>routerx.php</filename>
+	</files>
+
+	<media destination="com_phocagallery" folder="media">
+		<folder>css</folder>
+		<folder>images</folder>
+		<folder>duotone</folder>
+		<folder>js</folder>
+		<filename>index.html</filename>
+	</media>
+
+	<languages folder="admin/language">
+		<language tag="en-GB" client="site">en-GB/en-GB.com_phocagallery.ini</language>
+		<language tag="en-GB" client="site">en-GB/en-GB.com_phocagallery.sys.ini</language>
+	</languages>
+
+	<administration>
+
+		<menu img="class:cp" alt="COM_PHOCAGALLERY" link="option=com_phocagallery">COM_PHOCAGALLERY</menu>
+
+			<submenu>
+				<menu img="class:cp" alt="COM_PHOCAGALLERY_CONTROLPANEL" view="phocagallerycp" link="option=com_phocagallery">COM_PHOCAGALLERY_CONTROLPANEL</menu>
+				<menu img="class:images" alt="COM_PHOCAGALLERY_IMAGES" view="phocagalleryimgs" link="option=com_phocagallery&amp;view=phocagalleryimgs">COM_PHOCAGALLERY_IMAGES</menu>
+				<menu img="class:categories" alt="COM_PHOCAGALLERY_CATEGORIES" view="phocagallerycs" link="option=com_phocagallery&amp;view=phocagallerycs">COM_PHOCAGALLERY_CATEGORIES</menu>
+				<menu img="class:themes" alt="COM_PHOCAGALLERY_THEMES" view="phocagalleryt" link="option=com_phocagallery&amp;view=phocagalleryt">COM_PHOCAGALLERY_THEMES</menu>
+				<menu img="class:rate-categories" alt="COM_PHOCAGALLERY_CATEGORYRATING" view="phocagalleryra" link="option=com_phocagallery&amp;view=phocagalleryra">COM_PHOCAGALLERY_CATEGORYRATING</menu>
+				<menu img="class:rate-images" alt="COM_PHOCAGALLERY_IMAGERATING" view="phocagalleryraimg" link="option=com_phocagallery&amp;view=phocagalleryraimg">COM_PHOCAGALLERY_IMAGERATING</menu>
+				<menu img="class:comment-categories" alt="COM_PHOCAGALLERY_CATEGORYCOMMENTS" view="phocagallerycos" link="option=com_phocagallery&amp;view=phocagallerycos">COM_PHOCAGALLERY_CATEGORYCOMMENTS</menu>
+				<menu img="class:comment-images" alt="COM_PHOCAGALLERY_IMAGECOMMENTS" view="phocagallerycoimgs" link="option=com_phocagallery&amp;view=phocagallerycoimgs">COM_PHOCAGALLERY_IMAGECOMMENTS</menu>
+				<menu img="class:users" alt="COM_PHOCAGALLERY_USERS" view="phocagalleryusers" link="option=com_phocagallery&amp;view=phocagalleryusers">COM_PHOCAGALLERY_USERS</menu>
+				<menu img="class:tags" alt="COM_PHOCAGALLERY_TAGS" view="phocagallerytags" link="option=com_phocagallery&amp;view=phocagallerytags">COM_PHOCAGALLERY_TAGS</menu>
+				<menu img="class:styles" alt="COM_PHOCAGALLERY_STYLES" view="phocagalleryefs" link="option=com_phocagallery&amp;view=phocagalleryefs">COM_PHOCAGALLERY_STYLES</menu>
+				<menu img="class:info" alt="COM_PHOCAGALLERY_INFO" view="phocagalleryin" link="option=com_phocagallery&amp;view=phocagalleryin">COM_PHOCAGALLERY_INFO</menu>
+			</submenu>
+
+		<files folder="admin">
+			<folder>helpers</folder>
+			<folder>help</folder>
+			<folder>views</folder>
+			<folder>libraries</folder>
+			<folder>install</folder>
+			<folder>update</folder>
+			<folder>controllers</folder>
+			<folder>models</folder>
+			<folder>tables</folder>
+			<filename>config.xml</filename>
+			<filename>index.html</filename>
+			<filename>phocagallery.php</filename>
+			<filename>controller.php</filename>
+			<filename>access.xml</filename>
+		</files>
+
+		<languages folder="admin/language">
+			<language tag="en-GB">en-GB/en-GB.com_phocagallery.ini</language>
+			<language tag="en-GB">en-GB/en-GB.com_phocagallery.sys.ini</language>
+		</languages>
+	</administration>
+	
+	
+
+	<updateservers>
+		<server type="extension" name="COM_PHOCAGALLERY" priority="1"><![CDATA[https://raw.githubusercontent.com/PhocaCz/PhocaGallery45/master/manifest.xml]]></server>
+	</updateservers>
+</extension>
