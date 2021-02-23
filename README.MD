@@ -2,7 +2,7 @@
 
 
 
-![Phoca Gallery](https://github.com/PhocaCz/PhocaGallery45/blob/master/phocagallery.png?raw=true)
+![Phoca Gallery](https://github.com/PhocaCz/PhocaGallery45/blob/main/phocagallery.png?raw=true)
 
 # Phoca Gallery
 

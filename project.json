@@ -18,7 +18,8 @@
 		"Joomla! 1.5 Demo": "https://www.phoca.cz/demo/"
 
 	},
-	"projectColor": "#95313e",												
+	"projectColor": "#95313e",
+	"projectBranch": "main",
 	"menu": {
 		"main":{
 			"0" : {

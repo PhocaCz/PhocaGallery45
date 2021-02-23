@@ -102,6 +102,6 @@
 	
 
 	<updateservers>
-		<server type="extension" name="COM_PHOCAGALLERY" priority="1"><![CDATA[https://raw.githubusercontent.com/PhocaCz/PhocaGallery45/master/manifest.xml]]></server>
+		<server type="extension" name="COM_PHOCAGALLERY" priority="1"><![CDATA[https://raw.githubusercontent.com/PhocaCz/PhocaGallery45/main/manifest.xml]]></server>
 	</updateservers>
 </extension>
