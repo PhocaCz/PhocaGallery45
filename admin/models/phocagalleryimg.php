@@ -261,7 +261,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 
 
 		// Initialise variables;
-		$dispatcher = JDispatcher::getInstance();
+		//$dispatcher = JDispatcher::getInstance();
 		$table		= $this->getTable();
 		$pk			= (!empty($data['id'])) ? $data['id'] : (int)$this->getState($this->getName().'.id');
 		$isNew		= true;

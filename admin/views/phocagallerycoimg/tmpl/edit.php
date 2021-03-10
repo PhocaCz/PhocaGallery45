@@ -31,6 +31,8 @@ JFactory::getDocument()->addScriptDeclaration(
 }'
 
 );
+
+echo $r->startHeader();
 echo $r->startForm($option, $task, $this->item->id, 'adminForm', 'adminForm');
 // First Column
 echo '<div class="span10 form-horizontal">';

@@ -7,6 +7,9 @@
  * @copyright Copyright (C) Jan Pavelka www.phoca.cz
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
+
+use Joomla\CMS\Factory;
+
 defined('_JEXEC') or die();
 jimport( 'joomla.application.component.view');
 phocagalleryimport( 'phocagallery.image.image');
@@ -27,15 +30,15 @@ class PhocaGalleryViewDetail extends JViewLegacy
 	function display($tpl = null) {
 
 
-		$app					= JFactory::getApplication();
-$id			= $app->input->get('id', 0, 'int');
-	    krumo("this is defail view $id");
-	    return;
+		$app		= Factory::getApplication();
+        $id			= $app->input->get('id', 0, 'int');
 
 
-		$document				= JFactory::getDocument();
+
+
+		$document				= Factory::getDocument();
 		$this->params			= $app->getParams();
-		$user					= JFactory::getUser();
+		$user					= Factory::getUser();
 		$var['slideshow']		= $app->input->get('phocaslideshow', 0, 'int');
 		$var['download'] 		= $app->input->get('phocadownload', 0, 'int');
 		$uri 					= \Joomla\CMS\Uri\Uri::getInstance();
@@ -131,7 +134,7 @@ $id			= $app->input->get('id', 0, 'int');
 
 
 		// CSS
-		JHtml::stylesheet('media/com_phocagallery/css/phocagallery.css' );
+		/*JHtml::stylesheet('media/com_phocagallery/css/phocagallery.css' );
 		if ($this->t['enablecustomcss'] == 1) {
 			JHtml::stylesheet('media/com_phocagallery/css/phocagallerycustom.css' );
 			if ($this->t['customcss'] != ''){
@@ -140,10 +143,10 @@ $id			= $app->input->get('id', 0, 'int');
 				."\n </style> \n");
 
 			}
-		}
+		}*/
 
 		//Multibox displaying
-		$this->t['mb_title'] 		= PhocaGalleryUtils::isEnabledMultiboxFeature(1);
+		/*$this->t['mb_title'] 		= PhocaGalleryUtils::isEnabledMultiboxFeature(1);
 		$this->t['mb_desc'] 			= PhocaGalleryUtils::isEnabledMultiboxFeature(2);
 		$this->t['mb_uploaded_by'] 	= PhocaGalleryUtils::isEnabledMultiboxFeature(3);
 		$this->t['mb_rating'] 		= PhocaGalleryUtils::isEnabledMultiboxFeature(4);
@@ -176,7 +179,7 @@ $id			= $app->input->get('id', 0, 'int');
 
 				$document->addCustomTag( "<style type=\"text/css\"> \n" . $oS . " </style> \n");
 		}
-
+*/
 		// Download from the detail view which is not in the popupbox
 		if ($var['download'] == 2 ){
 			$this->t['display_icon_download'] = 2;
@@ -194,13 +197,13 @@ $id			= $app->input->get('id', 0, 'int');
 		$item	= $model->getData();
 
 		//Multibox Thumbnails
-		$this->t['mb_thumbs_data'] = '';
+		/*$this->t['mb_thumbs_data'] = '';
 		if ($this->t['mb_thumbs'] == 1) {
 			// if we get item variable, we have rights to load the thumbnails, this is why we checking it
 			if (isset($item->id) && isset($item->catid) && (int)$item->id > 0 && (int)$item->catid > 0) {
 				$this->t['mb_thumbs_data'] = $model->getThumbnails((int)$item->id, (int)$item->catid, (int)$item->ordering);
 			}
-		}
+		}*/
 
 		// User Avatar
 		$this->t['useravatarimg'] 		= '';
@@ -320,7 +323,8 @@ $id			= $app->input->get('id', 0, 'int');
 		}
 
 		// VOTES Statistics Img
-		if ((int)$this->t['display_rating_img'] == 1 || $this->t['mb_rating']) {
+		//if ((int)$this->t['display_rating_img'] == 1 || $this->t['mb_rating']) {
+        if ((int)$this->t['display_rating_img'] == 1) {
 
 			$this->t['votescountimg']		= 0;
 			$this->t['votesaverageimg'] 	= 0;
@@ -350,7 +354,8 @@ $id			= $app->input->get('id', 0, 'int');
 
 		// Tags
 		$this->t['displaying_tags_output'] = '';
-		if ($this->t['display_tags_links'] == 1 || $this->t['display_tags_links'] == 3 || $this->t['mb_tags'])  {
+		//if ($this->t['display_tags_links'] == 1 || $this->t['display_tags_links'] == 3 || $this->t['mb_tags'])  {
+        if ($this->t['display_tags_links'] == 1 || $this->t['display_tags_links'] == 3)  {
 
 			if ($this->t['detailwindow'] == 7) {
 				$this->t['displaying_tags_output'] = PhocaGalleryTag::displayTags($item->id);
@@ -379,8 +384,8 @@ $id			= $app->input->get('id', 0, 'int');
 
 
 		// ASIGN
-		$this->assignRef( 'tmpl', $this->t );
-		$this->assignRef( 'item', $item );
+
+		$this->item = $item;
 		$this->_prepareDocument($item);
 
 
@@ -449,7 +454,7 @@ $id			= $app->input->get('id', 0, 'int');
 
 	protected function _prepareDocument($item) {
 
-		$app		= JFactory::getApplication();
+		$app		= Factory::getApplication();
 		$menus		= $app->getMenu();
 		$pathway 	= $app->getPathway();
 		//$this->params		= $app->getParams();
@@ -532,21 +537,21 @@ $id			= $app->input->get('id', 0, 'int');
 
 		// Features added by Bernard Gilly - alphaplug.com
 		// load external plugins
-		/*$user       = JFactory::getUser();
+		/*$user       = Factory::getUser();
 		$imgid      = $item->id;
 		$catid		= $item->catid;
-		$db	   		= JFactory::getDBO();
+		$db	   		= Factory::getDBO();
 		$query 		= "SELECT owner_id FROM #__phocagallery_categories WHERE `id`='$catid'";
 		$db->setQuery( $query );
 		$ownerid 	= $db->loadResult();
 		$dispatcher = JDispatcher::getInstance();
 		JPluginHelper::importPlugin('phocagallery');
-		$results 	= \JFactory::getApplication()->triggerEvent('onViewImage', array($imgid, $catid, $ownerid, $user->id ) );*/
+		$results 	= Factory::getApplication()->triggerEvent('onViewImage', array($imgid, $catid, $ownerid, $user->id ) );*/
 
-		$user       = JFactory::getUser();
+		$user       = Factory::getUser();
 		//$dispatcher = J Dispatcher::getInstance();
 		JPluginHelper::importPlugin('phocagallery');
-		$results 	= \JFactory::getApplication()->triggerEvent('onViewImage', array((int)$item->id, (int)$item->catid, (int)$item->owner_id, (int)$user->id ) );
+		$results 	= Factory::getApplication()->triggerEvent('onViewImage', array((int)$item->id, (int)$item->catid, (int)$item->owner_id, (int)$user->id ) );
 
 
 	}

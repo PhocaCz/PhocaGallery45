@@ -8,6 +8,9 @@
  * @copyright Copyright (C) Open Source Matters. All rights reserved.
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
+
+use Joomla\CMS\Filesystem\File;
+
 defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.filesystem.folder' );
 jimport( 'joomla.filesystem.file' );
@@ -89,8 +92,8 @@ class PhocaGalleryFileUpload
 				// parts uploaded by the new file - so this is why we are using temp file in Chunk method
 				$stream 				= JFactory::getStream();// Chunk Files
 				$tempFolder				= 'pgpluploadtmpfolder/';
-				$filepathImgFinal 		= JPath::clean($path->image_abs.$folder.$file['name']);
-				$filepathImgTemp 		= JPath::clean($path->image_abs.$folder.$tempFolder.$file['name']);
+				$filepathImgFinal 		= JPath::clean($path->image_abs.$folder.strtolower($file['name']));
+				$filepathImgTemp 		= JPath::clean($path->image_abs.$folder.$tempFolder.strtolower($file['name']));
 				$filepathFolderFinal 	= JPath::clean($path->image_abs.$folder);
 				$filepathFolderTemp 	= JPath::clean($path->image_abs.$folder.$tempFolder);
 				$maxFileAge 			= 60 * 60; // Temp file age in seconds
@@ -260,7 +263,7 @@ class PhocaGalleryFileUpload
 			} else {
 				// No Chunk Method
 
-				$filepathImgFinal 		= JPath::clean($path->image_abs.$folder.$file['name']);
+				$filepathImgFinal 		= JPath::clean($path->image_abs.$folder.strtolower($file['name']));
 				$filepathFolderFinal 	= JPath::clean($path->image_abs.$folder);
 
 
@@ -355,7 +358,7 @@ class PhocaGalleryFileUpload
 
 		// All HTTP header will be overwritten with js message
 		if (isset($file['name'])) {
-			$filepath = JPath::clean($path->image_abs.$folder.$file['name']);
+			$filepath = JPath::clean($path->image_abs.$folder.strtolower($file['name']));
 
 			if (!PhocaGalleryFileUpload::canUpload( $file, $errUploadMsg, $frontEnd )) {
 
@@ -496,7 +499,7 @@ class PhocaGalleryFileUpload
 			}
 
 			if (isset($file['name'])) {
-				$filepath = JPath::clean($path->image_abs.$folder.$file['name']);
+				$filepath = JPath::clean($path->image_abs.$folder.strtolower($file['name']));
 
 				if (!PhocaGalleryFileUpload::canUpload( $file, $errUploadMsg, $frontEnd  )) {
 					exit( 'ERROR: '.JText::_($errUploadMsg));
@@ -650,15 +653,29 @@ class PhocaGalleryFileUpload
 		}
 
 		// XSS Check
-		$xss_check =  JFile::read($file['tmp_name'],false,256);
-		$html_tags = array('abbr','acronym','address','applet','area','audioscope','base','basefont','bdo','bgsound','big','blackface','blink','blockquote','body','bq','br','button','caption','center','cite','code','col','colgroup','comment','custom','dd','del','dfn','dir','div','dl','dt','em','embed','fieldset','fn','font','form','frame','frameset','h1','h2','h3','h4','h5','h6','head','hr','html','iframe','ilayer','img','input','ins','isindex','keygen','kbd','label','layer','legend','li','limittext','link','listing','map','marquee','menu','meta','multicol','nobr','noembed','noframes','noscript','nosmartquotes','object','ol','optgroup','option','param','plaintext','pre','rt','ruby','s','samp','script','select','server','shadow','sidebar','small','spacer','span','strike','strong','style','sub','sup','table','tbody','td','textarea','tfoot','th','thead','title','tr','tt','ul','var','wbr','xml','xmp','!DOCTYPE', '!--');
-		foreach($html_tags as $tag) {
+		$xss_check = file_get_contents($file['tmp_name'], false, null, -1, 256);
+
+		$html_tags = array(
+			'abbr', 'acronym', 'address', 'applet', 'area', 'audioscope', 'base', 'basefont', 'bdo', 'bgsound', 'big', 'blackface', 'blink',
+			'blockquote', 'body', 'bq', 'br', 'button', 'caption', 'center', 'cite', 'code', 'col', 'colgroup', 'comment', 'custom', 'dd', 'del',
+			'dfn', 'dir', 'div', 'dl', 'dt', 'em', 'embed', 'fieldset', 'fn', 'font', 'form', 'frame', 'frameset', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+			'head', 'hr', 'html', 'iframe', 'ilayer', 'img', 'input', 'ins', 'isindex', 'keygen', 'kbd', 'label', 'layer', 'legend', 'li', 'limittext',
+			'link', 'listing', 'map', 'marquee', 'menu', 'meta', 'multicol', 'nobr', 'noembed', 'noframes', 'noscript', 'nosmartquotes', 'object',
+			'ol', 'optgroup', 'option', 'param', 'plaintext', 'pre', 'rt', 'ruby', 's', 'samp', 'script', 'select', 'server', 'shadow', 'sidebar',
+			'small', 'spacer', 'span', 'strike', 'strong', 'style', 'sub', 'sup', 'table', 'tbody', 'td', 'textarea', 'tfoot', 'th', 'thead', 'title',
+			'tr', 'tt', 'ul', 'var', 'wbr', 'xml', 'xmp', '!DOCTYPE', '!--',
+		);
+
+		foreach ($html_tags as $tag)
+		{
 			// A tag is '<tagname ', so we need to add < and a space or '<tagname>'
-			if(stristr($xss_check, '<'.$tag.' ') || stristr($xss_check, '<'.$tag.'>')) {
+			if (stripos($xss_check, '<' . $tag . ' ') !== false || stripos($xss_check, '<' . $tag . '>') !== false)
+			{
 				$errUploadMsg = 'COM_PHOCAGALLERY_WARNING_IEXSS';
 				return false;
 			}
 		}
+
 		return true;
 	}
 	/*

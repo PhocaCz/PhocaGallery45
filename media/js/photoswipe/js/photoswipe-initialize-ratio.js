@@ -253,11 +253,15 @@ var initPhotoSwipeFromDOM = function(gallerySelector) {
 			});
 		});
 		
-		gallery.listen('close', function() {
+
+
+        gallery.listen('close', function() {
+            gallery.close();
+            history.pushState("", document.title, window.location.pathname);
 			jQuery('.ph-pswp-video-wrapper iframe').each(function() {
 				jQuery(this).attr('src', jQuery(this).attr('src'));
 			});
-		});
+		}); 
 		
 		
 		/* SLIDESHOW FUNCTIONS */
@@ -313,6 +317,16 @@ var initPhotoSwipeFromDOM = function(gallerySelector) {
 		
 		
 		/* END SLIDESHOW FUNCTIONS */
+
+        /* END SLIDESHOW FUNCTIONS */
+        gallery.listen('close', function() {
+            // Second attempt to close gallery
+            gallery.close();
+            // Remove history in case it will be not removed by close
+            history.pushState("", document.title, window.location.pathname);
+            // Forse stopping of slideshow
+            setSlideshowState(ssButtonClass, false);            
+        }); 
 		
     };
 

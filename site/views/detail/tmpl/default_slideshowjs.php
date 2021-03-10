@@ -15,14 +15,14 @@ $document			= JFactory::getDocument();
 Joomla\CMS\HTML\HTMLHelper::_('jquery.framework', false);// Load it here because of own nonConflict method (nonconflict is set below)
 $document->addScript(JURI::base(true).'/media/com_phocagallery/js/fadeslideshow/fadeslideshow.js');
 
-if($this->t['responsive'] == 1) {
-	$iW = '\'100%\'';
-	$iH = '\'100%\''; // DOES NOT WORK IN FADESLIDESHOW
+//if($this->t['responsive'] == 1) {
+	$iW = $this->t['largewidth'];//'\'100%\'';
+	$iH = $this->t['largeheight'];//'\'100px\'';//\'100%\''; // DOES NOT WORK IN FADESLIDESHOW
 	//$iH = $this->t['largeheight'];
-} else {
-	$iW = $this->t['largewidth'];
-	$iH = $this->t['largeheight'];
-}
+//} else {
+//	$iW = $this->t['largewidth'];
+//	$iH = $this->t['largeheight'];
+//}
 
 ?><script type="text/javascript">
 /***********************************************

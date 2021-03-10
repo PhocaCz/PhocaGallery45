@@ -28,6 +28,7 @@ if ($saveOrder && !empty($this->items)) {
 }
 $sortFields = $this->getSortFields();
 
+echo $r->startHeader();
 echo $r->jsJorderTable($listOrder);
 
 echo '<div class="phoca-thumb-status">' . $this->t['enablethumbcreationstatus'] .'</div>';
@@ -139,7 +140,7 @@ if (isset($item->extid) && $item->extid !='') {
 		echo $r->td('');
 	}
 } else {
-	echo $r->td($item->filename);
+	echo $r->td(str_replace('/', ' / ', $item->filename), "small ph-list-filename");
 	echo '<td align="center">';
 
 	echo '<div class="pha-toolbox">';

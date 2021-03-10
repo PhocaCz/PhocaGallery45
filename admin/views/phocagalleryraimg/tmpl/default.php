@@ -29,7 +29,7 @@ if ($saveOrder && !empty($this->items)) {
 }
 $sortFields = $this->getSortFields();
 
-
+echo $r->startHeader();
 echo $r->jsJorderTable($listOrder);
 
 echo $r->startForm($option, $task, 'adminForm');

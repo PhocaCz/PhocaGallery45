@@ -19,9 +19,9 @@ foreach ($this->itemscv as $k => $item) {
 
 
 	if ($item->type == 3) {
-	    echo '<svg class="pg-icon pg-icon-category-top-back"><use xlink:href="#pg-icon-back"></use></svg>';
+	    echo '<svg class="ph-si ph-si-category-top-back"><use xlink:href="#ph-si-back"></use></svg>';
     } else {
-	    echo '<svg class="pg-icon pg-icon-category-top-category"><use xlink:href="#pg-icon-category"></use></svg>';
+	    echo '<svg class="ph-si ph-si-category-top-category"><use xlink:href="#ph-si-category"></use></svg>';
     }
 
 

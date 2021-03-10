@@ -160,7 +160,7 @@ class PhocaGalleryRateImage
 					.$rating['votescountfile'] . ' ' . JText::_('COM_PHOCAGALLERY_'.$rating['votestextimg']). '&nbsp;&nbsp;</div>';
 	*/
 			if ($rating['alreadyratedfile']) {
-				$o .= '<div style="float:left" title="'.$voteMsg.'" ><ul class="star-rating'.$smallO.'">'
+				$o .= '<div class="pg-rate-box" title="'.$voteMsg.'" ><ul class="star-rating'.$smallO.'">'
 						.'<li class="current-rating" style="width:'.$rating['voteswidthfile'].'px"></li>'
 						.'<li><span class="star1"></span></li>';
 
@@ -173,7 +173,7 @@ class PhocaGalleryRateImage
 
 			} else if ($rating['notregisteredfile']) {
 
-				$o .= '<div style="float:left" title="'.JText::_('COM_PHOCAGALLERY_COMMENT_ONLY_REGISTERED_LOGGED_RATE_IMAGE').'"><ul class="star-rating'.$smallO.'">'
+				$o .= '<div class="pg-rate-box" title="'.JText::_('COM_PHOCAGALLERY_COMMENT_ONLY_REGISTERED_LOGGED_RATE_IMAGE').'"><ul class="star-rating'.$smallO.'">'
 						.'<li class="current-rating" style="width:'.$rating['voteswidthfile'].'px"></li>'
 						.'<li><span class="star1"></span></li>';
 
@@ -186,7 +186,7 @@ class PhocaGalleryRateImage
 
 			} else {
 
-				$o .= '<div style="float:left"><ul class="star-rating'.$smallO.'">'
+				$o .= '<div class="pg-rate-box"><ul class="star-rating'.$smallO.'">'
 						.'<li class="current-rating" style="width:'.$rating['voteswidthfile'].'px"></li>'
 						.'<li><a href="'.$href.'" onclick="pgRating('.(int)$id.', 1, 1, \'pg-msnr-container\')" title="'. JText::sprintf('COM_PHOCAGALLERY_STAR_OUT_OF', 1, 5). '" class="star1">1</a></li>';
 
@@ -195,7 +195,7 @@ class PhocaGalleryRateImage
 				}
 				$o .= '</ul></div>';
 
-				$or ='<div class="pg-cv-vote-img-result" id="pg-cv-vote-img-result'.(int)$id.'"></div>';
+				$or ='<div class="pg-rate-img-result" id="pg-rate-img-result'.(int)$id.'"></div>';
 			}
 
 
@@ -205,7 +205,7 @@ class PhocaGalleryRateImage
 		if ($refresh == true) {
 			return $o . '<div style="clear:both;"></div>';//we are in Ajax, return only content of pdvoting div
 		} else {
-			return '<div id="pg-cv-vote-img'.(int)$id.'">'.$o.'</div>'.$or . '<div style="clear:both;"></div>';//not in ajax, return the content in div
+			return '<div class="pg-rate-img" id="pg-rate-img'.(int)$id.'">'.$o.'</div>'.$or . '<div style="clear:both;"></div>';//not in ajax, return the content in div
 		}
 
 
@@ -216,15 +216,15 @@ class PhocaGalleryRateImage
 		$document	 = JFactory::getDocument();
 		$url		  = 'index.php?option=com_phocagallery&view=ratingimga&task=rate&format=json&'.JSession::getFormToken().'=1';
 		$urlRefresh		= 'index.php?option=com_phocagallery&view=ratingimga&task=refreshrate&small='.$small.'&format=json&'.JSession::getFormToken().'=1';
-		$imgLoadingUrl = JURI::base(). 'media/com_phocagallery/images/icon-loading3.gif';
+		$imgLoadingUrl = JURI::base(). 'media/com_phocagallery/images/loading.svg';
 		$imgLoadingHTML = '<img src="'.$imgLoadingUrl.'" alt="" />';
 
 
 		$js = '
 		function pgRating(id, vote, m, container) {
 		
-			var result 			= "#pg-cv-vote-img-result" + id;
-			var resultvoting 	= "#pg-cv-vote-img" + id;
+			var result 			= "#pg-rate-img-result" + id;
+			var resultvoting 	= "#pg-rate-img" + id;
 			data = {"ratingId": id, "ratingVote": vote, "format":"json"};
 			
 			pgRequest = jQuery.ajax({

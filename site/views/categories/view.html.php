@@ -438,7 +438,7 @@ class PhocaGalleryViewCategories extends JViewLegacy
 				$this->tGeo['categorieslng'] = $latLng['lng'];
 				$this->tGeo['categorieslat'] = $latLng['lat'];
 			}
-			$this->assignRef('tmplGeo',	$this->tGeo);
+			$this->tmplGeo =	$this->tGeo;
 
 			if ($this->t['map_type'] == 2) {
 				parent::display('map_osm');

@@ -28,7 +28,7 @@ if ($saveOrder && !empty($this->items)) {
 }
 $sortFields = $this->getSortFields();
 
-
+echo $r->startHeader();
 echo $r->jsJorderTable($listOrder);
 
 

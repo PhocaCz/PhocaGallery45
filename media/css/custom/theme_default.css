@@ -1,5 +1,5 @@
 /* Icons */
-.pg-icon {
+.ph-si {
     width: 1.5em;
     height: 1.5em;
     margin: 0 0.25em;
@@ -20,18 +20,24 @@ F8961E
 */
 
 
-.pg-icon-feed {color: #F8961E;}
+.ph-si-feed {color: #F8961E;}
+.ph-si-image {color: #fff; margin-bottom: 0.3em}
+.ph-si-category {color: #F9C74F; margin-bottom: 0.3em}
+.ph-si-star {color: #ffc93c;}
+.ph-si-comment {color: #333a9e;}
+.ph-si-upload {color: #0d6e35;}
+.ph-si-upload-multiple {color: #333a9e;}
+.ph-si-earth {color: #0d6e35;}
+.ph-si-stats {color: #F8961E;}
+.ph-si-ytb {color: #ff0000;}
 
-.pg-icon-image {color: #fff; margin-bottom: 0.3em}
-.pg-icon-category {color: #F9C74F; margin-bottom: 0.3em}
+.ph-si-category-top-category {color: #F9C74F; margin-bottom: 0.3em}
+.ph-si-category-top-back {color: #F3722C; margin-bottom: 0.3em}
 
-.pg-icon-category-top-category {color: #F9C74F; margin-bottom: 0.3em}
-.pg-icon-category-top-back {color: #F3722C; margin-bottom: 0.3em}
+.ph-si-category-medium {color: #F9C74F; background: #f0f0f0;}
 
-.pg-icon-category-medium {color: #F9C74F; background: #f0f0f0;}
-
-.pg-icon-back-medium {color: #b0b0b0; background: #f0f0f0;}
-.pg-icon-lock-medium {color: #b0b0b0; background: #f0f0f0;}
+.ph-si-back-medium {color: #b0b0b0; background: #f0f0f0;}
+.ph-si-lock-medium {color: #b0b0b0; background: #f0f0f0;}
 
 .pg-categories-items-box,
 .pg-category-items-box {
@@ -92,6 +98,28 @@ F8961E
     text-transform: capitalize;
 }
 
+.pg-category-box-rating {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+
+}
+
+.pg-item-box-icons-box {
+    position: absolute;
+    bottom: 3em;
+    right: 0em;
+    padding: 0.5em;
+}
+
+.pg-item-box-icons-box svg.ph-si {
+    color:#fff;
+    background: rgba(0,0,0,.5);
+    border-radius: 50%;
+    padding: 0.3em;
+    margin: 0;
+}
+
 .pg-category-box-count {
     font-size: small;
     color: #d0d0d0;
@@ -100,4 +128,25 @@ F8961E
 .pg-category-box-title a {
     color: #fff;
     text-decoration: none;
+}
+
+.ph-si-tab {
+	width: 1.1em;
+	height: 1.1em;
+}
+
+.pg-detail-item-image-box {
+    text-align: center;
+}
+
+#pgCategoryModal .modal-dialog {
+    height: 90%;
+    max-width: 70%;
+}
+#pgCategoryModal .modal-content {
+    height: 100%;
+}
+
+#pgCategoryModalLabel {
+    text-transform: capitalize;
 }

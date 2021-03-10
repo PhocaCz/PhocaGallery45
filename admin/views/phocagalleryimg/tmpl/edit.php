@@ -13,7 +13,7 @@ $task		= 'phocagalleryimg';
 
 //Joomla\CMS\HTML\HTMLHelper::_('behavior.tooltip');
 //Joomla\CMS\HTML\HTMLHelper::_('behavior.formvalidation');
-Joomla\CMS\HTML\HTMLHelper::_('behavior.keepalive');
+//Joomla\CMS\HTML\HTMLHelper::_('behavior.keepalive');
 //Joomla\CMS\HTML\HTMLHelper::_('formbehavior.chosen', 'select');
 
 $r 			= $this->r;
@@ -79,9 +79,11 @@ JFactory::getDocument()->addScriptDeclaration(
 
 );
 
+echo $r->startHeader();
 echo $r->startForm($option, $task, $this->item->id, 'adminForm', 'adminForm');
 // First Column
-echo '<div class="span12 form-horizontal">';
+//echo '<div class="span12 form-horizontal">';
+echo '<div>';
 $tabs = array (
 'general' 		=> JText::_($OPT.'_GENERAL_OPTIONS'),
 'publishing' 	=> JText::_($OPT.'_PUBLISHING_OPTIONS'),
@@ -193,7 +195,7 @@ echo $r->endTab();
 
 
 echo $r->endTabs();
-echo '</div>';//end span2
+echo '</div>';
 
 echo $r->formInputs($this->t['task']);
 echo $r->endForm();

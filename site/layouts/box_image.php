@@ -16,7 +16,7 @@ $item   = $d['item'];
 $t      = $d['t'];
 
 
-echo '<a class="'.$item->button->methodname.'" href="'. $item->link.'"';
+echo '<a class="'.$item->button->methodname.'" href="'. $item->link.'" data-img-title="'.$item->title.'" id="pgImg'.$item->id.'"';
 
 echo PhocaGalleryRenderFront::renderAAttribute($t['detail_window'], $item->button->options, $item->linkorig, $t['highslideonclick'], '', $item->linknr, $item->catalias);// Render OnClick, Rel
 

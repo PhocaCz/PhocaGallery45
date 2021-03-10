@@ -175,6 +175,8 @@ var initPhotoSwipeFromDOM = function(gallerySelector) {
 
         };
 
+        
+
         // PhotoSwipe opened from URL
         if(fromURL) {
             if(options.galleryPIDs) {
@@ -202,10 +204,11 @@ var initPhotoSwipeFromDOM = function(gallerySelector) {
         if(disableAnimation) {
             options.showAnimationDuration = 0;
         }
-
+//options.history = false;
         // Pass data to PhotoSwipe and initialize it
+        
         gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
-		
+        
 		
 		/* SLIDESHOW */
 		setSlideshowState(ssButtonClass, true /* not running from the start */);
@@ -217,14 +220,22 @@ var initPhotoSwipeFromDOM = function(gallerySelector) {
 				setTimeout(gotoNextSlide, ssDelay);
 			}
 		}); 
-		gallery.listen('destroy', function() { gallery = null; });
+		gallery.listen('destroy', function() { 
+         
+            gallery = null; 
+        });
 		/* END SLIDESHOW */
 		
         gallery.init();
+        
+        
+        
 		
 		/* YouTube */
+       
 		gallery.listen('beforeChange', function() {
 			var currItem = jQuery(gallery.currItem.container);
+
 			jQuery('.ph-pswp-video-wrapper iframe').removeClass('active');
 			var currItemIframe = currItem.find('.ph-pswp-video-wrapper iframe').addClass('active');
 			jQuery('.ph-pswp-video-wrapper iframe').each(function() {
@@ -234,12 +245,14 @@ var initPhotoSwipeFromDOM = function(gallerySelector) {
 			});
 		});
 		
+		
 		gallery.listen('close', function() {
+            gallery.close();
+            history.pushState("", document.title, window.location.pathname);
 			jQuery('.ph-pswp-video-wrapper iframe').each(function() {
 				jQuery(this).attr('src', jQuery(this).attr('src'));
 			});
 		}); 
-		
 		
 		
 		/* SLIDESHOW FUNCTIONS */
@@ -256,6 +269,8 @@ var initPhotoSwipeFromDOM = function(gallerySelector) {
 			setSlideshowState(this, !ssRunning);
 			//gallery.next();
 		});
+
+
 		
 
 
@@ -295,8 +310,18 @@ var initPhotoSwipeFromDOM = function(gallerySelector) {
 		
 		
 		/* END SLIDESHOW FUNCTIONS */
+        gallery.listen('close', function() {
+            // Second attempt to close gallery
+            gallery.close();
+            // Remove history in case it will be not removed by close
+            history.pushState("", document.title, window.location.pathname);
+            // Forse stopping of slideshow
+            setSlideshowState(ssButtonClass, false);            
+        }); 
 		
     };
+
+    
 
     // loop through all gallery elements and bind events
     var galleryElements = document.querySelectorAll( gallerySelector );
@@ -309,6 +334,7 @@ var initPhotoSwipeFromDOM = function(gallerySelector) {
     // Parse URL and open gallery if it contains #&pid=3&gid=1
     var hashData = photoswipeParseHash();
     if(hashData.pid && hashData.gid) {
+       
         openPhotoSwipe( hashData.pid ,  galleryElements[ hashData.gid - 1 ], true, true );
     }
 };

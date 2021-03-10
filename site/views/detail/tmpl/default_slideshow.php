@@ -26,13 +26,14 @@ if ($this->t['backbutton'] != '') {
 
 //echo '<div id="phocaGallerySlideshowC" style="width:'. $iW.';height:'.$iH .';padding:0;margin: auto"></div>';
 
-echo '<div class="ph-mc">'
+/*echo '<div class="ph-mc">'
 .'<table border="0" class="ph-mc" cellpadding="0" cellspacing="0">'
 .'<tr>'
 .'<td colspan="6"  valign="middle"'
 .' style="height:'.$iH.';width: '.$iW.';" >';
-
-echo '<div id="phocaGallerySlideshowC" style="max-width:'. $iW.';max-height:'.$iH .';padding:0;margin: auto;">';
+*/
+//echo '<div id="phocaGallerySlideshowC" style="max-width:'. $iW.';max-height:'.$iH .';padding:0;margin: auto;">';
+echo '<div id="phocaGallerySlideshowC">';
 
 //.'<a href="#" onclick="'.$this->t['detailwindowclose'].'">'.$this->item->linkimage.'</a>';
 /*.'<script type="text/javascript" style="padding:0;margin:0;">';
@@ -44,10 +45,10 @@ if ( $this->t['slideshowrandom'] == 1 ) {
 echo '</script>';*/
 
 echo '</div>';
-echo '</td>'
-.'</tr>';
+//echo '</td>'
+//.'</tr>';
 
-echo '<tr><td colspan="6"><div style="padding:0;margin:0;height:3px;font-size:0px;">&nbsp;</div></td></tr>';
+//echo '<tr><td colspan="6"><div style="padding:0;margin:0;height:3px;font-size:0px;">&nbsp;</div></td></tr>';
 
 // Standard Description (to get the same height as by not slideshow
 if ($this->t['displaydescriptiondetail'] == 1) {

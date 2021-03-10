@@ -55,7 +55,10 @@ class PhocaGalleryRenderTabs
                     $activeO = ' active';
 
                 }
-                $o[] = '<li class="phTabsLi"><a class="phTabsA phTabsHeader' . $activeO . '" id="phTabId' . $this->id . 'Item' . $v['id'] . '">' . PhocaGalleryRenderFront::renderIcon($v['icon'], 'media/com_phocagallery/images/icon-' . $v['image'] . '.png', '') . '&nbsp;' . $v['title'] . '</a></li>';
+                $o[] = '<li class="phTabsLi"><a class="phTabsA phTabsHeader' . $activeO . '" id="phTabId' . $this->id . 'Item' . $v['id'] . '">'
+                        //. PhocaGalleryRenderFront::renderIcon($v['icon'], 'media/com_phocagallery/images/icon-' . $v['image'] . '.png', '')
+                        . '<svg class="ph-si ph-si-tab ph-si-'.$v['icon'].'"><use xlink:href="#ph-si-'.$v['icon'].'"></use></svg>'
+                        . '&nbsp;' . $v['title'] . '</a></li>';
                 $i++;
             }
         }

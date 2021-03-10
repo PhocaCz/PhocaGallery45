@@ -18,6 +18,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\Helpers\Sidebar;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Version;
@@ -91,6 +92,13 @@ class Adminviews
             HTMLHelper::_('stylesheet', 'media/' . $this->option . '/css/administrator/3.css', array('version' => 'auto'));
         }
     }
+
+    public function startHeader() {
+
+		$layoutSVG 	= new FileLayout('svg_definitions', null, array('component' => $this->option));
+		//return $layoutSVG->render(array());
+
+	}
 
 
     public function startMainContainer($id = 'phAdminView', $class = 'ph-admin-box') {

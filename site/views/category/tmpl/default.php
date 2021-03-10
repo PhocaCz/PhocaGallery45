@@ -8,10 +8,13 @@
  * @copyright Copyright (C) Jan Pavelka www.phoca.cz
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
+
+use Joomla\CMS\Layout\FileLayout;
+
 defined('_JEXEC') or die('Restricted access');
 phocagalleryimport('phocagallery.render.rendertabs');
 
-$layoutSVG 	= new JLayoutFile('svg_definitions', null, array('component' => 'com_phocagallery'));
+$layoutSVG 	= new FileLayout('svg_definitions', null, array('component' => 'com_phocagallery'));
 
 // SVG Definitions
 $d          = array();
@@ -45,7 +48,7 @@ if ($this->t['show_page_heading'] != 0) {
 if ($this->t['display_feed'] == 1 || $this->t['display_feed'] == 3) {
     if (isset($this->category->id) && (int)$this->category->id > 0 && isset($this->category->alias)) {
         echo '<div class="pg-top-icons">';
-        echo '<a href="' . JRoute::_(PhocaGalleryRoute::getFeedRoute('category'), $this->category->id, $this->category->alias) . '" title="' . JText::_('COM_PHOCAGALLERY_RSS') . '"><svg class="pg-icon pg-icon-feed"><use xlink:href="#pg-icon-feed"></use></svg></a>';
+        echo '<a href="' . JRoute::_(PhocaGalleryRoute::getFeedRoute('category'), $this->category->id, $this->category->alias) . '" title="' . JText::_('COM_PHOCAGALLERY_RSS') . '"><svg class="ph-si ph-si-feed"><use xlink:href="#ph-si-feed"></use></svg></a>';
         echo '</div>';
         echo '<div class="ph-cb"></div>';
     }
@@ -101,33 +104,33 @@ if ((int)$this->tagId > 0) {
         echo $tabs->startTabs();
 
         if ((int)$this->t['display_rating'] == 1) {
-            $tabItems[$tabItemsI] = array('id' => 'pgvotes', 'title' => JText::_('COM_PHOCAGALLERY_RATING'), 'image' => 'vote', 'icon' => 'vote');
+            $tabItems[$tabItemsI] = array('id' => 'pgvotes', 'title' => JText::_('COM_PHOCAGALLERY_RATING'), 'image' => 'vote', 'icon' => 'star');
             $tabItemsI++;
         }
 
         if ((int)$this->t['display_comment'] == 1) {
-            if ($this->t['externalcommentsystem'] == 2) {
-                $tabItems[$tabItemsI] = array('id' => 'pgcomments', 'title' => JText::_('COM_PHOCAGALLERY_COMMENTS'), 'image' => 'comment-fb-small', 'icon' => 'comment-fb');
-            } else {
+            //if ($this->t['externalcommentsystem'] == 2) {
+            //    $tabItems[$tabItemsI] = array('id' => 'pgcomments', 'title' => JText::_('COM_PHOCAGALLERY_COMMENTS'), 'image' => 'comment-fb-small', 'icon' => 'comment-fb');
+            //} else {
                 $tabItems[$tabItemsI] = array('id' => 'pgcomments', 'title' => JText::_('COM_PHOCAGALLERY_COMMENTS'), 'image' => 'comment', 'icon' => 'comment');
-            }
+            //}
             $tabItemsI++;
         }
         if ((int)$this->t['displaycategorystatistics'] == 1) {
-            $tabItems[$tabItemsI] = array('id' => 'pgstatistics', 'title' => JText::_('COM_PHOCAGALLERY_STATISTICS'), 'image' => 'statistics', 'icon' => 'statistics');
+            $tabItems[$tabItemsI] = array('id' => 'pgstatistics', 'title' => JText::_('COM_PHOCAGALLERY_STATISTICS'), 'image' => 'statistics', 'icon' => 'stats');
             $tabItemsI++;
         }
         if ((int)$this->t['displaycategorygeotagging'] == 1) {
             if ($this->map['longitude'] == '' || $this->map['latitude'] == '') {
 				//echo '<p>' . JText::_('COM_PHOCAGALLERY_ERROR_MAP_NO_DATA') . '</p>';
 			} else {
-                $tabItems[$tabItemsI] = array('id' => 'pggeotagging', 'title' => JText::_('COM_PHOCAGALLERY_GEOTAGGING'), 'image' => 'geo', 'icon' => 'geo');
+                $tabItems[$tabItemsI] = array('id' => 'pggeotagging', 'title' => JText::_('COM_PHOCAGALLERY_GEOTAGGING'), 'image' => 'geo', 'icon' => 'earth');
                 $tabItemsI++;
             }
         }
 
         if ((int)$this->t['displaycreatecat'] == 1) {
-            $tabItems[$tabItemsI] = array('id' => 'pgnewcategory', 'title' => JText::_('COM_PHOCAGALLERY_CATEGORY'), 'image' => 'subcategories', 'icon' => 'subcategory');
+            $tabItems[$tabItemsI] = array('id' => 'pgnewcategory', 'title' => JText::_('COM_PHOCAGALLERY_CATEGORY'), 'image' => 'subcategories', 'icon' => 'category');
             $tabItemsI++;
         }
         if ((int)$this->t['displayupload'] == 1) {
@@ -135,17 +138,17 @@ if ((int)$this->tagId > 0) {
             $tabItemsI++;
         }
         if ((int)$this->t['ytbupload'] == 1 && $this->t['displayupload'] == 1 ) {
-            $tabItems[$tabItemsI] = array('id' => 'pgytbupload', 'title' => JText::_('COM_PHOCAGALLERY_YTB_UPLOAD'), 'image' => 'upload-ytb', 'icon' => 'upload-ytb');
+            $tabItems[$tabItemsI] = array('id' => 'pgytbupload', 'title' => JText::_('COM_PHOCAGALLERY_YTB_UPLOAD'), 'image' => 'upload-ytb', 'icon' => 'ytb');
             $tabItemsI++;
         }
         if((int)$this->t['enablemultiple']  == 1 && (int)$this->t['displayupload'] == 1) {
             $tabItems[$tabItemsI] = array('id' => 'pgmultipleupload', 'title' => JText::_('COM_PHOCAGALLERY_MULTIPLE_UPLOAD'), 'image' => 'upload-multiple', 'icon' => 'upload-multiple');
             $tabItemsI++;
         }
-        if($this->t['enablejava'] == 1 && (int)$this->t['displayupload'] == 1) {
+        /*if($this->t['enablejava'] == 1 && (int)$this->t['displayupload'] == 1) {
             $tabItems[$tabItemsI] = array('id' => 'pgjavaupload', 'title' => JText::_('COM_PHOCAGALLERY_JAVA_UPLOAD'), 'image' => 'upload-java', 'icon' => 'upload-java');
             $tabItemsI++;
-        }
+        }*/
 
         $tabs->setActiveTab(isset($tabItems[$this->t['tab']]['id']) ? $tabItems[$this->t['tab']]['id'] : 0);
         echo $tabs->renderTabsHeader($tabItems);

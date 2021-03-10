@@ -17,9 +17,9 @@ $t      = $d['t'];
 echo '<a class="'.$item->button->methodname.'" href="'. $item->link.'">';
 echo '<div class="pg-item-box-image pg-svg-box">';
 if (isset($item->rightdisplaykey) && $item->rightdisplaykey == 0) {
-    echo '<svg alt="'.$item->altvalue.'" class="pg-icon pg-icon-lock-medium pg-image c-Image c-Image--shaded" style="width:'.$t['medium_image_width'].'px;height:'.$t['medium_image_height'].'px" itemprop="thumbnail"><use xlink:href="#pg-icon-lock"></use></svg>';
+    echo '<svg alt="'.$item->altvalue.'" class="ph-si ph-si-lock-medium pg-image c-Image c-Image--shaded" style="width:'.$t['medium_image_width'].'px;height:'.$t['medium_image_height'].'px" itemprop="thumbnail"><use xlink:href="#ph-si-lock"></use></svg>';
 } else {
-    echo '<svg alt="'.$item->altvalue.'" class="pg-icon pg-icon-back-medium pg-image c-Image c-Image--shaded" style="width:'.$t['medium_image_width'].'px;height:'.$t['medium_image_height'].'px" itemprop="thumbnail"><use xlink:href="#pg-icon-back"></use></svg>';
+    echo '<svg alt="'.$item->altvalue.'" class="ph-si ph-si-back-medium pg-image c-Image c-Image--shaded" style="width:'.$t['medium_image_width'].'px;height:'.$t['medium_image_height'].'px" itemprop="thumbnail"><use xlink:href="#ph-si-back"></use></svg>';
 }
 echo '</div>';
 echo '</a>';

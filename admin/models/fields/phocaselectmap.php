@@ -60,6 +60,7 @@ class JFormFieldPhocaSelectMap extends JFormField
 		$script[] = '	function phocaSelectMap_'.$this->id.'(title) {';
 		$script[] = '		document.getElementById("'.$this->id.'").value = title;';
 		$script[] = '		'.$onchange;
+		$script[] = '		jModalClose();';
 		//$script[] = '		SqueezeBox.close();';
 		//$script[] = '		jQuery(\'#'.$idA.'\').modal(\'toggle\');';
 		$script[] = '	}';
@@ -92,7 +93,7 @@ class JFormFieldPhocaSelectMap extends JFormField
 			$html[] = '<div class="input-append">';
 			$html[] = '<span class="input-append"><input type="text" id="' . $this->id . '" name="' . $this->name . '"'
 				. ' value="' . $this->value . '"' . $attr . ' />';
-			$html[] = '<a href="#'.$idA.'" role="button" class="btn " data-toggle="modal" title="' . JText::_('COM_PHOCAGALLERY_FORM_SELECT_COORDINATES') . '">'
+			$html[] = '<a href="'.$link.'" role="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#'.$idA.'" title="' . JText::_('COM_PHOCAGALLERY_FORM_SELECT_COORDINATES') . '">'
 				. '<span class="icon-list icon-white"></span> '
 				. JText::_('COM_PHOCAGALLERY_FORM_SELECT_COORDINATES') . '</a></span>';
 			$html[] = '</div>'. "\n";
@@ -107,7 +108,7 @@ class JFormFieldPhocaSelectMap extends JFormField
 					'height' => '470px',
 					'modalWidth' => '50',
 					'bodyHeight' => '70',
-					'footer' => '<div id="phmPopupInfo" class="ph-info-modal"></div><button type="button" class="btn" data-dismiss="modal" aria-hidden="true">'
+					'footer' => '<div id="phmPopupInfo" class="ph-info-modal"></div><button type="button" class="btn" data-bs-dismiss="modal" aria-hidden="true">'
 						. JText::_('COM_PHOCAGALLERY_CLOSE') . '</button>'
 				)
 			);

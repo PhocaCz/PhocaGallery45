@@ -8,8 +8,11 @@
  * @copyright Copyright (C) Jan Pavelka www.phoca.cz
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
+
+use Joomla\CMS\Layout\FileLayout;
+
 defined('_JEXEC') or die('Restricted access');
-$layoutSVG 	= new JLayoutFile('svg_definitions', null, array('component' => 'com_phocagallery'));
+$layoutSVG 	= new FileLayout('svg_definitions', null, array('component' => 'com_phocagallery'));
 
 // SVG Definitions
 $d          = array();
@@ -25,7 +28,7 @@ if ( $this->params->get( 'show_page_heading' ) ) {
 if ($this->t['display_feed'] == 1 || $this->t['display_feed'] == 2 ) {
 
     echo '<div class="pg-top-icons">';
-    echo '<a href="' . JRoute::_(PhocaGalleryRoute::getFeedRoute('categories')) . '" title="' . JText::_('COM_PHOCAGALLERY_RSS') . '"><svg class="pg-icon pg-icon-feed"><use xlink:href="#pg-icon-feed"></use></svg></a>';
+    echo '<a href="' . JRoute::_(PhocaGalleryRoute::getFeedRoute('categories')) . '" title="' . JText::_('COM_PHOCAGALLERY_RSS') . '"><svg class="ph-si ph-si-feed"><use xlink:href="#ph-si-feed"></use></svg></a>';
     echo '</div>';
     echo '<div class="ph-cb"></div>';
 }

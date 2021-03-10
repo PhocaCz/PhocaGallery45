@@ -70,6 +70,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 
 		// CSS
 		PhocaGalleryRenderFront::renderAllCSS();
+		PhocaGalleryRenderFront::renderMainJs();
 
 		// LIBRARY
 		$library 							= PhocaGalleryLibrary::getLibrary();
@@ -1273,7 +1274,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 			} else if ( $this->t['detail_window'] == 14 ) {
 
 				$this->items[$iS]->link 		= $imgLink;
-				$this->items[$iS]->link2 		= $siteLink;
+				$this->items[$iS]->link2 		= $imgLink;//$siteLink;//todo
 				$this->items[$iS]->linkother	= $siteLink;
 				$this->items[$iS]->linkorig		= $imgLinkOrig;
 
@@ -1402,7 +1403,8 @@ class PhocaGalleryViewCategory extends JViewLegacy
 					}
 					if (!isset($this->items[$iS]->extlink1[3]) || $this->items[$iS]->extlink1[3] == 1) {
 						//$this->items[$iS]->extlink1[4] = Joomla\CMS\HTML\HTMLHelper::_('image', 'media/com_phocagallery/images/icon-extlink1.png', JText::_($this->items[$iS]->extlink1[1]));
-						$this->items[$iS]->extlink1[4] = PhocaGalleryRenderFront::renderIcon('extlink1', 'media/com_phocagallery/images/icon-extlink1.png', JText::_($this->items[$iS]->extlink1[1]));
+						//$this->items[$iS]->extlink1[4] = PhocaGalleryRenderFront::renderIcon('extlink1', 'media/com_phocagallery/images/icon-extlink1.png', JText::_($this->items[$iS]->extlink1[1]));
+						$this->items[$iS]->extlink1[4] = '<svg class="ph-si ph-si-ext-link1"><use xlink:href="#ph-si-ext-link"></use></svg>';
 						$this->items[$iS]->extlink1[5] = '';
 					} else {
 						$this->items[$iS]->extlink1[4] = $this->items[$iS]->extlink1[1];
@@ -1424,7 +1426,8 @@ class PhocaGalleryViewCategory extends JViewLegacy
 					}
 					if (!isset($this->items[$iS]->extlink2[3]) || $this->items[$iS]->extlink2[3] == 1) {
 						//$this->items[$iS]->extlink2[4] = Joomla\CMS\HTML\HTMLHelper::_('image', 'media/com_phocagallery/images/icon-extlink2.png', JText::_($this->items[$iS]->extlink2[1]));
-						$this->items[$iS]->extlink2[4] = PhocaGalleryRenderFront::renderIcon('extlink2', 'media/com_phocagallery/images/icon-extlink2.png', JText::_($this->items[$iS]->extlink2[1]));
+						//$this->items[$iS]->extlink2[4] = PhocaGalleryRenderFront::renderIcon('extlink2', 'media/com_phocagallery/images/icon-extlink2.png', JText::_($this->items[$iS]->extlink2[1]));
+						$this->items[$iS]->extlink2[4] = '<svg class="ph-si ph-si-ext-link2"><use xlink:href="#ph-si-ext-link"></use></svg>';
 						$this->items[$iS]->extlink2[5] = '';
 					}else {
 						$this->items[$iS]->extlink2[4] = $this->items[$iS]->extlink2[1];
@@ -1742,7 +1745,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 			$this->t['already_commented'] 	= PhocaGalleryCommentCategory::checkUserComment( (int)$id, (int)$this->t['user']->id );
 			$commentItem				= PhocaGalleryCommentCategory::displaycomment( (int)$id );
 
-			$this->assignRef( 'commentitem',		$commentItem);
+			$this->t['commentitem']		= $commentItem;
 		}
 
 

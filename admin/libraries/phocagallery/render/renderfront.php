@@ -8,10 +8,23 @@
  * @copyright Copyright (C) Open Source Matters. All rights reserved.
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+
 defined('_JEXEC') or die('Restricted access');
 
 class PhocaGalleryRenderFront
 {
+    public static function renderMainJs() {
+        HTMLHelper::_('script', 'media/com_phocagallery/js/main.js', array('version' => 'auto'));
+        Factory::getApplication()
+			->getDocument()
+			->getWebAssetManager()
+			->useScript('bootstrap.modal');
+    }
+
+
     // hotnew
     public static function getOverImageIcons($date, $hits) {
         $app    = JFactory::getApplication();
@@ -29,7 +42,7 @@ class PhocaGalleryRenderFront
             $dateExists = $dateToday - $dateAdded;
             $dateNew    = (int)$new * 24 * 60 * 60;
             if ($dateExists < $dateNew) {
-                $output .= Joomla\CMS\HTML\HTMLHelper::_('image', 'media/com_phocagallery/images/icon-new.png', '', array('class' => 'pg-img-ovr1'));
+                $output .= HTMLHelper::_('image', 'media/com_phocagallery/images/icon-new.png', '', array('class' => 'pg-img-ovr1'));
             }
         }
         if ($hot == 0) {
@@ -37,9 +50,9 @@ class PhocaGalleryRenderFront
         } else {
             if ((int)$hot <= $hits) {
                 if ($output == '') {
-                    $output .= Joomla\CMS\HTML\HTMLHelper::_('image', 'media/com_phocagallery/images/icon-hot.png', '', array('class' => 'pg-img-ovr1'));
+                    $output .= HTMLHelper::_('image', 'media/com_phocagallery/images/icon-hot.png', '', array('class' => 'pg-img-ovr1'));
                 } else {
-                    $output .= Joomla\CMS\HTML\HTMLHelper::_('image', 'media/com_phocagallery/images/icon-hot.png', '', array('class' => 'pg-img-ovr2'));
+                    $output .= HTMLHelper::_('image', 'media/com_phocagallery/images/icon-hot.png', '', array('class' => 'pg-img-ovr2'));
                 }
             }
         }
@@ -518,7 +531,7 @@ class PhocaGalleryRenderFront
 
         $url = PhocaGalleryRoute::getFeedRoute($type, $catid, $catidAlias);
         if ($paramsIcons) {
-            //$text = Joomla\CMS\HTML\HTMLHelper::_('image', 'media/com_phocagallery/images/icon-feed.png', JText::_('COM_PHOCAGALLERY_RSS'));
+            //$text = HTMLHelper::_('image', 'media/com_phocagallery/images/icon-feed.png', JText::_('COM_PHOCAGALLERY_RSS'));
 
             $text = PhocaGalleryRenderFront::renderIcon('feed', 'media/com_phocagallery/images/icon-feed.png', JText::_('COM_PHOCAGALLERY_RSS'));
         } else {
@@ -761,13 +774,13 @@ class PhocaGalleryRenderFront
 
     public static function renderIcon($type, $img, $alt, $class = '', $attributes = '') {
 
-        //return Joomla\CMS\HTML\HTMLHelper::_('image', $img, $alt);
+        //return HTMLHelper::_('image', $img, $alt);
 
         $paramsC         = JComponentHelper::getParams('com_phocagallery');
         $bootstrap_icons = $paramsC->get('bootstrap_icons', 0);
 
         if ($bootstrap_icons == 0) {
-            return Joomla\CMS\HTML\HTMLHelper::_('image', $img, $alt, $attributes);
+            return HTMLHelper::_('image', $img, $alt, $attributes);
         }
 
         $i = '';
@@ -824,7 +837,7 @@ class PhocaGalleryRenderFront
 
             } else {
                 if ($img != '') {
-                    return Joomla\CMS\HTML\HTMLHelper::_('image', $img, $alt, $attributes);
+                    return HTMLHelper::_('image', $img, $alt, $attributes);
                 }
             }
 
@@ -887,7 +900,7 @@ class PhocaGalleryRenderFront
 
             } else {
                 if ($img != '') {
-                    return Joomla\CMS\HTML\HTMLHelper::_('image', $img, $alt, $attributes);
+                    return HTMLHelper::_('image', $img, $alt, $attributes);
                 }
             }
         }

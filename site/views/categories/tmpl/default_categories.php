@@ -25,7 +25,7 @@ foreach ($this->categories as $k => $item) {
     echo '</div>';
 
     echo '<div class="pg-category-box-title">';
-    echo '<svg class="pg-icon pg-icon-category"><use xlink:href="#pg-icon-category"></use></svg>';
+    echo '<svg class="ph-si ph-si-category"><use xlink:href="#ph-si-category"></use></svg>';
     echo '<a href="' . Route::_($item->link) . '">' . $item->title_self. '</a>';
     echo $item->numlinks > 0 ? ' <span class="pg-category-box-count">(' . $item->numlinks . ')</span>' : '';
     echo '</div>';

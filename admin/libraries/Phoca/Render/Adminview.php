@@ -18,6 +18,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Version;
+use Joomla\CMS\Layout\FileLayout;
 
 class Adminview
 {
@@ -64,6 +65,12 @@ class Adminview
 
 	}
 
+	public function startHeader() {
+
+		$layoutSVG 	= new FileLayout('svg_definitions', null, array('component' => $this->option));
+		return $layoutSVG->render(array());
+
+	}
 
 	public function startCp() {
 
@@ -117,11 +124,11 @@ class Adminview
 		}
 
 		return '<div id="'.$view.'"><form action="'.Route::_('index.php?option='.$option . $viewP . $layout . '&id='.(int) $itemId . $tmpl).'" method="post" name="'.$name.'" id="'.$id.'" class="form-validate '.$class.'" role="form">'."\n"
-		.'<div id="phAdminEdit" class="row-fluid">'."\n";
+		.'<div id="phAdminEdit" class="container"><div class="row">'."\n";
 	}
 
 	public function endForm() {
-		return '</div>'."\n".'</form>'."\n".'</div>'. "\n" . $this->ajaxTopHtml();
+		return '</div></div>'."\n".'</form>'."\n".'</div>'. "\n" . $this->ajaxTopHtml();
 	}
 
 	public function startFormRoute($view, $route, $id = 'adminForm', $name = 'adminForm') {

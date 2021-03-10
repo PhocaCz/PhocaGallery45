@@ -67,10 +67,12 @@ JFactory::getDocument()->addScriptDeclaration(
 	}'
 
 );
+
+echo $r->startHeader();
 echo '<div class="phoca-thumb-status">' . $this->t['enablethumbcreationstatus'] .'</div>';
 
 echo $r->startForm($option, $task, 'adminForm', 'adminForm');
-echo '<div class="span4 form-horizontal" style="border-right: 1px solid #d3d3d3;padding-right: 5px;">';
+echo '<div class="col-sm-4 form-horizontal" style="border-right: 1px solid #d3d3d3;padding-right: 5px;">';
 echo '<h4>'. JText::_('COM_PHOCAGALLERY_MULTIPLE_ADD'). '</h4>';
 
 echo '<div>'."\n";
@@ -81,7 +83,7 @@ echo '</div>'. "\n";
 echo '</div>';
 
 
-echo '<div class="span8 form-horizontal">';
+echo '<div class="col-sm-8 form-horizontal">';
 
 echo '<div class="ph-admin-path">' . JText::_('COM_PHOCAGALLERY_PATH'). ': '.JPath::clean($this->path->image_abs. $this->folderstate->folder) .'</div>';
 
@@ -102,7 +104,9 @@ $link = 'index.php?option=com_phocagallery&amp;view=phocagallerym&amp;layout=edi
 echo '<tr><td>&nbsp;</td>'
 .'<td class="ph-img-table">'
 .'<a href="'.$link.'" >'
-. Joomla\CMS\HTML\HTMLHelper::_( 'image', 'media/com_phocagallery/images/administrator/icon-16-up.png', '').'</a>'
+//. Joomla\CMS\HTML\HTMLHelper::_( 'image', 'media/com_phocagallery/images/administrator/icon-16-up.png', '')
+.'<svg class="ph-si ph-si-up"><use xlink:href="#ph-si-up"></use></svg>'
+.'</a>'
 .'</td>'
 .'<td><a href="'.$link.'" >..</a></td>'
 .'</tr>';
@@ -117,7 +121,10 @@ if (count($this->images) > 0 || count($this->folders) > 0) {
 		echo '<tr>'
 			.' <td>'. $checked .'</td>'
 			.' <td class="ph-img-table"><a href="'. JRoute::_( $link ).'">'
-			. Joomla\CMS\HTML\HTMLHelper::_( 'image', 'media/com_phocagallery/images/administrator/icon-folder-small.gif', '').'</a></td>'
+			//. Joomla\CMS\HTML\HTMLHelper::_( 'image', 'media/com_phocagallery/images/administrator/icon-folder-small.gif', '')
+			.'<svg class="ph-si ph-si-category"><use xlink:href="#ph-si-category"></use></svg>'
+
+			.'</a></td>'
 			.' <td><a href="'. JRoute::_( $link ).'">'. $this->folders[$i]->name.'</a></td>'
 			.'</tr>';
 	}
@@ -130,7 +137,9 @@ if (count($this->images) > 0 || count($this->folders) > 0) {
 		echo '<tr>'
 			.' <td>'. $checked .'</td>'
 			.' <td class="ph-img-table">'
-			. Joomla\CMS\HTML\HTMLHelper::_( 'image', 'media/com_phocagallery/images/administrator/icon-image-small.gif', '').'</td>'
+			//. Joomla\CMS\HTML\HTMLHelper::_( 'image', 'media/com_phocagallery/images/administrator/icon-image-small.gif', '')
+			.'<svg class="ph-si ph-si-image"><use xlink:href="#ph-si-image"></use></svg>'
+			.'</td>'
 			.' <td>'.$this->images[$i]->nameno.'</td>'
 			.'</tr>';
 	}
@@ -151,8 +160,8 @@ echo '<input type="hidden" name="layout" value="edit" />'. "\n";
 echo Joomla\CMS\HTML\HTMLHelper::_('form.token');
 echo $r->endForm();
 
-echo '</div>';
-echo '<div class="clearfix"></div>';
+//echo '</div>';
+//echo '<div class="clearfix"></div>';
 
 if ($this->t['displaytabs'] > 0) {
 
@@ -191,14 +200,9 @@ if ($this->t['displaytabs'] > 0) {
 	echo $r->startTabs($activeTab);
 
 	$tabs = array();
-	$tabs['multipleupload'] = '<span class="ph-cp-item"><i class="phi phi-fs-s phi-fc-bl duotone icon-upload"></i></span>' . '&nbsp;'.JText::_('COM_PHOCAGALLERY_MULTIPLE_UPLOAD');
-	$tabs['upload'] = '<span class="ph-cp-item"><i class="phi phi-fs-s phi-fc-bd duotone icon-upload"></i></span>' . '&nbsp;'.JText::_('COM_PHOCAGALLERY_UPLOAD');
-
-	if (!empty($this->t['javaupload'])) {
-	    $tabs['javaupload'] = '<span class="ph-cp-item"><i class="phi phi-fs-s phi-fc-rl duotone icon-upload"></i></span>' . '&nbsp;'.JText::_('COM_PHOCAGALLERY_JAVA_UPLOAD');
-    }
-
-	$tabs['createfolder'] = '<span class="ph-cp-item"><i class="phi phi-fs-s phi-fc-brd duotone icon-folder"></i></span>' . '&nbsp;'.JText::_('COM_PHOCAGALLERY_CREATE_FOLDER');
+	$tabs['multipleupload'] = '<svg class="ph-si ph-si-tab pg-icon-upload-multiple"><use xlink:href="#ph-si-upload-multiple"></use></svg>' . '&nbsp;'.JText::_('COM_PHOCAGALLERY_MULTIPLE_UPLOAD');
+	$tabs['upload'] 		= '<svg class="ph-si ph-si-tab pg-icon-upload"><use xlink:href="#ph-si-upload"></use></svg>' . '&nbsp;'.JText::_('COM_PHOCAGALLERY_UPLOAD');
+	$tabs['createfolder'] 	= '<svg class="ph-si ph-si-tab pg-icon-category"><use xlink:href="#ph-si-category"></use></svg>'. '&nbsp;'.JText::_('COM_PHOCAGALLERY_CREATE_FOLDER');
 
 	echo $r->navigation($tabs, $activeTab);
 
@@ -210,11 +214,6 @@ if ($this->t['displaytabs'] > 0) {
 	echo $this->loadTemplate('upload');
 	echo $r->endTab();
 
-	if (!empty($this->t['javaupload'])) {
-        echo $r->startTab('javaupload', $tabs['javaupload'], $activeTab == 'javaupload' ? 'active' : '');
-        echo $this->loadTemplate('javaupload');
-        echo $r->endTab();
-    }
 
 	echo $r->startTab('createfolder', $tabs['createfolder'], $activeTab == 'createfolder' ? 'active' : '');
 

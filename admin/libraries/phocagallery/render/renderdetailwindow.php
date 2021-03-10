@@ -106,10 +106,14 @@ class PhocaGalleryRenderDetailWindow
 			$this->b1->set('modal', true);
 			$this->b1->set('methodname', 'pg-modal-button');
 
+
+			// run by JS to paste iframe $this->b1->set('attributes', 'data-bs-toggle="modal" data-bs-target="#pgCategoryModal"');
+
 			$this->b2->modal 		= &$this->b1->modal;
 			$this->b2->methodname 	= &$this->b1->methodname;
 			$this->b3->modal 		= &$this->b1->modal;
 			$this->b3->methodname  	= &$this->b1->methodname;
+
 
 			// Modal - Image only
 			if ($method == 2) {
@@ -536,16 +540,18 @@ class PhocaGalleryRenderDetailWindow
 
 			$this->b1->set('methodname', 'photoswipe-button');
 			$this->b1->set('options', ' itemprop="contentUrl"');
-			/*$this->b2->methodname 		= &$this->b1->methodname;
+			$this->b2->methodname 		= &$this->b1->methodname;
 			$this->b2->set('options', ' itemprop="contentUrl"');
+
+			/*
 			$this->b3->methodname 		= &$this->b1->methodname;
 			$this->b3->set('options', ' itemprop="contentUrl"');
 			$this->b3->set('optionsrating', ' itemprop="contentUrl"');*/
 
-			$this->b2->set('modal', true);
+			/*$this->b2->set('modal', true);
 			$this->b2->set('methodname', 'pg-modal-button');
 			$this->b2->set('options', "{handler: 'iframe', size: {x: ".$this->popupWidth.", y: ".$this->popupHeight."}, overlayOpacity: ".$this->mbOverlayOpacity."}");
-
+*/
 			$this->b3->set('modal', true);
 			$this->b3->set('methodname', 'pg-modal-button');
 			$this->b3->set('options', "{handler: 'iframe', size: {x: ".$this->popupWidth.", y: ".$this->popupHeight."}, overlayOpacity: ".$this->mbOverlayOpacity."}");
