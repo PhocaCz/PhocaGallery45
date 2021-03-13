@@ -30,6 +30,17 @@
 .ph-cb {
   clear:both;
 }
+.ph-right {
+  float: right;
+}
+.ph-left {
+  float:left;
+}
+
+.pg-detail-nav-box {
+  margin: 1em;
+  margin-bottom: 2em;
+}
 
 
 .pg-comment-btn {

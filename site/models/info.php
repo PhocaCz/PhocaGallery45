@@ -24,12 +24,12 @@ class PhocaGalleryModelInfo extends JModelLegacy
 		$this->setId((int)$id);
 		//$post	= $app->input->get('get');
 	}
-	
+
 	function setId($id){
 		$this->_id			= $id;
 		$this->_data		= null;
 	}
-	
+
 	function &getData() {
 		// Load the Phoca gallery data
 		if (!$this->_loadData()) {
@@ -37,7 +37,7 @@ class PhocaGalleryModelInfo extends JModelLegacy
 		}
 		return $this->_data;
 	}
-	
+
 	function _loadData() {
 		$app	= JFactory::getApplication();
 		$user 		= JFactory::getUser();
@@ -52,20 +52,20 @@ class PhocaGalleryModelInfo extends JModelLegacy
 				.' WHERE a.id = '. (int) $this->_id;
 			$this->_db->setQuery($query, 0, 1);
 			$this->_data 	= $this->_db->loadObject();
-			
+
 			/*
 			if (isset($image->description) && $image->description != '') {
 				$this->_data['description'] = $image->description;
 			} else {
 				$this->_data['description'] = '';
 			}*/
-			
-			return (boolean) $this->_data;	
+
+			return (boolean) $this->_data;
 		}
 		return true;
 	}
-	
-	
+
+
 	function _initData() {
 		if (empty($this->_data)) {
 			$this->_data	= '';

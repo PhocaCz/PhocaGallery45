@@ -119,7 +119,7 @@ class PhocaGalleryViewUser extends JViewLegacy
 		//Subcateogry
 		$this->t['parentid']			= $app->input->get('parentcategoryid', 0, 'int');
 
-		$document->addScript(JURI::base(true).'/media/com_phocagallery/js/comments.js');
+		//$document->addScript(JURI::base(true).'/media/com_phocagallery/js/comments.js');
 		$document->addCustomTag(PhocaGalleryRenderFront::renderOnUploadJS());
 		$document->addCustomTag(PhocaGalleryRenderFront::renderDescriptionCreateCatJS((int)$this->t['maxcreatecatchar']));
 		$document->addCustomTag(PhocaGalleryRenderFront::userTabOrdering());// SubCategory + Image

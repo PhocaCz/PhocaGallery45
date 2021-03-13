@@ -20,12 +20,16 @@ phocagalleryimport( 'phocagallery.picasa.picasa');
 phocagalleryimport( 'phocagallery.facebook.fbsystem');
 phocagalleryimport( 'phocagallery.youtube.youtube');
 phocagalleryimport( 'phocagallery.user.user');
+phocagalleryimport('phocagallery.comment.comment');
+phocagalleryimport('phocagallery.comment.commentimage');
 
 class PhocaGalleryViewDetail extends JViewLegacy
 {
 
 	public $t;
 	protected $params;
+	protected $itemnext;
+	protected $itemprev;
 
 	function display($tpl = null) {
 
@@ -120,11 +124,15 @@ class PhocaGalleryViewDetail extends JViewLegacy
 		$this->t['display_tags_links'] 			= $this->params->get( 'display_tags_links', 0 );
 		$this->t['ytb_display'] 					= $this->params->get( 'ytb_display', 0 );
 
-		$paramsFb = PhocaGalleryFbSystem::getCommentsParams($this->params->get( 'fb_comment_user_id', ''));// Facebook
+		/*$paramsFb = PhocaGalleryFbSystem::getCommentsParams($this->params->get( 'fb_comment_user_id', ''));// Facebook
 		$this->t['fb_comment_app_id']		= isset($paramsFb['fb_comment_app_id']) ? $paramsFb['fb_comment_app_id'] : '';
 		$this->t['fb_comment_width']			= isset($paramsFb['fb_comment_width']) ? $paramsFb['fb_comment_width'] : 550;
 		$this->t['fb_comment_lang'] 			= isset($paramsFb['fb_comment_lang']) ? $paramsFb['fb_comment_lang'] : 'en_US';
-		$this->t['fb_comment_count'] 		= isset($paramsFb['fb_comment_count']) ? $paramsFb['fb_comment_count'] : '';
+		$this->t['fb_comment_count'] 		= isset($paramsFb['fb_comment_count']) ? $paramsFb['fb_comment_count'] : '';*/
+
+        $this->t['max_upload_char']			= $this->params->get( 'max_upload_char', 1000 );
+		$this->t['max_comment_char']			= $this->params->get( 'max_comment_char', 1000 );
+		$this->t['max_create_cat_char']			= $this->params->get( 'max_create_cat_char', 1000 );
 
 		$oH = '';
 		if ($this->t['enable_multibox'] == 1) {
@@ -365,23 +373,28 @@ class PhocaGalleryViewDetail extends JViewLegacy
 		}
 
 
-
-
-
-
-
-
-		// Back button
-		$this->t['backbutton'] = '';
-		if ($this->t['detailwindow'] == 7) {
-			phocagalleryimport('phocagallery.image.image');
-			$this->t['backbutton'] = '<div><a href="'.JRoute::_('index.php?option=com_phocagallery&view=category&id='. $item->catslug.'&Itemid='. $this->itemId).'"'
-				.' title="'.JText::_( 'COM_PHOCAGALLERY_BACK_TO_CATEGORY' ).'">'
-				. PhocaGalleryRenderFront::renderIcon('icon-up-images', 'media/com_phocagallery/images/icon-up-images.png', JText::_('COM_PHOCAGALLERY_BACK_TO_CATEGORY'), 'ph-icon-up-images ph-icon-button').'</a></div>';
-
+        // Only registered (VOTES + COMMENTS)
+		$this->t['not_registered'] 	= true;
+		$this->t['name']		= '';
+		if ($access) {
+			$this->t['not_registered'] 	= false;
+			$this->t['name']		= $user->name;
 		}
 
 
+        $this->t['already_commented'] = PhocaGalleryCommentImage::checkUserComment( (int)$item->id, (int)$user->id );
+		$this->t['commentitem']					= PhocaGalleryCommentImage::displayComment( (int)$item->id);
+
+
+
+		$this->itemnext[0]			= false;
+		$this->itemprev[0]			= false;
+		//if ($this->t['enable_image_navigation'] == 1) {
+			if (isset($item->ordering) && isset($item->catid) && isset($item->id) && $item->catid > 0 && $item->id > 0) {
+				$this->itemnext			= $model->getItemNext($item->ordering, $item->catid);
+				$this->itemprev			= $model->getItemPrev($item->ordering, $item->catid);
+			}
+		//}
 
 		// ASIGN
 

@@ -87,7 +87,7 @@ class PhocaGalleryCpViewPhocaGalleryImgs extends JViewLegacy
 		$btn->popupHeight 	= '480';
 		$btn->backend		= 1;
 
-		$btn->setButtons(12, $libraries, $library);
+		$btn->setButtons(14, $libraries, $library);
 		$this->button = $btn->getB1();
 
 

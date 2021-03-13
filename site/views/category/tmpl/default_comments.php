@@ -65,25 +65,25 @@ if ($this->t['already_commented']) {
 		<tr>
 			<td>&nbsp;</td>
 			<td>
-			<?php /*<a href="#" onclick="pasteTag('b', true); return false;"><?php echo PhocaGalleryRenderFront::renderIcon('bold', $this->t['icon_path'].'icon-b.png', JText::_('COM_PHOCAGALLERY_BOLD')); ?></a>&nbsp;
-			<a href="#" onclick="pasteTag('i', true); return false;"><?php echo PhocaGalleryRenderFront::renderIcon('italic', $this->t['icon_path'].'icon-i.png', JText::_('COM_PHOCAGALLERY_ITALIC')); ?></a>&nbsp;
-			<a href="#" onclick="pasteTag('u', true); return false;"><?php echo PhocaGalleryRenderFront::renderIcon('underline', $this->t['icon_path'].'icon-u.png', JText::_('COM_PHOCAGALLERY_UNDERLINE')); ?></a>&nbsp;&nbsp;
+			<?php /*<a href="#" onclick="pgPasteTag('b', true); return false;"><?php echo PhocaGalleryRenderFront::renderIcon('bold', $this->t['icon_path'].'icon-b.png', JText::_('COM_PHOCAGALLERY_BOLD')); ?></a>&nbsp;
+			<a href="#" onclick="pgPasteTag('i', true); return false;"><?php echo PhocaGalleryRenderFront::renderIcon('italic', $this->t['icon_path'].'icon-i.png', JText::_('COM_PHOCAGALLERY_ITALIC')); ?></a>&nbsp;
+			<a href="#" onclick="pgPasteTag('u', true); return false;"><?php echo PhocaGalleryRenderFront::renderIcon('underline', $this->t['icon_path'].'icon-u.png', JText::_('COM_PHOCAGALLERY_UNDERLINE')); ?></a>&nbsp;&nbsp;
 
-			<a href="#" onclick="pasteSmiley(':)'); return false;"><?php echo PhocaGalleryRenderFront::renderIcon('smile', $this->t['icon_path'].'icon-s-smile.png', JText::_('COM_PHOCAGALLERY_SMILE')); ?></a>&nbsp;
-			<a href="#" onclick="pasteSmiley(':lol:'); return false;"><?php echo PhocaGalleryRenderFront::renderIcon('lol', $this->t['icon_path'].'icon-s-lol.png', JText::_('COM_PHOCAGALLERY_LOL')); ?></a>&nbsp;
-			<a href="#" onclick="pasteSmiley(':('); return false;"><?php echo PhocaGalleryRenderFront::renderIcon('sad', $this->t['icon_path'].'icon-s-sad.png', JText::_('COM_PHOCAGALLERY_SAD')); ?></a>&nbsp;
-			<a href="#" onclick="pasteSmiley(':?'); return false;"><?php echo PhocaGalleryRenderFront::renderIcon('confused', $this->t['icon_path'].'icon-s-confused.png', JText::_('COM_PHOCAGALLERY_CONFUSED')); ?></a>&nbsp;
-			<a href="#" onclick="pasteSmiley(':wink:'); return false;"><?php echo PhocaGalleryRenderFront::renderIcon('wink', $this->t['icon_path'].'icon-s-wink.png', JText::_('COM_PHOCAGALLERY_WINK')); ?></a>&nbsp;*/ ?>
+			<a href="#" onclick="pgPasteSmiley(':)'); return false;"><?php echo PhocaGalleryRenderFront::renderIcon('smile', $this->t['icon_path'].'icon-s-smile.png', JText::_('COM_PHOCAGALLERY_SMILE')); ?></a>&nbsp;
+			<a href="#" onclick="pgPasteSmiley(':lol:'); return false;"><?php echo PhocaGalleryRenderFront::renderIcon('lol', $this->t['icon_path'].'icon-s-lol.png', JText::_('COM_PHOCAGALLERY_LOL')); ?></a>&nbsp;
+			<a href="#" onclick="pgPasteSmiley(':('); return false;"><?php echo PhocaGalleryRenderFront::renderIcon('sad', $this->t['icon_path'].'icon-s-sad.png', JText::_('COM_PHOCAGALLERY_SAD')); ?></a>&nbsp;
+			<a href="#" onclick="pgPasteSmiley(':?'); return false;"><?php echo PhocaGalleryRenderFront::renderIcon('confused', $this->t['icon_path'].'icon-s-confused.png', JText::_('COM_PHOCAGALLERY_CONFUSED')); ?></a>&nbsp;
+			<a href="#" onclick="pgPasteSmiley(':wink:'); return false;"><?php echo PhocaGalleryRenderFront::renderIcon('wink', $this->t['icon_path'].'icon-s-wink.png', JText::_('COM_PHOCAGALLERY_WINK')); ?></a>&nbsp;*/ ?>
 
-            <a class="pg-comment-btn pg-b" href="#" onclick="pasteTag('b', true); return false;" title="<?php echo JText::_('COM_PHOCAGALLERY_BOLD') ?>">B</a>
-			<a class="pg-comment-btn pg-i" href="#" onclick="pasteTag('i', true); return false;" title="<?php echo JText::_('COM_PHOCAGALLERY_ITALIC') ?>">I</a>
-			<a class="pg-comment-btn pg-u" href="#" onclick="pasteTag('u', true); return false;" title="<?php echo JText::_('COM_PHOCAGALLERY_UNDERLINE') ?>">U</a>
+            <a class="pg-comment-btn pg-b" href="#" onclick="pgPasteTag('b', true); return false;" title="<?php echo JText::_('COM_PHOCAGALLERY_BOLD') ?>">B</a>
+			<a class="pg-comment-btn pg-i" href="#" onclick="pgPasteTag('i', true); return false;" title="<?php echo JText::_('COM_PHOCAGALLERY_ITALIC') ?>">I</a>
+			<a class="pg-comment-btn pg-u" href="#" onclick="pgPasteTag('u', true); return false;" title="<?php echo JText::_('COM_PHOCAGALLERY_UNDERLINE') ?>">U</a>
 
-			<a class="pg-comment-btn" href="#" onclick="pasteSmiley(':)'); return false;" title="<?php echo JText::_('COM_PHOCAGALLERY_SMILE') ?>">&#x1F642</a>
-			<a class="pg-comment-btn" href="#" onclick="pasteSmiley(':lol:'); return false;" title="<?php echo JText::_('COM_PHOCAGALLERY_LOL') ?>">&#x1F604</a>
-			<a class="pg-comment-btn" href="#" onclick="pasteSmiley(':('); return false;" title="<?php echo JText::_('COM_PHOCAGALLERY_SAD') ?>">&#x2639</a>
-			<a class="pg-comment-btn" href="#" onclick="pasteSmiley(':?'); return false;" title="<?php echo JText::_('COM_PHOCAGALLERY_CONFUSED') ?>">&#x1F615</a>
-			<a class="pg-comment-btn" href="#" onclick="pasteSmiley(':wink:'); return false;" title="<?php echo JText::_('COM_PHOCAGALLERY_WINK') ?>">&#x1F609</a>
+			<a class="pg-comment-btn" href="#" onclick="pgPasteSmiley(':)'); return false;" title="<?php echo JText::_('COM_PHOCAGALLERY_SMILE') ?>">&#x1F642</a>
+			<a class="pg-comment-btn" href="#" onclick="pgPasteSmiley(':lol:'); return false;" title="<?php echo JText::_('COM_PHOCAGALLERY_LOL') ?>">&#x1F604</a>
+			<a class="pg-comment-btn" href="#" onclick="pgPasteSmiley(':('); return false;" title="<?php echo JText::_('COM_PHOCAGALLERY_SAD') ?>">&#x2639</a>
+			<a class="pg-comment-btn" href="#" onclick="pgPasteSmiley(':?'); return false;" title="<?php echo JText::_('COM_PHOCAGALLERY_CONFUSED') ?>">&#x1F615</a>
+			<a class="pg-comment-btn" href="#" onclick="pgPasteSmiley(':wink:'); return false;" title="<?php echo JText::_('COM_PHOCAGALLERY_WINK') ?>">&#x1F609</a>
 
 
 			</td>

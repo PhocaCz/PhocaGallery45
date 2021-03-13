@@ -33,6 +33,10 @@ F8961E
 
 .ph-si-category-top-category {color: #F9C74F; margin-bottom: 0.3em}
 .ph-si-category-top-back {color: #F3722C; margin-bottom: 0.3em}
+.ph-si-detail-top-back{color: #F3722C; margin-bottom: 0.3em; width: 3em;height:3em;}
+
+.ph-si-next-btn,
+.ph-si-prev-btn {color: #fff;margin-bottom:0.25em;}
 
 .ph-si-category-medium {color: #F9C74F; background: #f0f0f0;}
 
@@ -76,6 +80,7 @@ F8961E
     margin: 0;
 }
 
+.pg-detail-item-image-box img,
 .pg-item-box-image img,
 .pg-item-box-image svg,
 .pg-category-box-image img{

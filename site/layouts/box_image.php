@@ -16,9 +16,11 @@ $item   = $d['item'];
 $t      = $d['t'];
 
 
-echo '<a class="'.$item->button->methodname.'" href="'. $item->link.'" data-img-title="'.$item->title.'" id="pgImg'.$item->id.'"';
+echo '<a class="'.$item->class.'" href="'. $item->link.'" data-img-title="'.$item->title.'" id="pgImg'.$item->id.'"';
 
-echo PhocaGalleryRenderFront::renderAAttribute($t['detail_window'], $item->button->options, $item->linkorig, $t['highslideonclick'], '', $item->linknr, $item->catalias);// Render OnClick, Rel
+if (isset($item->onclick) && $item->onclick != '') {
+    echo 'onclick="'.$item->onclick.'"';
+}
 
 if (isset($item->datasize)) { echo ' '. $item->datasize;}
 
@@ -27,6 +29,7 @@ if (isset($item->videocode) && $item->videocode != '' && $item->videocode != '0'
 }
 
 echo ' >';
+
 echo '<div class="pg-item-box-image">';
 echo HTMLHelper::_( 'image', isset($item->extid) & (int)$item->extid> 0 ? $item->extm : $item->linkthumbnailpath, $item->oimgalt, array( 'class' => 'pg-image c-Image c-Image--shaded', 'itemprop' => "thumbnail"));
 

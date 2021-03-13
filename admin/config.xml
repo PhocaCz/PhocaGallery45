@@ -332,21 +332,10 @@
 	<fieldset name="detail" label="COM_PHOCAGALLERY_CONFIG_HEAD_DETAIL_VIEW_LABEL">
 
 <field name="phocahead4" type="phocahead" phocaimage="icon-param-dv.png" default="COM_PHOCAGALLERY_CONFIG_DETAIL_VIEW_LABEL" label="" description="" />
-<field name="detail_window" type="list" default="12" label="COM_PHOCAGALLERY_FIELD_DETAIL_WINDOW_LABEL" description="COM_PHOCAGALLERY_FIELD_DETAIL_WINDOW_DESC_DESC">
-	<option value="1">COM_PHOCAGALLERY_STANDARD_POPUP_WINDOW</option>
-	<option value="0">COM_PHOCAGALLERY_MODAL_POPUP_BOX</option>
-	<option value="2">COM_PHOCAGALLERY_MODAL_POPUP_BOX_IMAGE_ONLY</option>
-	<option value="13">COM_PHOCAGALLERY_SHADOWBOX</option>
-	<option value="3">COM_PHOCAGALLERY_SHADOWBOX_IMAGE_ONLY</option>
-	<option value="4">COM_PHOCAGALLERY_HIGHSLIDE</option>
-	<option value="5">COM_PHOCAGALLERY_HIGHSLIDE_IMAGE_ONLY</option>
-	<option value="6">COM_PHOCAGALLERY_JAK_LIGHTBOX</option>
+<field name="detail_window" type="list" default="14" label="COM_PHOCAGALLERY_FIELD_DETAIL_WINDOW_LABEL" description="COM_PHOCAGALLERY_FIELD_DETAIL_WINDOW_DESC_DESC">
+	<option value="0">COM_PHOCAGALLERY_BOOTSTRAP_MODAL_POPUP_WINDOW</option>
+    <option value="1">COM_PHOCAGALLERY_STANDARD_POPUP_WINDOW</option>
 	<option value="7">COM_PHOCAGALLERY_NO_POPUP</option>
-	<option value="8">COM_PHOCAGALLERY_SLIMBOX</option>
-	<option value="9">COM_PHOCAGALLERY_BOXPLUS</option>
-	<option value="10">COM_PHOCAGALLERY_BOXPLUS_IMAGE_ONLY</option>
-	<option value="11">COM_PHOCAGALLERY_MAGNIFIC</option>
-	<option value="12">COM_PHOCAGALLERY_MAGNIFIC_IMAGE_ONLY</option>
 	<option value="14">COM_PHOCAGALLERY_PHOTOSWIPE</option>
 </field>
 

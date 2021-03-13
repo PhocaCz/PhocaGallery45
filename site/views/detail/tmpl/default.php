@@ -10,21 +10,27 @@
  */
 
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Layout\FileLayout;
 
 defined('_JEXEC') or die('Restricted access');
+
+$layoutSVG 	= new FileLayout('svg_definitions', null, array('component' => 'com_phocagallery'));
+$layoutC 	= new FileLayout('comments', null, array('component' => 'com_phocagallery'));
+
+// SVG Definitions
+$d          = array();
+echo $layoutSVG->render($d);
+
 echo '<div id="phocagallery" class="pg-detail-item-box'.$this->params->get( 'pageclass_sfx' ).'">';
-if ($this->t['backbutton'] != '') {
-	echo $this->t['backbutton'];
+
+
+if ($this->t['detailwindow'] == 7) {
+	echo '<div class="pg-detail-top-box-back-title">';
+	echo '<a href="'.JRoute::_('index.php?option=com_phocagallery&view=category&id='. $this->item->catslug.'&Itemid='. $this->itemId).'"';
+	echo ' title="'.JText::_( 'COM_PHOCAGALLERY_BACK_TO_CATEGORY' ).'">';
+	echo '<svg class="ph-si ph-si-detail-top-back"><use xlink:href="#ph-si-back"></use></svg>';
+	echo '</a></div>';
 }
-/*
-if($this->t['responsive'] == 1) {
-	$iW = '';
-	$iH = '';
-} else {
-	$iW = 'width:'.$this->item->realimagewidth. 'px;';
-	$iH = 'height:'.$this->t['largeheight'].'px;';
-}
-*/
 
 switch ($this->t['detailwindow']) {
 	case 4:
@@ -43,6 +49,8 @@ switch ($this->t['detailwindow']) {
 	break;
 
 }
+
+
 //krumo($this->item);
 $classSuffix = ' popup';
 if ($this->t['detailwindow'] == 7) {
@@ -58,6 +66,9 @@ echo '<div class="ph-mc" style="padding-top:10px">'
 	.$closeImage;
 */
 echo '<div class="pg-detail-item-image-box">'.$closeImage.'</div>';
+
+
+
 $titleDesc = '';
 if ($this->t['display_title_description'] == 1) {
 	$titleDesc .= $this->item->title;
@@ -73,17 +84,39 @@ if ($this->t['displaydescriptiondetail'] == 2 && (!empty($this->item->descriptio
 }
 
 
-
+/*
 if ($this->t['detailbuttons'] == 1){
 	echo '<div class="pg-detail-item-button-box">'
 	.'<td align="left" width="30%" style="padding-left:48px">'.$this->item->prevbutton.'</td>'
 	.'<td align="center">'.$this->item->slideshowbutton.'</td>'
 	.'<td align="center">'.str_replace("%onclickreload%", $this->t['detailwindowreload'], $this->item->reloadbutton).'</td>'
 	. $closeButton
-	.'<td align="right" width="30%" style="padding-right:48px">'.$this->item->nextbutton.'</td>'
+	//.'<td align="right" width="30%" style="padding-right:48px">'.$this->item->nextbutton.'</td>'
 	.'</div>';
 }
+*/
 
+
+
+
+if ($this->itemnext[0] || $this->itemprev[0]) {
+	echo '<div class="pg-detail-nav-box">';
+	if($this->itemprev[0]) {
+		$p = $this->itemprev[0];
+		$linkPrev = JRoute::_(PhocaGalleryRoute::getImageRoute($p->id, $p->catid, $p->alias, $p->categoryalias));
+		echo '<div class="ph-left"><a href="'.$linkPrev.'" class="btn btn-primary ph-image-navigation" role="button"><svg class="ph-si ph-si-prev-btn"><use xlink:href="#ph-si-prev"></use></svg> '.JText::_('COM_PHOCAGALLERY_PREVIOUS').'</a></div>';
+	}
+
+	if($this->itemnext[0]) {
+		$n = $this->itemnext[0];
+		$linkNext = JRoute::_(PhocaGalleryRoute::getImageRoute($n->id, $n->catid, $n->alias, $n->categoryalias));
+		echo '<div class="ph-right"><a href="'.$linkNext.'" class="btn btn-primary ph-image-navigation" role="button">'.JText::_('COM_PHOCAGALLERY_NEXT').' <svg class="ph-si ph-si-next-btn"><use xlink:href="#ph-si-next"></use></svg></a></div>';
+	}
+
+	echo '<div class="ph-cb"></div>';
+	echo '</div>';
+
+}
 
 echo $this->loadTemplate('rating');
 
@@ -92,6 +125,19 @@ if ($this->t['displaying_tags_output'] != '') {
 	echo '<div class="pg-detail-item-tag-box">'.$this->t['displaying_tags_output'].'</div>';
 }
 if ($this->t['detailwindow'] == 7) {
+
+	$d          = array();
+	$d['t']     = $this->t;
+
+	$d['form']['task']          = 'comment';
+	$d['form']['view']          = 'detail';
+	$d['form']['controller']    = 'detail';
+	$d['form']['tab']           = '';
+	$d['form']['id']            = $this->item->id;
+	$d['form']['catid']         = $this->item->catid;
+	$d['form']['itemid']        = $this->itemId;
+
+	echo $layoutC->render($d);
 
 
 
@@ -106,5 +152,4 @@ if ($this->t['detailwindow'] == 7) {
     echo PhocaGalleryUtils::getExtInfo();
 }
 echo '</div>';
-echo '<div id="phocaGallerySlideshowC" style="display:none"></div>';
 ?>

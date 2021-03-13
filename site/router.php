@@ -52,6 +52,15 @@ class PhocagalleryRouter extends JComponentRouterView
 		$detail->setKey('id')->setParent($category, 'catid');
 		$this->registerView($detail);
 
+		$views = array('info', 'comment');
+        foreach ($views as $k => $v) {
+            $item = new JComponentRouterViewconfiguration($v);
+		    $item->setName($v)->setParent($detail, 'id')->setParent($category, 'catid');
+		    $this->registerView($item);
+        }
+
+
+
 		parent::__construct($app, $menu);
 
 		phocagalleryimport('phocagallery.path.routerrules');
@@ -148,6 +157,32 @@ class PhocagalleryRouter extends JComponentRouterView
 		return array((int) $id => $id);
 	}
 
+	public function getInfoSegment($id, $query)
+	{
+
+
+		if (!strpos($id, ':'))
+		{
+			$db = JFactory::getDbo();
+			$dbquery = $db->getQuery(true);
+			$dbquery->select($dbquery->qn('alias'))
+				->from($dbquery->qn('#__content'))
+				->where('id = ' . $dbquery->q($id));
+			$db->setQuery($dbquery);
+
+			$id .= ':' . $db->loadResult();
+		}
+
+		if ($this->noIDs)
+		{
+			list($void, $segment) = explode(':', $id, 2);
+
+			return array($void => $segment);
+		}
+
+		return array((int) $id => $id);
+	}
+
 	/**
 	 * Method to get the segment(s) for a form
 	 *
@@ -192,7 +227,6 @@ class PhocagalleryRouter extends JComponentRouterView
             }
 
 
-            bdump($segment);
 			if ($category) {
 
                 if (!empty($category->subcategories)){
@@ -273,6 +307,7 @@ function PhocaGalleryBuildRoute(&$query)
 
 function PhocaGalleryParseRoute($segments)
 {
+
 
 	$app = JFactory::getApplication();
 	$router = new PhocagalleryRouter($app, $app->getMenu());

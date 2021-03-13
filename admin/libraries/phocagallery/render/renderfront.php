@@ -17,6 +17,25 @@ defined('_JEXEC') or die('Restricted access');
 class PhocaGalleryRenderFront
 {
     public static function renderMainJs() {
+
+        $app    = JFactory::getApplication();
+        $doc    = $app->getDocument();
+
+        $oVars   = array();
+        $oLang   = array();
+        $oParams = array();
+        $oLang   = array(
+            'COM_PHOCAGALLERY_MAX_LIMIT_CHARS_REACHED' => JText::_('COM_PHOCAGALLERY_MAX_LIMIT_CHARS_REACHED'),
+            'COM_PHOCAGALLERY_ENTER_TITLE' => JText::_('COM_PHOCAGALLERY_ENTER_TITLE'),
+            'COM_PHOCAGALLERY_ENTER_COMMENT' => JText::_('COM_PHOCAGALLERY_ENTER_COMMENT')
+
+        );
+
+        $doc->addScriptOptions('phLangPG', $oLang);
+        //$doc->addScriptOptions('phVarsPG', $oVars);
+        //$doc->addScriptOptions('phParamsPG', $oParams);
+
+
         HTMLHelper::_('script', 'media/com_phocagallery/js/main.js', array('version' => 'auto'));
         Factory::getApplication()
 			->getDocument()
@@ -58,7 +77,7 @@ class PhocaGalleryRenderFront
         }
         return $output;
     }
-
+/*
     public static function renderCommentJS($chars) {
 
         $tag = "<script type=\"text/javascript\">"
@@ -94,7 +113,8 @@ class PhocaGalleryRenderFront
 
         return $tag;
     }
-
+*/
+    /*
     public static function renderCategoryCSS($font_color, $background_color, $border_color, $imageBgCSS, $imageBgCSSIE, $border_color_hover, $background_color_hover, $ol_fg_color, $ol_bg_color, $ol_tf_color, $ol_cf_color, $margin_box, $padding_box, $opacity = 0.8) {
 
         $opacityPer = (float)$opacity * 100;
@@ -108,7 +128,7 @@ class PhocaGalleryRenderFront
             ." .ol-foreground { background-color: $ol_fg_color ;}\n"
             ." .ol-background { background-color: $ol_bg_color ;}\n"
             ." .ol-textfont { font-family: Arial, sans-serif; font-size: 10px; color: $ol_tf_color ;}"
-            ." .ol-captionfont {font-family: Arial, sans-serif; font-size: 12px; color: $ol_cf_color ; font-weight: bold;}"*/
+            ." .ol-captionfont {font-family: Arial, sans-serif; font-size: 12px; color: $ol_cf_color ; font-weight: bold;}"*//*
 
             . ".bgPhocaClass{
 			background:" . $ol_bg_color . ";
@@ -168,7 +188,7 @@ class PhocaGalleryRenderFront
             . " </style>\n";
         return $tag;
 
-    }
+    }*/
 
     public static function renderOnUploadJS() {
 

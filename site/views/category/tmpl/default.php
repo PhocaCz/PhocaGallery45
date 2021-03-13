@@ -15,6 +15,7 @@ defined('_JEXEC') or die('Restricted access');
 phocagalleryimport('phocagallery.render.rendertabs');
 
 $layoutSVG 	= new FileLayout('svg_definitions', null, array('component' => 'com_phocagallery'));
+$layoutC 	= new FileLayout('comments', null, array('component' => 'com_phocagallery'));
 
 // SVG Definitions
 $d          = array();
@@ -181,7 +182,7 @@ if ((int)$this->tagId > 0) {
 
 
 
-			if ($this->t['externalcommentsystem'] == 1) {
+			/*if ($this->t['externalcommentsystem'] == 1) {
 				if (JComponentHelper::isEnabled('com_jcomments', true)) {
 					include_once(JPATH_BASE.'/components/com_jcomments/jcomments.php');
 					echo JComments::showComments($this->category->id, 'com_phocagallery', JText::_('COM_PHOCAGALLERY_CATEGORY') .' '. $this->category->title);
@@ -190,7 +191,20 @@ if ((int)$this->tagId > 0) {
 				echo $this->loadTemplate('comments-fb');
 			} else {
 				echo $this->loadTemplate('comments');
-			}
+			}*/
+
+            $d          = array();
+            $d['t']     = $this->t;
+
+            $d['form']['task']          = 'comment';
+            $d['form']['view']          = 'category';
+            $d['form']['controller']    = 'category';
+            $d['form']['tab']           = $this->t['currenttab']['comment'];
+            $d['form']['id']            = '';
+            $d['form']['catid']         = $this->category->slug;
+            $d['form']['itemid']        = $this->itemId;
+
+            echo $layoutC->render($d);
 
 			echo $tabs->endTab();
 		}
@@ -247,12 +261,12 @@ if ((int)$this->tagId > 0) {
 			echo $tabs->endTab();
 		}
 
-		if($this->t['enablejava'] == 1 && (int)$this->t['displayupload'] == 1) {
+		/*if($this->t['enablejava'] == 1 && (int)$this->t['displayupload'] == 1) {
 		    echo $tabs->startTab('pgjavaupload');
 			//echo Joomla\CMS\HTML\HTMLHelper::_('tabs.panel', PhocaGalleryRenderFront::renderIcon('upload-java', 'media/com_phocagallery/images/icon-upload-java.png', ''). '&nbsp;'.JText::_('COM_PHOCAGALLERY_JAVA_UPLOAD'), 'pgjavaupload' );
 			echo $this->loadTemplate('javaupload');
 			echo $tabs->endTab();
-		}
+		}*/
 
 		echo $tabs->endTabs();
 		//echo Joomla\CMS\HTML\HTMLHelper::_('tabs.end');

@@ -8,6 +8,9 @@
  * @copyright Copyright (C) Jan Pavelka www.phoca.cz
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
+
+use Joomla\CMS\Factory;
+
 defined('_JEXEC') or die();
 jimport( 'joomla.application.component.view');
 class PhocaGalleryViewInfo extends JViewLegacy
@@ -15,57 +18,18 @@ class PhocaGalleryViewInfo extends JViewLegacy
 	public 		$t;
 	protected 	$params;
 
-	/*
-	public static function getGps($exifCoord) {
-		$degrees = count($exifCoord) > 0 ? self::gps2Num($exifCoord[0]) : 0;
-		$minutes = count($exifCoord) > 1 ? self::gps2Num($exifCoord[1]) : 0;
-		$seconds = count($exifCoord) > 2 ? self::gps2Num($exifCoord[2]) : 0;
 
-		//normalize
-		$minutes += 60 * ($degrees - floor($degrees));
-		$degrees = floor($degrees);
-
-		$seconds += 60 * ($minutes - floor($minutes));
-		$minutes = floor($minutes);
-
-		//extra normalization, probably not necessary unless you get weird data
-		if($seconds >= 60)
-		{
-		$minutes += floor($seconds/60.0);
-		$seconds -= 60*floor($seconds/60.0);
-		}
-
-		if($minutes >= 60)
-		{
-		$degrees += floor($minutes/60.0);
-		$minutes -= 60*floor($minutes/60.0);
-		}
-
-		return array('degrees' => $degrees, 'minutes' => $minutes, 'seconds' => $seconds);
-	}
-
-	public static function gps2Num($coordPart)
-	{
-		$parts = explode('/', $coordPart);
-
-		if(count($parts) <= 0)// jic
-		return 0;
-		if(count($parts) == 1)
-		return $parts[0];
-
-		return floatval($parts[0]) / floatval($parts[1]);
-	}
-*/
 	function display($tpl = null) {
 
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 
 		// PLUGIN WINDOW - we get information from plugin
 		$get			= array();
 		$get['info']	= $app->input->get( 'info', '', 'string' );
 		$this->itemId	= $app->input->get('Itemid', 0, 'int');
+		$this->t['infooutput'] = '';
 
-		$document		= JFactory::getDocument();
+		$document		= $app->getDocument();
 		$this->params	= $app->getParams();
 
 		$this->t['enablecustomcss']				= $this->params->get( 'enable_custom_css', 0);
@@ -127,26 +91,27 @@ class PhocaGalleryViewInfo extends JViewLegacy
 
 		// MODEL
 		$model	= $this->getModel();
-		$info	= $model->getData();
+		$this->info	= $model->getData();
+
 
 		// Back button
-		$this->t['backbutton'] = '';
+		/*$this->t['backbutton'] = '';
 		if ($this->t['detailwindow'] == 7) {
 			phocagalleryimport('phocagallery.image.image');
-			$this->t['backbutton'] = '<div><a href="'.JRoute::_('index.php?option=com_phocagallery&view=category&id='. $info->catslug.'&Itemid='. $app->input->get('Itemid', 0, 'int')).'"'
+			$this->t['backbutton'] = '<div><a href="'.JRoute::_('index.php?option=com_phocagallery&view=category&id='. $this->info->catslug.'&Itemid='. $app->input->get('Itemid', 0, 'int')).'"'
 				.' title="'.JText::_( 'COM_PHOCAGALLERY_BACK_TO_CATEGORY' ).'">'
 				. PhocaGalleryRenderFront::renderIcon('icon-up-images', 'media/com_phocagallery/images/icon-up-images.png', JText::_('COM_PHOCAGALLERY_BACK_TO_CATEGORY'), 'ph-icon-up-images ph-icon-button').'</a></div>';
-		}
+		}*/
 
 		// EXIF DATA
 		$outputExif 	= '';
 		$originalFile 	= '';
-		$extImage = PhocaGalleryImage::isExtImage($info->extid);
-		if ($extImage && isset($info->exto) && $info->exto != '') {
-			$originalFile = $info->exto;
+		$extImage = PhocaGalleryImage::isExtImage($this->info->extid);
+		if ($extImage && isset($this->info->exto) && $this->info->exto != '') {
+			$originalFile = $this->info->exto;
 		} else {
-			if (isset($info->filename)) {
-				$originalFile = PhocaGalleryFile::getFileOriginal($info->filename);
+			if (isset($this->info->filename)) {
+				$originalFile = PhocaGalleryFile::getFileOriginal($this->info->filename);
 			}
 		}
 
@@ -164,16 +129,16 @@ class PhocaGalleryViewInfo extends JViewLegacy
 			$setExifArray	= explode(",", $setExif, 200);
 			$exif 			= @exif_read_data($originalFile, 0, true);
 
-		/*	$infoOutput = '';
+		/*	$this->t['infooutput'] = '';
 			foreach ($exif as $key => $section) {
 				foreach ($section as $name => $val) {
-					$infoOutput .= strtoupper($key.'.'.$name).'='.$name.'<br />';
-					$infoOutput .= $key.'.'.$name.';';
+					$this->t['infooutput'] .= strtoupper($key.'.'.$name).'='.$name.'<br />';
+					$this->t['infooutput'] .= $key.'.'.$name.';';
 				}
 			}*/
 
 
-			$infoOutput	= '';
+			$this->t['infooutput']	= '';
 			$i 			= 0;
 			foreach ($setExifArray as $ks => $vs) {
 
@@ -698,7 +663,7 @@ class PhocaGalleryViewInfo extends JViewLegacy
 
 							$vs = str_replace('.', '_', $vs);
 
-							$infoOutput .= '<tr '.$class.'>'
+							$this->t['infooutput'] .= '<tr '.$class.'>'
 							//.'<td>'. JText::_($vs) . '('.$section.' '.$name.')</td>'
 							.'<td>'. JText::_('COM_PHOCAGALLERY_'.strtoupper($vs)) . '</td>'
 							.'<td>'.$exifValue. '</td>'
@@ -712,11 +677,8 @@ class PhocaGalleryViewInfo extends JViewLegacy
 
 		}
 
-		// ASIGN
-		$this->assignRef( 'tmpl', $this->t );
-		$this->assignRef( 'infooutput', $infoOutput );
-	//	$this->assignRef( 'infooutput', $infoOutput );
-		$this->_prepareDocument($info);
+
+		$this->_prepareDocument($this->info);
 		parent::display($tpl);
 	}
 

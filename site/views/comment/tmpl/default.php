@@ -67,12 +67,12 @@ if ($this->t['externalcommentsystem'] == 1) {
 
 } else {
 
-	if (!empty($this->commentitem)){
+	if (!empty($this->t['commentitem'])){
 		//$userImage	= Joomla\CMS\HTML\HTMLHelper::_( 'image', 'media/com_phocagallery/images/icon-user.png', '');
 		$userImage	= PhocaGalleryRenderFront::renderIcon('user', 'media/com_phocagallery/images/icon-user.png', '');
 		$smileys = PhocaGalleryComment::getSmileys();
 
-		foreach ($this->commentitem as $itemValue) {
+		foreach ($this->t['commentitem'] as $itemValue) {
 			$date		= Joomla\CMS\HTML\HTMLHelper::_('date',  $itemValue->date, JText::_('DATE_FORMAT_LC2') );
 			$comment	= $itemValue->comment;
 			$comment 	= PhocaGalleryComment::bbCodeReplace($comment);
@@ -109,35 +109,35 @@ if ($this->t['externalcommentsystem'] == 1) {
 		echo '<tr>'
 			.'<td>&nbsp;</td>'
 			.'<td>'
-			.'<a href="#" onclick="pasteTag(\'b\', true); return false;">'
+			.'<a href="#" onclick="pgPasteTag(\'b\', true); return false;">'
 			. PhocaGalleryRenderFront::renderIcon('bold', $this->t['icon_path'].'icon-b.png', JText::_('COM_PHOCAGALLERY_BOLD'))
 			.'</a>&nbsp;'
 
-			.'<a href="#" onclick="pasteTag(\'i\', true); return false;">'
+			.'<a href="#" onclick="pgPasteTag(\'i\', true); return false;">'
 			. PhocaGalleryRenderFront::renderIcon('italic', $this->t['icon_path'].'icon-i.png', JText::_('COM_PHOCAGALLERY_ITALIC'))
 			.'</a>&nbsp;'
 
-			.'<a href="#" onclick="pasteTag(\'u\', true); return false;">'
+			.'<a href="#" onclick="pgPasteTag(\'u\', true); return false;">'
 			. PhocaGalleryRenderFront::renderIcon('underline', $this->t['icon_path'].'icon-u.png', JText::_('COM_PHOCAGALLERY_UNDERLINE'))
 			.'</a>&nbsp;&nbsp;'
 
-			.'<a href="#" onclick="pasteSmiley(\':)\'); return false;">'
+			.'<a href="#" onclick="pgPasteSmiley(\':)\'); return false;">'
 			. PhocaGalleryRenderFront::renderIcon('smile', $this->t['icon_path'].'icon-s-smile.png', JText::_('COM_PHOCAGALLERY_SMILE'))
 			.'</a>&nbsp;'
 
-			.'<a href="#" onclick="pasteSmiley(\':lol:\'); return false;">'
+			.'<a href="#" onclick="pgPasteSmiley(\':lol:\'); return false;">'
 			. PhocaGalleryRenderFront::renderIcon('lol', $this->t['icon_path'].'icon-s-lol.png', JText::_('COM_PHOCAGALLERY_LOL'))
 			.'</a>&nbsp;'
 
-			.'<a href="#" onclick="pasteSmiley(\':(\'); return false;">'
+			.'<a href="#" onclick="pgPasteSmiley(\':(\'); return false;">'
 			. PhocaGalleryRenderFront::renderIcon('sad', $this->t['icon_path'].'icon-s-sad.png', JText::_('COM_PHOCAGALLERY_SAD'))
 			.'</a>&nbsp;'
 
-			.'<a href="#" onclick="pasteSmiley(\':?\'); return false;">'
+			.'<a href="#" onclick="pgPasteSmiley(\':?\'); return false;">'
 			. PhocaGalleryRenderFront::renderIcon('confused', $this->t['icon_path'].'icon-s-confused.png', JText::_('COM_PHOCAGALLERY_CONFUSED'))
 			.'</a>&nbsp;'
 
-			.'<a href="#" onclick="pasteSmiley(\':wink:\'); return false;">'
+			.'<a href="#" onclick="pgPasteSmiley(\':wink:\'); return false;">'
 			. PhocaGalleryRenderFront::renderIcon('wink', $this->t['icon_path'].'icon-s-wink.png', JText::_('COM_PHOCAGALLERY_WINK'))
 			.'</a>&nbsp;'
 			.'</td>'
