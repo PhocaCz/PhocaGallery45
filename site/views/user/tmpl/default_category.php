@@ -33,9 +33,11 @@ if ($this->t['categorytitle'] != '') {
 
 
 			if ($this->t['categoryapproved'] == 1) {
-				echo PhocaGalleryRenderFront::renderIcon('publish', $this->t['pi'].'icon-publish.png', JText::_('COM_PHOCAGALLERY_APPROVED'));
+				//echo PhocaGalleryRenderFront::renderIcon('publish', $this->t['pi'].'icon-publish.png', JText::_('COM_PHOCAGALLERY_APPROVED'));
+				echo '<svg class="ph-si ph-si-enabled"><title>'.JText::_('COM_PHOCAGALLERY_APPROVED').'</title><use xlink:href="#ph-si-enabled"></use></svg>';
 			} else {
-				echo PhocaGalleryRenderFront::renderIcon('unpublish', $this->t['pi'].'icon-unpublish.png', JText::_('COM_PHOCAGALLERY_NOT_APPROVED'));
+				//echo PhocaGalleryRenderFront::renderIcon('unpublish', $this->t['pi'].'icon-unpublish.png', JText::_('COM_PHOCAGALLERY_NOT_APPROVED'));
+				echo '<svg class="ph-si ph-si-disabled"><title>'.JText::_('COM_PHOCAGALLERY_NOT_APPROVED').'</title><use xlink:href="#ph-si-disabled"></use></svg>';
 			}
 
 		?></td>
@@ -47,23 +49,23 @@ if ($this->t['categorytitle'] != '') {
 	<table>
 		<tr>
 			<td><strong><?php echo JText::_('COM_PHOCAGALLERY_CATEGORY');?>:</strong></td>
-			<td><input type="text" id="categoryname" name="categoryname" maxlength="255" class="comment-input" value="<?php echo $this->t['categorytitle'] ;?>" /></td>
+			<td><input type="text" id="categoryname" name="categoryname" maxlength="255" class="form-control comment-input" value="<?php echo $this->t['categorytitle'] ;?>" /></td>
 		</tr>
 
 		<tr>
 			<td><strong><?php echo JText::_( 'COM_PHOCAGALLERY_DESCRIPTION' ); ?>:</strong></td>
-			<td><textarea id="phocagallery-create-cat-description" name="phocagallerycreatecatdescription" onkeyup="countCharsCreateCat();" cols="30" rows="10" class="comment-input"><?php echo $this->t['categorydescription'] ;?></textarea></td>
+			<td><textarea id="phocagallery-create-cat-description" name="phocagallerycreatecatdescription" onkeyup="countCharsCreateCat();" cols="30" rows="10" class="form-control comment-input"><?php echo $this->t['categorydescription'] ;?></textarea></td>
 		</tr>
 
 		<tr>
 			<td>&nbsp;</td>
-			<td><?php echo JText::_('COM_PHOCAGALLERY_CHARACTERS_WRITTEN');?> <input name="phocagallerycreatecatcountin" value="0" readonly="readonly" class="comment-input2" /> <?php echo JText::_('COM_PHOCAGALLERY_AND_LEFT_FOR_DESCRIPTION');?> <input name="phocagallerycreatecatcountleft" value="<?php echo $this->t['maxcreatecatchar'];?>" readonly="readonly" class="comment-input2" />
+			<td><?php echo JText::_('COM_PHOCAGALLERY_CHARACTERS_WRITTEN');?> <input name="phocagallerycreatecatcountin" value="0" readonly="readonly" class="form-control comment-input2" /> <?php echo JText::_('COM_PHOCAGALLERY_AND_LEFT_FOR_DESCRIPTION');?> <input name="phocagallerycreatecatcountleft" value="<?php echo $this->t['maxcreatecatchar'];?>" readonly="readonly" class="form-control comment-input2" />
 			</td>
 		</tr>
 
 		<tr>
 			<td>&nbsp;</td>
-			<td align="right"><button class="btn" onclick="return(checkCreateCatForm());" id="phocagallerycreatecatsubmit" ><?php echo $this->t['categorycreateoredit']; ?></button>
+			<td align="right"><button class="btn btn-primary" onclick="return(checkCreateCatForm());" id="phocagallerycreatecatsubmit" ><?php echo $this->t['categorycreateoredit']; ?></button>
 			</td>
 		</tr>
 	</table>

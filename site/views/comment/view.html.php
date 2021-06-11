@@ -154,7 +154,8 @@ class PhocaGalleryViewComment extends JViewLegacy
 
 			if ($rightDisplay == 0) {
 				$this->t['pl']		= 'index.php?option=com_users&view=login&return='.base64_encode($uri->toString());
-				$app->redirect(JRoute::_($this->t['pl'], false), JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'));
+				$app->enqueueMessage(JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'), 'error');
+				$app->redirect(JRoute::_($this->t['pl'], false));
 				exit;
 			}
 			// - - - - - - - - - - - - - - - - - - - -

@@ -23,6 +23,7 @@ class PhocaGalleryViewCategories extends JViewLegacy
 {
 	public 		$t;
 	protected 	$params;
+	public 		$cv;
 
 	public function display($tpl = null) {
 
@@ -31,52 +32,48 @@ class PhocaGalleryViewCategories extends JViewLegacy
 		$uri 						= \Joomla\CMS\Uri\Uri::getInstance();
 		$path						= PhocaGalleryPath::getPath();
 		$this->params				= $app->getParams();
-		$this->tGeo				= array();
+		$this->tGeo					= array();
 		$this->t					= array();
 		$this->itemId				= $app->input->get('Itemid', 0, 'int');
 		$document					= JFactory::getDocument();
 		$library 					= PhocaGalleryLibrary::getLibrary();
-		$this->t['action']		= $uri->toString();
+		$this->t['action']			= $uri->toString();
 
 		// CSS
 		PhocaGalleryRenderFront::renderAllCSS();
 
-
-
-
-
-		$this->t['display_feed']			= $this->params->get('display_feed', 1);
-
-
-
 		// Params
 		$this->t['display_name']				= 1;//$this->params->get( 'display_name', 1);
-		$this->t['image_categories_size']	= $this->params->get( 'image_categories_size', 1);
+		$this->t['image_categories_size']		= $this->params->get( 'image_categories_size', 1);
 		$display_categories_geotagging 			= $this->params->get( 'display_categories_geotagging', 0 );
 		$display_access_category 				= $this->params->get( 'display_access_category', 1 );
 		$display_empty_categories				= $this->params->get( 'display_empty_categories', 0 );
 		$hideCatArray							= explode( ',', trim( $this->params->get( 'hide_categories', '' ) ) );
 		$showCatArray    						= explode( ',', trim( $this->params->get( 'show_categories', '' ) ) );
 		$showParentCatArray    					= explode( ',', trim( $this->params->get( 'show_parent_categories', '' ) ) );
-		$this->t['categoriesimageordering']	= $this->params->get( 'categories_image_ordering', 10 );
-		$this->t['categoriesdisplayavatar']	= $this->params->get( 'categories_display_avatar');
-		$this->t['categories_description'] 	= $this->params->get( 'categories_description', '' );
-		$this->t['phocagallery_width']		= $this->params->get( 'phocagallery_width', '');
-		$this->t['phocagallery_center']		= $this->params->get( 'phocagallery_center', 0);
-		$this->t['display_rating']			= $this->params->get( 'display_rating', 0 );
+		$this->t['categoriesimageordering']		= $this->params->get( 'categories_image_ordering', 10 );
+		$this->t['categoriesdisplayavatar']		= $this->params->get( 'categories_display_avatar');
+		$this->t['categories_description'] 		= $this->params->get( 'categories_description', '' );
+		$this->t['phocagallery_width']			= $this->params->get( 'phocagallery_width', '');
+		$this->t['phocagallery_center']			= $this->params->get( 'phocagallery_center', 0);
+		$this->t['display_rating']				= $this->params->get( 'display_rating', 0 );
 		$this->t['categories_box_space']		= $this->params->get( 'categories_box_space', '');
 		$this->t['display_cat_desc_box']		= $this->params->get( 'display_cat_desc_box', 0);
-		$this->t['char_cat_length_name'] 	= $this->params->get( 'char_cat_length_name', 9);
-		$this->t['categories_mosaic_images'] = $this->params->get( 'categories_mosaic_images', 0);
-		$this->t['diff_thumb_height']		= $this->params->get( 'diff_thumb_height', 0 );
-		$this->t['responsive']				= $this->params->get( 'responsive', 0 );
-		$this->t['bootstrap_icons']			= $this->params->get( 'bootstrap_icons', 0 );
-		$this->t['equal_heights']			= $this->params->get( 'equal_heights', 0 );
-		$this->t['masonry_center']			= $this->params->get( 'masonry_center', 0 );
+		//$this->t['char_cat_length_name'] 		= $this->params->get( 'char_cat_length_name', 9);
+		//$this->t['categories_mosaic_images'] 	= $this->params->get( 'categories_mosaic_images', 0);
+		//$this->t['diff_thumb_height']			= $this->params->get( 'diff_thumb_height', 0 );
+		$this->t['responsive']					= $this->params->get( 'responsive', 0 );
+		$this->t['bootstrap_icons']				= $this->params->get( 'bootstrap_icons', 0 );
+		$this->t['equal_heights']				= $this->params->get( 'equal_heights', 0 );
+		$this->t['masonry_center']				= $this->params->get( 'masonry_center', 0 );
 		$this->t['map_type']					= $this->params->get( 'map_type', 2 );
+		$this->t['display_feed']				= $this->params->get('display_feed', 1);
+
+		$this->t['medium_image_width']			= $this->params->get( 'medium_image_width', 256 );
+		$this->t['medium_image_height'] 		= $this->params->get( 'medium_image_height', 192 );
 
 		// L E G A C Y ===
-		$this->t['equalpercentagewidth']		= $this->params->get( 'equal_percentage_width', 1);
+		/*$this->t['equalpercentagewidth']		= $this->params->get( 'equal_percentage_width', 1);
 		$this->t['categoriesboxwidth']		= $this->params->get( 'categories_box_width','33%');
 		$this->t['categoriescolumns'] 		= $this->params->get( 'categories_columns', 1 );
 		$this->t['displayrating']			= $this->params->get( 'display_rating', 0 );
@@ -87,68 +84,46 @@ class PhocaGalleryViewCategories extends JViewLegacy
 			// If legacy no different height, no mosaic
 			$this->t['diff_thumb_height'] = 0;
 			$this->t['categories_mosaic_images'] = 0;
-		}
+		}*/
+
 		// END L E G A C Y ===
 		switch($this->t['image_categories_size']) {
 			// medium
 			case 1:
 			case 3:
-				$this->t['picasa_correct_width']		= (int)$this->params->get( 'medium_image_width', 100 );
-				$this->t['picasa_correct_height']	= (int)$this->params->get( 'medium_image_height', 100 );
-				$this->t['imagewidth']				= (int)$this->params->get( 'medium_image_width', 100 );
-				$this->t['imageheight']				= (int)$this->params->get( 'medium_image_height', 100 );
+				$this->t['picasa_correct_width']		= (int)$this->params->get( 'medium_image_width', 256 );
+				$this->t['picasa_correct_height']	= (int)$this->params->get( 'medium_image_height', 192 );
+				$this->t['imagewidth']				= (int)$this->params->get( 'medium_image_width', 256 );
+				$this->t['imageheight']				= (int)$this->params->get( 'medium_image_height', 192 );
 				$this->t['class_suffix']				= 'medium';
 
-				if ($this->t['categories_mosaic_images'] == 1) {
-					$this->t['imagewidth']				= (int)$this->params->get( 'medium_image_width', 100 ) * 3;
-					$this->t['imageheight']				= (int)$this->params->get( 'medium_image_height', 100 ) * 2;
-				}
+				/*if ($this->t['categories_mosaic_images'] == 1) {
+					$this->t['imagewidth']				= (int)$this->params->get( 'medium_image_width', 256 ) * 3;
+					$this->t['imageheight']				= (int)$this->params->get( 'medium_image_height', 192 ) * 2;
+				}*/
 			break;
 
 			// small
 			case 0:
 			case 2:
 			default:
-				$this->t['picasa_correct_width']		= (int)$this->params->get( 'small_image_width', 50 );
-				$this->t['picasa_correct_height']	= (int)$this->params->get( 'small_image_height', 50 );
-				$this->t['imagewidth']				= (int)$this->params->get( 'small_image_width', 50 );
-				$this->t['imageheight'] 				= (int)$this->params->get( 'small_image_height', 50 );
+				$this->t['picasa_correct_width']		= (int)$this->params->get( 'small_image_width', 128 );
+				$this->t['picasa_correct_height']	= (int)$this->params->get( 'small_image_height', 96 );
+				$this->t['imagewidth']				= (int)$this->params->get( 'small_image_width', 128 );
+				$this->t['imageheight'] 				= (int)$this->params->get( 'small_image_height', 96 );
 				$this->t['class_suffix']				= 'small';
 
-				if ($this->t['categories_mosaic_images'] == 1) {
-					$this->t['imagewidth']				= (int)$this->params->get( 'small_image_width', 50 ) * 3;
-					$this->t['imageheight']				= (int)$this->params->get( 'small_image_height', 50 ) * 2;
-				}
+				/*if ($this->t['categories_mosaic_images'] == 1) {
+					$this->t['imagewidth']				= (int)$this->params->get( 'small_image_width', 128 ) * 3;
+					$this->t['imageheight']				= (int)$this->params->get( 'small_image_height', 96 ) * 2;
+				}*/
 			break;
 		}
 
 
 		$this->t['boxsize'] 		= PhocaGalleryImage::setBoxSize($this->t, 1);
 
-		// Masonry effect
-		if ($this->t['diff_thumb_height'] == 2) {
-			Joomla\CMS\HTML\HTMLHelper::_('jquery.framework', false);
-			$document->addScript(JURI::base(true).'/media/com_phocagallery/js/masonry/masonry.min.js');
 
-			if ($this->t['masonry_center'] == 1) {
-				$document->addScript(JURI::base(true).'/media/com_phocagallery/js/masonry/masonry.initialize.center.js');
-			} else if ($this->t['masonry_center'] == 2) {
-				$document->addCustomTag('<script type="text/javascript">
-				window.onload = function() {
-				  var wall = new Masonry( document.getElementById(\'pg-msnr-container\'), {
-					isFitWidth: true,
-					isAnimated: true
-				  });
-				};
-				</script>');
-			} else {
-				$document->addScript(JURI::base(true).'/media/com_phocagallery/js/masonry/masonry.initialize.js');
-			}
-
-
-
-
-		}
 
 
 
@@ -270,94 +245,77 @@ class PhocaGalleryViewCategories extends JViewLegacy
 				$pathAvatarRel	= $path->avatar_rel . 'thumbs/phoca_thumb_'.$sizeString.'_'. $this->categories[$key]->avatar;
 				if (JFile::exists($pathAvatarAbs)){
 					$this->categories[$key]->linkthumbnailpath	=  $pathAvatarRel;
+					$this->categories[$key]->rightdisplaykey				= $rightDisplayKey;
 					$displayAvatar = 1;
 				}
 			}
 
 			if ($displayAvatar == 0) {
 				if ($extCategory) {
-					if ($this->t['categories_mosaic_images'] == 1) {
 
-						if ($this->t['categoriesimageordering'] == 10) {
-							// Special cannot be used in this case:
-							$categoriesImageOrdering = 1;// set to default ordering
+
+					$this->categories[$key]->rightdisplaykey				= $rightDisplayKey;
+					if ($this->t['categoriesimageordering'] != 10) {
+						$imagePic		= PhocaGalleryImageFront::getRandomImageRecursive($this->categories[$key]->id, $categoriesImageOrdering, 1);
+						if ($rightDisplayKey == 0) {
+							$imagePic = new StdClass();
+							$imagePic->exts = '';
+							$imagePic->extm = '';
+							$imagePic->extw = '';
+							$imagePic->exth = '';
 						}
+						$fileThumbnail	= PhocaGalleryImageFront::displayCategoriesExtImgOrFolder($imagePic->exts,$imagePic->extm, $imagePic->extw,$imagePic->exth, $this->t['image_categories_size'], $rightDisplayKey);
 
-						$this->categories[$key]->filenames	= PhocaGalleryImageFront::getCategoryImages($this->categories[$key]->id, $categoriesImageOrdering);
-
-						$this->categories[$key]->mosaic = PhocaGalleryImageFront::renderMosaic($this->categories[$key]->filenames, $this->t['image_categories_size'], 1, $this->t['picasa_correct_width'], $this->t['picasa_correct_height']);
-
+						$this->categories[$key]->linkthumbnailpath	= $fileThumbnail->rel;
+						$this->categories[$key]->extw				= $fileThumbnail->extw;
+						$this->categories[$key]->exth				= $fileThumbnail->exth;
+						$this->categories[$key]->extpic				= $fileThumbnail->extpic;
 					} else {
+						$fileThumbnail		= PhocaGalleryImageFront::displayCategoriesExtImgOrFolder($this->categories[$key]->exts,$this->categories[$key]->extm, $this->categories[$key]->extw, $this->categories[$key]->exth, $this->t['image_categories_size'], $rightDisplayKey);
 
-						if ($this->t['categoriesimageordering'] != 10) {
-							$imagePic		= PhocaGalleryImageFront::getRandomImageRecursive($this->categories[$key]->id, $categoriesImageOrdering, 1);
-							if ($rightDisplayKey == 0) {
-								$imagePic = new StdClass();
-								$imagePic->exts = '';
-								$imagePic->extm = '';
-								$imagePic->extw = '';
-								$imagePic->exth = '';
-							}
-							$fileThumbnail	= PhocaGalleryImageFront::displayCategoriesExtImgOrFolder($imagePic->exts,$imagePic->extm, $imagePic->extw,$imagePic->exth, $this->t['image_categories_size'], $rightDisplayKey);
-
-							$this->categories[$key]->linkthumbnailpath	= $fileThumbnail->rel;
-							$this->categories[$key]->extw				= $fileThumbnail->extw;
-							$this->categories[$key]->exth				= $fileThumbnail->exth;
-							$this->categories[$key]->extpic				= $fileThumbnail->extpic;
-						} else {
-							$fileThumbnail		= PhocaGalleryImageFront::displayCategoriesExtImgOrFolder($this->categories[$key]->exts,$this->categories[$key]->extm, $this->categories[$key]->extw, $this->categories[$key]->exth, $this->t['image_categories_size'], $rightDisplayKey);
-
-							$this->categories[$key]->linkthumbnailpath	= $fileThumbnail->rel;
-							$this->categories[$key]->extw				= $fileThumbnail->extw;
-							$this->categories[$key]->exth				= $fileThumbnail->exth;
-							$this->categories[$key]->extpic				= $fileThumbnail->extpic;
-						}
+						$this->categories[$key]->linkthumbnailpath	= $fileThumbnail->rel;
+						$this->categories[$key]->extw				= $fileThumbnail->extw;
+						$this->categories[$key]->exth				= $fileThumbnail->exth;
+						$this->categories[$key]->extpic				= $fileThumbnail->extpic;
 					}
+
 
 
 
 				} else {
-					if ($this->t['categories_mosaic_images'] == 1) {
 
-						if ($this->t['categoriesimageordering'] == 10) {
-							// Special cannot be used in this case:
-							$categoriesImageOrdering = 1;// set to default ordering
-						}
+					$this->categories[$key]->rightdisplaykey				= $rightDisplayKey;
 
-						$this->categories[$key]->filenames	= PhocaGalleryImageFront::getCategoryImages($this->categories[$key]->id, $categoriesImageOrdering);
-						$this->categories[$key]->mosaic = PhocaGalleryImageFront::renderMosaic($this->categories[$key]->filenames, $this->t['image_categories_size']);
-					} else {
-
-						if (isset($item->image_id) && $item->image_id > 0) {
-							// User has selected image in category edit
-							$selectedImg = PhocaGalleryImageFront::setFileNameByImageId((int)$item->image_id);
+					if (isset($item->image_id) && $item->image_id > 0) {
+						// User has selected image in category edit
+						$selectedImg = PhocaGalleryImageFront::setFileNameByImageId((int)$item->image_id);
 
 
-							if (isset($selectedImg->filename) && ($selectedImg->filename != '' && $selectedImg->filename != '-')) {
-								$fileThumbnail	= PhocaGalleryImageFront::displayCategoriesImageOrFolder($selectedImg->filename, $this->t['image_categories_size'], $rightDisplayKey);
-								$this->categories[$key]->filename = $selectedImg->filename;
-								$this->categories[$key]->linkthumbnailpath   = $fileThumbnail->rel;
+						if (isset($selectedImg->filename) && ($selectedImg->filename != '' && $selectedImg->filename != '-')) {
+							$fileThumbnail	= PhocaGalleryImageFront::displayCategoriesImageOrFolder($selectedImg->filename, $this->t['image_categories_size'], $rightDisplayKey);
+							$this->categories[$key]->filename = $selectedImg->filename;
+							$this->categories[$key]->linkthumbnailpath   = $fileThumbnail->rel;
 
-							} else if (isset($selectedImg->exts) && isset($selectedImg->extm) && $selectedImg->exts != '' && $selectedImg->extm != '') {
-								$fileThumbnail		= PhocaGalleryImageFront::displayCategoriesExtImgOrFolder($selectedImg->exts, $selectedImg->extm, $selectedImg->extw, $selectedImg->exth, $this->t['image_categories_size'], $rightDisplayKey);
+						} else if (isset($selectedImg->exts) && isset($selectedImg->extm) && $selectedImg->exts != '' && $selectedImg->extm != '') {
+							$fileThumbnail		= PhocaGalleryImageFront::displayCategoriesExtImgOrFolder($selectedImg->exts, $selectedImg->extm, $selectedImg->extw, $selectedImg->exth, $this->t['image_categories_size'], $rightDisplayKey);
 
-								$this->categories[$key]->linkthumbnailpath	= $fileThumbnail->rel;
-								$this->categories[$key]->extw				= $fileThumbnail->extw;
-								$this->categories[$key]->exth				= $fileThumbnail->exth;
-								$this->categories[$key]->extpic				= $fileThumbnail->extpic;
-
-							}
-
-						} else {
-							// Standard Internal Image
-							if ($this->t['categoriesimageordering'] != 10) {
-								$this->categories[$key]->filename	= PhocaGalleryImageFront::getRandomImageRecursive($this->categories[$key]->id, $categoriesImageOrdering);
-							}
-							$fileThumbnail	= PhocaGalleryImageFront::displayCategoriesImageOrFolder($this->categories[$key]->filename, $this->t['image_categories_size'], $rightDisplayKey);
 							$this->categories[$key]->linkthumbnailpath	= $fileThumbnail->rel;
+							$this->categories[$key]->extw				= $fileThumbnail->extw;
+							$this->categories[$key]->exth				= $fileThumbnail->exth;
+							$this->categories[$key]->extpic				= $fileThumbnail->extpic;
 
 						}
+
+					} else {
+						// Standard Internal Image
+						if ($this->t['categoriesimageordering'] != 10) {
+							$this->categories[$key]->filename	= PhocaGalleryImageFront::getRandomImageRecursive($this->categories[$key]->id, $categoriesImageOrdering);
+						}
+						$fileThumbnail	= PhocaGalleryImageFront::displayCategoriesImageOrFolder($this->categories[$key]->filename, $this->t['image_categories_size'], $rightDisplayKey);
+						$this->categories[$key]->linkthumbnailpath	= $fileThumbnail->rel;
+
 					}
+
 
 				}
 			}
@@ -387,7 +345,7 @@ class PhocaGalleryViewCategories extends JViewLegacy
 
 
 		// L E G A C Y ===
-		$this->t['countcategories'] 	= count($this->categories);
+	/*	$this->t['countcategories'] 	= count($this->categories);
 		$this->t['begin']			= array();
 		$this->t['end']				= array();
 		$this->t['begin'][0]			= 0;// first
@@ -413,7 +371,7 @@ class PhocaGalleryViewCategories extends JViewLegacy
 		} else {
 			$this->t['fixedwidthstyle1']	= '';//'margin: 10px;';
 			$this->t['fixedwidthstyle2']	= '';//'margin: 0px;';
-		}
+		}*/
 		// END L E G A C Y ===
 
 

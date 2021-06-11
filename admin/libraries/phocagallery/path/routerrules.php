@@ -11,6 +11,7 @@ class PhocaGalleryRouterrules extends \JComponentRouterRulesMenu
 {
 	public function preprocess(&$query)
 	{
+
 		parent::preprocess($query);
 
 	}

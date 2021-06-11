@@ -237,7 +237,7 @@ class PhocagalleryModelUser extends JModelLegacy
 	/*
 	 * Create category tree
 	 */
-	function _categoryTree( $data, $tree, $id = 0, $text='', $currentId) {
+	function _categoryTree( $data, $tree, $id = 0, $text='', $currentId = 0) {
 
 		// Ordering
 		$countItemsInCat 	= 0;
@@ -509,7 +509,7 @@ class PhocagalleryModelUser extends JModelLegacy
 	/*
 	 * Save order subcat
 	 */
-	 function saveordersubcat($cid = array(), $order){
+	 function saveordersubcat($cid = array(), $order = array()){
 		$row = $this->getTable('phocagalleryc', 'Table');
 		$groupings 	= array();
 
@@ -538,7 +538,7 @@ class PhocagalleryModelUser extends JModelLegacy
 	/*
 	 * Save order Image
 	 */
-	 function saveorderimage($cid = array(), $order){
+	 function saveorderimage($cid = array(), $order = array()){
 		$row = $this->getTable('phocagallery', 'Table');
 		$groupings 	= array();
 
@@ -567,7 +567,7 @@ class PhocagalleryModelUser extends JModelLegacy
 	/*
 	 * Delete
 	 */
-	function delete($id = 0, &$errorMsg) {
+	function delete($id = 0, &$errorMsg = '') {
 
 		$app	= JFactory::getApplication();
 
@@ -666,7 +666,7 @@ class PhocagalleryModelUser extends JModelLegacy
 		return true;
 	}
 
-	function deleteimage($id = 0, &$errorMsg) {
+	function deleteimage($id = 0, &$errorMsg = '') {
 
 		// Get all filenames we want to delete from database, we delete all thumbnails from server of this file
 		$queryd = 'SELECT filename as filename FROM #__phocagallery WHERE id ='.(int)$id;
@@ -716,7 +716,7 @@ class PhocagalleryModelUser extends JModelLegacy
 	/*
 	 * Pagination Subcategory
 	 */
-	function getCountItemSubCat($id = 0, $userId, $catid = 0) {
+	function getCountItemSubCat($id = 0, $userId = 0, $catid = 0) {
 
 		$where = ' WHERE c.id ='.(int)$id;
 		if ((int)$catid > 0) {
@@ -744,7 +744,7 @@ class PhocagalleryModelUser extends JModelLegacy
 	/*
 	 * Pagination Image
 	 */
-	function getCountItemImage($id = 0, $userId, $catid = 0) {
+	function getCountItemImage($id = 0, $userId = 0, $catid = 0) {
 
 		$where = ' WHERE a.id ='.(int)$id;
 		if ((int)$catid > 0) {

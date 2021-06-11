@@ -40,7 +40,8 @@ class PhocagalleryModelCooliris3DWall extends JModelLegacy
 			if ($rightDisplay == 0) {
 				$uri 			= \Joomla\CMS\Uri\Uri::getInstance();
 				$t['pl']		= 'index.php?option=com_users&view=login&return='.base64_encode($uri->toString());
-				$app->redirect(JRoute::_($t['pl'], false), JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'));
+				$app->enqueueMessage(JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'));
+				$app->redirect(JRoute::_($t['pl'], false));
 				exit;
 			}
 			// - - - - - - - - - - - - - - - -

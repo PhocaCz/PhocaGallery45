@@ -78,7 +78,8 @@ class PhocaGalleryControllerDetail extends PhocaGalleryController
 				$results = \JFactory::getApplication()->triggerEvent('onVoteImage', array($imgid, $rating, $user->id ) );
 				}
 			} else {
-				$app->redirect(JRoute::_('index.php?option=com_users&view=login', false), JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'));
+				$app->enqueueMessage(JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'), 'error');
+				$app->redirect(JRoute::_('index.php?option=com_users&view=login', false));
 				exit;
 			}
 		}

@@ -38,8 +38,8 @@ class PhocaGalleryViewFeed extends JViewLegacy
 		$imgCount			= $params->get( 'feed_img_count', 5 );
 		$feedTitle			= $params->get( 'feed_title', JText::_('COM_PHOCAGALLERY_GALLERY') );
 
-		$t['picasa_correct_width_m']		= (int)$params->get( 'medium_image_width', 100 );
-		$t['picasa_correct_height_m']	= (int)$params->get( 'medium_image_height', 100 );
+		$t['picasa_correct_width_m']		= (int)$params->get( 'medium_image_width', 256 );
+		$t['picasa_correct_height_m']	= (int)$params->get( 'medium_image_height', 192 );
 
 		$document->setTitle($this->escape( html_entity_decode($feedTitle)));
 

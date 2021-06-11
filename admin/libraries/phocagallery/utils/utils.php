@@ -8,6 +8,10 @@
  * @copyright Copyright (C) Open Source Matters. All rights reserved.
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\PluginHelper;
+
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class PhocaGalleryUtils
@@ -15,8 +19,9 @@ class PhocaGalleryUtils
 
 	public static function getExtInfo() {
 
-        JPluginHelper::importPlugin('phocatools');
-        $results = \JFactory::getApplication()->triggerEvent('PhocatoolsOnDisplayInfo', array('NzI5NzY5NTcxMTc='));
+        PluginHelper::importPlugin('phocatools');
+        $results = Factory::getApplication()->triggerEvent('onPhocatoolsDisplayInfo', array('NzI5NzY5NTcxMTc='));
+
         if (isset($results[0]) && $results[0] === true) {
             return '';
         }

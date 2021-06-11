@@ -7,7 +7,15 @@
  * @copyright Copyright (C) Jan Pavelka www.phoca.cz
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
+
+use Joomla\CMS\Factory;
+
 defined('_JEXEC') or die;
+
+$document = Factory::getDocument();
+$document->addStyleSheet(JURI::root(true).'/media/com_phocagallery/js/photoswipe/css/photoswipe.css');
+$document->addStyleSheet(JURI::root(true).'/media/com_phocagallery/js/photoswipe/css/default-skin/default-skin.css');
+$document->addStyleSheet(JURI::root(true).'/media/com_phocagallery/js/photoswipe/css/photoswipe-style.css');
 
 $task		= 'phocagalleryimg';
 
@@ -40,7 +48,7 @@ echo $r->startForm($option, $tasks, 'adminForm');
 
 echo $r->startMainContainer();
 if (isset($this->t['notapproved']->count) && (int)$this->t['notapproved']->count > 0 ) {
-	echo '<div class="alert alert-error"><a class="close" data-dismiss="alert" href="#">&times;</a>'.JText::_($OPT.'_NOT_APPROVED_IMAGE_IN_GALLERY').': '
+	echo '<div class="alert alert-error alert-danger"><a class="close" data-dismiss="alert" href="#">&times;</a>'.JText::_($OPT.'_NOT_APPROVED_IMAGE_IN_GALLERY').': '
 	.(int)$this->t['notapproved']->count.'</div>';
 }
 /*
@@ -61,6 +69,8 @@ echo $r->selectFilterCategory(PhocaGalleryCategory::options($option, 1), 'JOPTIO
 echo $r->endFilterBar();*/
 
 echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
+
+echo '<div  id="pg-msnr-container" class="pg-photoswipe pg-msnr-container pg-category-items-box" itemscope itemtype="http://schema.org/ImageGallery">';
 
 echo $r->startTable('categoryList');
 
@@ -93,6 +103,7 @@ $j 				= 0;
 
 if (is_array($this->items)) {
 	foreach ($this->items as $i => $item) {
+
 		//if ($i >= (int)$this->pagination->limitstart && $j < (int)$this->pagination->limit) {
 			$j++;
 
@@ -112,10 +123,11 @@ $linkDeleteThumbs= JRoute::_( $urlTask.'.recreate&cid[]='. (int)$item->id );
 $linkCat	= JRoute::_( 'index.php?option=com_phocagallery&task=phocagalleryc.edit&id='.(int) $item->category_id );
 $canEditCat	= $user->authorise('core.edit', $option);
 
+
 echo $r->startTr($i, isset($item->catid) ? (int)$item->catid : 0);
 echo $r->firstColumn($i, $item->id, $canChange, $saveOrder, $orderkey, $item->ordering);
 echo $r->secondColumn($i, $item->id, $canChange, $saveOrder, $orderkey, $item->ordering);
-echo $r->tdImage($item, $this->button, 'COM_PHOCAGALLERY_ENLARGE_IMAGE');
+echo $r->tdImage($item, 'pg-photoswipe-button', 'COM_PHOCAGALLERY_ENLARGE_IMAGE');
 $checkO = '';
 if ($item->checked_out) {
 	$checkO .= Joomla\CMS\HTML\HTMLHelper::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, $tasks.'.', $canCheckin);
@@ -183,15 +195,20 @@ echo $r->endTr();
 
 		//}
 	}
+
 }
 echo $r->endTblBody();
 
 echo $r->tblFoot($this->pagination->getListFooter(), 15);
 echo $r->endTable();
+echo "</div>";
 
 echo $this->loadTemplate('batch');
 
 echo $r->formInputsXML($listOrder, $listDirn, $originalOrders);
 echo $r->endMainContainer();
 echo $r->endForm();
+
+// Modal window for images
+echo PhocaGalleryRenderDetailWindow::loadPhotoswipeBottom();
 ?>

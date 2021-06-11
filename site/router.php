@@ -43,16 +43,19 @@ class PhocagalleryRouter extends JComponentRouterView
 
 		$category = new JComponentRouterViewconfiguration('category');
 
+
 		$category->setKey('id')->setParent($categories, 'parent_id')->setNestable();
 
 
 		$this->registerView($category);
 
+
+
 		$detail = new JComponentRouterViewconfiguration('detail');
-		$detail->setKey('id')->setParent($category, 'catid');
+		$detail->setKey('id')->setParent($category, 'catid');//->setNestable();
 		$this->registerView($detail);
 
-		$views = array('info', 'comment');
+		$views = array('info', 'comment', 'user');
         foreach ($views as $k => $v) {
             $item = new JComponentRouterViewconfiguration($v);
 		    $item->setName($v)->setParent($detail, 'id')->setParent($category, 'catid');
@@ -87,10 +90,16 @@ class PhocagalleryRouter extends JComponentRouterView
 	{
 
 
+
 	    $category = PhocaGalleryCategory::getCategoryById($id);
 
 
 		if (isset($category->id)) {
+
+
+
+
+
 		    $path = PhocaGalleryCategory::getPath(array(), (int)$category->id, $category->parent_id, $category->title, $category->alias);
 
 		    //$path = array_reverse($path, true);
@@ -140,7 +149,7 @@ class PhocagalleryRouter extends JComponentRouterView
 			$db = JFactory::getDbo();
 			$dbquery = $db->getQuery(true);
 			$dbquery->select($dbquery->qn('alias'))
-				->from($dbquery->qn('#__content'))
+				->from($dbquery->qn('#__phocagallery'))
 				->where('id = ' . $dbquery->q($id));
 			$db->setQuery($dbquery);
 
@@ -154,6 +163,7 @@ class PhocagalleryRouter extends JComponentRouterView
 			return array($void => $segment);
 		}
 
+
 		return array((int) $id => $id);
 	}
 
@@ -166,7 +176,7 @@ class PhocagalleryRouter extends JComponentRouterView
 			$db = JFactory::getDbo();
 			$dbquery = $db->getQuery(true);
 			$dbquery->select($dbquery->qn('alias'))
-				->from($dbquery->qn('#__content'))
+				->from($dbquery->qn('#__phocagallery'))
 				->where('id = ' . $dbquery->q($id));
 			$db->setQuery($dbquery);
 
@@ -211,6 +221,7 @@ class PhocagalleryRouter extends JComponentRouterView
 	{
 
 
+
 	    if (isset($query['id']))
 		{
 
@@ -230,9 +241,11 @@ class PhocagalleryRouter extends JComponentRouterView
 			if ($category) {
 
                 if (!empty($category->subcategories)){
+
                     foreach ($category->subcategories as $child) {
                         if ($this->noIDs) {
                             if ($child->alias == $segment) {
+
 
                                 return $child->id;
                             }
@@ -276,7 +289,6 @@ class PhocagalleryRouter extends JComponentRouterView
 	public function getDetailId($segment, $query)
 	{
 
-	    bdump($segment);
 		if ($this->noIDs)
 		{
 			$db = JFactory::getDbo();

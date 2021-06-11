@@ -133,6 +133,7 @@ class PhocaGalleryFileUploadMultiple
 
 
 
+
 		//$js = ' var pgJQ = jQuery.noConflict();';
 		$js = 'var pgJQ =  jQuery.noConflict();';
 		$js .=' pgJQ(function() {'."\n";
@@ -236,7 +237,10 @@ class PhocaGalleryFileUploadMultiple
 		$js.='    Uploader.bind(\'Error\', function(Up, ErrorObj) {'."\n";
 		$js.=''."\n";
 	//	$js.='         if (ErrorObj.code == 100) { '."\n";
-		$js.='			pgJQ(\'#\' + ErrorObj.file.id).append(\'<div class="alert alert-error">\'+ ErrorObj.message + ErrorObj.details +\'</div>\');'."\n";
+		$js.='			pgJQ(\'#\' + ErrorObj.file.id).append(\'<div class="alert alert-error alert-danger">\'+ ErrorObj.message + ErrorObj.details +\'</div>\');'."\n";
+
+		//$js.= '			console.log(ErrorObj.file.id + " " + ErrorObj.message + " " + ErrorObj.details);'."\n";
+
 	//	$js.='         }'."\n";
 		$js.='    });	'."\n";
 		$js.='}';

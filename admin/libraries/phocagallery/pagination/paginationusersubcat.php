@@ -39,9 +39,9 @@ class PhocaGalleryPaginationUserSubCat extends JPagination
 		$data->start	= new JPaginationObject(JText::_('COM_PHOCAGALLERY_PAG_START'));
 		$data->previous	= new JPaginationObject(JText::_('COM_PHOCAGALLERY_PAG_PREV'));
 
-		if ($this->get('pages.current') > 1)
+		if ($this->pagesCurrent > 1)
 		{
-			$page = ($this->get('pages.current') -2) * $this->limit;
+			$page = ($this->pagesCurrent -2) * $this->limit;
 
 			$page = $page == 0 ? '' : $page; //set the empty for removal from route
 
@@ -55,10 +55,10 @@ class PhocaGalleryPaginationUserSubCat extends JPagination
 		$data->next	= new JPaginationObject(JText::_('COM_PHOCAGALLERY_PAG_NEXT'));
 		$data->end	= new JPaginationObject(JText::_('COM_PHOCAGALLERY_PAG_END'));
 
-		if ($this->get('pages.current') < $this->get('pages.total'))
+		if ($this->pagesCurrent < $this->pagesTotal)
 		{
-			$next = $this->get('pages.current') * $this->limit;
-			$end  = ($this->get('pages.total') -1) * $this->limit;
+			$next = $this->pagesCurrent * $this->limit;
+			$end  = ($this->pagesTotal -1) * $this->limit;
 
 			$data->next->base	= $next;
 			$data->next->link	= JRoute::_($tabLink."&limitstartsubcat=".$next);
@@ -67,15 +67,15 @@ class PhocaGalleryPaginationUserSubCat extends JPagination
 		}
 
 		$data->pages = array();
-		$stop = $this->get('pages.stop');
-		for ($i = $this->get('pages.start'); $i <= $stop; $i ++)
+		$stop = $this->pagesStop;
+		for ($i = $this->pagesStart; $i <= $stop; $i ++)
 		{
 			$offset = ($i -1) * $this->limit;
 
 			$offset = $offset == 0 ? '' : $offset;  //set the empty for removal from route
 
 			$data->pages[$i] = new JPaginationObject($i);
-			if ($i != $this->get('pages.current') || $this->viewall)
+			if ($i != $this->pagesCurrent || $this->viewall)
 			{
 				$data->pages[$i]->base	= $offset;
 				$data->pages[$i]->link	= JRoute::_($tabLink."&limitstartsubcat=".$offset);

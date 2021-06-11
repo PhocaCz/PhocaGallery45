@@ -59,7 +59,7 @@ class PhocaGalleryRenderDetailWindow
 		$document					= $app->getDocument();
 		$paramsC 					= ComponentHelper::getParams('com_phocagallery') ;
 
-		$this->b1 = new stdClass();
+		/*$this->b1 = new stdClass();
 		$this->b1->name = 'image';
 		$this->b1->options = '';
 
@@ -75,14 +75,14 @@ class PhocaGalleryRenderDetailWindow
 		$path = JURI::base(true);
 		if ($this->backend == 1) {
 			$path = JURI::root(true);
-		}
+		}*/
 
 
 		switch($method) {
 
 			case 1:
 			//STANDARD JS POPUP
-			$this->b1->methodname 		= 'pg-js-nopopup-button';
+			/*$this->b1->methodname 		= 'pg-js-nopopup-button';
 			$this->b1->options 			= "window.open(this.href,'win2','width=".$this->popupWidth.",height=".$this->popupHeight.",scrollbars=yes,menubar=no,resizable=yes'); return false;";
 			$this->b1->optionsrating 	= "window.open(this.href,'win2','width=".$this->popupWidth.",height=".$this->popupHeight.",scrollbars=yes,menubar=no,resizable=yes'); return false;";
 
@@ -90,12 +90,12 @@ class PhocaGalleryRenderDetailWindow
 			$this->b2->options 			= $this->b1->options;
 			$this->b3->methodname  		= $this->b1->methodname;
 			$this->b3->options 			= $this->b1->options;
-			$this->b3->optionsrating 	= $this->b1->optionsrating;
+			$this->b3->optionsrating 	= $this->b1->optionsrating;*/
 			break;
 
 			case 0:
 			// BOOTSTRAP MODAL
-			$this->b1->name 			= 'image';
+			/*$this->b1->name 			= 'image';
 			$this->b1->methodname 		= 'pg-bs-modal-button';
 			$this->b1->options			= '';
 			$this->b1->optionsrating	= '';
@@ -106,30 +106,55 @@ class PhocaGalleryRenderDetailWindow
 			$this->b2->optionsrating= '';
 			$this->b3->methodname  	= $this->b1->methodname;
 			$this->b3->options		= '';
-			$this->b3->optionsrating= '';
+			$this->b3->optionsrating= '';*/
 
 			break;
 
 			case 7:
 			// NO POPUP
-			$this->b1->methodname 	= 'pg-no-popup';
+			/*$this->b1->methodname 	= 'pg-no-popup';
 			$this->b2->methodname 	= $this->b1->methodname;
-			$this->b3->methodname 	= $this->b1->methodname;
+			$this->b3->methodname 	= $this->b1->methodname;*/
+
+			break;
+
+			case 12:
+				// MAGNIFIC
+
+				HTMLHelper::_('jquery.framework', true);
+
+				$oLang   = array(
+                    'COM_PHOCAGALLERY_LOADING' => JText::_('COM_PHOCAGALLERY_LOADING'),
+                    'COM_PHOCAGALLERY_CLOSE' => JText::_('COM_PHOCAGALLERY_CLOSE'),
+                    'COM_PHOCAGALLERY_PREVIOUS' => JText::_('COM_PHOCAGALLERY_PREVIOUS'),
+                    'COM_PHOCAGALLERY_NEXT' => JText::_('COM_PHOCAGALLERY_NEXT'),
+                    'COM_PHOCAGALLERY_MAGNIFIC_CURR_OF_TOTAL' => JText::_('COM_PHOCAGALLERY_MAGNIFIC_CURR_OF_TOTAL'),
+                    'COM_PHOCAGALLERY_IMAGE_NOT_LOADED' => JText::_('COM_PHOCAGALLERY_IMAGE_NOT_LOADED')
+
+                );
+
+                $document->addScriptOptions('phLangPG', $oLang);
+
+
+				$document->addScript(JURI::base(true).'/media/com_phocagallery/js/magnific/jquery.magnific-popup.min.js');
+				$document->addScript(JURI::base(true).'/media/com_phocagallery/js/magnific/magnific-initialize.js');
+				$document->addStyleSheet(JURI::base(true).'/media/com_phocagallery/js/magnific/magnific-popup.css');
 
 			break;
 
 			case 14:
-			// PHOTOSWIPE
-			HTMLHelper::_('jquery.framework', true);
 
-			$this->b1->methodname 	= 'pg-photoswipe-button';
+				// PHOTOSWIPE
+				HTMLHelper::_('jquery.framework', true);
+
+			/*$this->b1->methodname 	= 'pg-photoswipe-button';
 			$this->b1->options		= 'itemprop="contentUrl"';
 			$this->b2->methodname 	= 'pg-photoswipe-button-copy';
 			$this->b2->options		= $this->b1->options;// todo
 
 			$this->b3->methodname	= 'pg-ps-modal-button';
 			$this->b3->options		= '';
-			$this->b3->optionsrating= '';
+			$this->b3->optionsrating= '';*/
 
 
 
@@ -140,6 +165,7 @@ class PhocaGalleryRenderDetailWindow
 
 
 			if ( isset($libraries['pg-group-photoswipe']->value) && $libraries['pg-group-photoswipe']->value == 0 ) {
+
 				$document->addStyleSheet(JURI::base(true).'/media/com_phocagallery/js/photoswipe/css/photoswipe.css');
 				$document->addStyleSheet(JURI::base(true).'/media/com_phocagallery/js/photoswipe/css/default-skin/default-skin.css');
 				$document->addStyleSheet(JURI::base(true).'/media/com_phocagallery/js/photoswipe/css/photoswipe-style.css');
@@ -172,6 +198,7 @@ class PhocaGalleryRenderDetailWindow
 		$photoswipe_slideshow	= $paramsC->get( 'photoswipe_slideshow', 1 );
 		$photoswipe_slide_effect= $paramsC->get( 'photoswipe_slide_effect', 0 );
 
+
 		if ($forceSlideshow == 1) {
             $photoswipe_slideshow = 1;
         }
@@ -182,7 +209,7 @@ class PhocaGalleryRenderDetailWindow
 		$o = '<!-- Root element of PhotoSwipe. Must have class pswp. -->
 <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
 
-    <!-- Background of PhotoSwipe. 
+    <!-- Background of PhotoSwipe.
          It\'s a separate element, as animating opacity is faster than rgba(). -->
     <div class="pswp__bg"></div>
 
@@ -201,7 +228,7 @@ class PhocaGalleryRenderDetailWindow
         <div class="pswp__ui pswp__ui--hidden">
 
             <div class="pswp__top-bar">
-			
+
                 <!--  Controls are self-explanatory. Order can be changed. -->
 
                 <div class="pswp__counter"></div>
@@ -252,13 +279,13 @@ class PhocaGalleryRenderDetailWindow
 
 </div>';
 
-$o .=   '<script src="'.JURI::base(true).'/media/com_phocagallery/js/photoswipe/js/photoswipe.min.js"></script>'. "\n"
-		.'<script src="'.JURI::base(true).'/media/com_phocagallery/js/photoswipe/js/photoswipe-ui-default.min.js"></script>'. "\n";
+$o .=   '<script src="'.JURI::root(true).'/media/com_phocagallery/js/photoswipe/js/photoswipe.min.js"></script>'. "\n"
+		.'<script src="'.JURI::root(true).'/media/com_phocagallery/js/photoswipe/js/photoswipe-ui-default.min.js"></script>'. "\n";
 
 if ($photoswipe_slide_effect == 1) {
-	$o .= '<script src="'.JURI::base(true).'/media/com_phocagallery/js/photoswipe/js/photoswipe-initialize-ratio.js"></script>'. "\n";
+	$o .= '<script src="'.JURI::root(true).'/media/com_phocagallery/js/photoswipe/js/photoswipe-initialize-ratio.js"></script>'. "\n";
 } else {
-	$o .= '<script src="'.JURI::base(true).'/media/com_phocagallery/js/photoswipe/js/photoswipe-initialize.js"></script>'. "\n";
+	$o .= '<script src="'.JURI::root(true).'/media/com_phocagallery/js/photoswipe/js/photoswipe-initialize.js"></script>'. "\n";
 }
 
 		return $o;

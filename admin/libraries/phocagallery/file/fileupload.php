@@ -394,7 +394,7 @@ class PhocaGalleryFileUpload
 					exit;
 				} else {
 					$app->enqueueMessage( $errUploadMsg, 'error');
-					$app->redirect($componentUrl, $errUploadMsg, 'error');
+					$app->redirect($componentUrl);
 					exit;
 				}
 			}
@@ -433,7 +433,7 @@ class PhocaGalleryFileUpload
 					exit;
 				} else {
 					$app->enqueueMessage( JText::_('COM_PHOCAGALLERY_SUCCESS_FILE_UPLOAD'));
-					$app->redirect($componentUrl, JText::_('COM_PHOCAGALLERY_SUCCESS_FILE_UPLOAD'));
+					$app->redirect($componentUrl);
 					exit;
 				}
 			}

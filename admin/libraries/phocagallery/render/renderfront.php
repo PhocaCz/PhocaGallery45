@@ -45,6 +45,7 @@ class PhocaGalleryRenderFront
 
 
     // hotnew
+    /*
     public static function getOverImageIcons($date, $hits) {
         $app    = JFactory::getApplication();
         $params = $app->getParams();
@@ -77,7 +78,7 @@ class PhocaGalleryRenderFront
         }
         return $output;
     }
-/*
+
     public static function renderCommentJS($chars) {
 
         $tag = "<script type=\"text/javascript\">"

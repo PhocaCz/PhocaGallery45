@@ -15,11 +15,11 @@ class PhocaGalleryPaginationCategories extends JPagination
 {
 	public function getLimitBox() {
 		$app	= JFactory::getApplication();
-		
+
 		$paramsC 			= JComponentHelper::getParams('com_phocagallery') ;
 		$pagination 		= $paramsC->get( 'pagination_categories', '5,10,15,20,50' );
 		$paginationArray	= explode( ',', $pagination );
-		
+
 		// Initialize variables
 		$limits = array ();
 
@@ -32,11 +32,11 @@ class PhocaGalleryPaginationCategories extends JPagination
 
 		// Build the select list
 		if ($app->isClient('administrator')) {
-			$html = Joomla\CMS\HTML\HTMLHelper::_('select.genericlist',  $limits, 'limit', 'class="inputbox input-mini" size="1" onchange="Joomla.submitform();"', 'value', 'text', $selected);
+			$html = Joomla\CMS\HTML\HTMLHelper::_('select.genericlist',  $limits, 'limit', 'class="form-select" size="1" onchange="Joomla.submitform();"', 'value', 'text', $selected);
 		} else {
-			$html = Joomla\CMS\HTML\HTMLHelper::_('select.genericlist',  $limits, 'limit', 'class="inputbox input-mini" size="1" onchange="this.form.submit()"', 'value', 'text', $selected);
+			$html = Joomla\CMS\HTML\HTMLHelper::_('select.genericlist',  $limits, 'limit', 'class="form-select" size="1" onchange="this.form.submit()"', 'value', 'text', $selected);
 		}
-	
+
 		return $html;
 	}
 }

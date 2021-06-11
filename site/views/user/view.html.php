@@ -54,7 +54,8 @@ class PhocaGalleryViewUser extends JViewLegacy
 
 		// Only registered users
 		if (!$access) {
-			$app->redirect(JRoute::_($this->t['pl'], false), JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'));
+			$app->enqueueMessage(JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'), 'error');
+			$app->redirect(JRoute::_($this->t['pl'], false));
 			exit;
 		}
 
@@ -86,7 +87,8 @@ class PhocaGalleryViewUser extends JViewLegacy
 		// UCP is disabled (security reasons)
 
 		if ((int)$this->params->get( 'enable_user_cp', 0 ) == 0) {
-			$app->redirect(JURI::base(true), JText::_('COM_PHOCAGALLERY_UCP_DISABLED'));
+			$app->enqueueMessage(JText::_('COM_PHOCAGALLERY_UCP_DISABLED'), 'error');
+			$app->redirect(JURI::base(true));
 			exit;
 		}
 
@@ -177,7 +179,7 @@ class PhocaGalleryViewUser extends JViewLegacy
 		$this->t['action']	= $uri->toString();
 		$this->t['ftp'] 		= !JClientHelper::hasCredentials('ftp');
 		$sess = JFactory::getSession();
-		$this->assignRef('session', $sess);
+		$this->session = $sess;
 
 
 		// SEF problem
@@ -225,7 +227,7 @@ class PhocaGalleryViewUser extends JViewLegacy
 		if ($ownerMainCategory) {
 			$this->t['usermaincategory'] =  $ownerMainCategory->title;
 		} else {
-			$this->t['usermaincategory'] =  PhocaGalleryRenderFront::renderIcon('minus-sign',$this->t['pi'].'icon-unpublish.png', JText::_('COM_PHOCAGALLERY_NOT_CREATED'))
+			$this->t['usermaincategory'] =  '<svg class="ph-si ph-si-disabled"><title>'.JText::_('COM_PHOCAGALLERY_NOT_CREATED').'</title><use xlink:href="#ph-si-disabled"></use></svg>'
 			.' ('.JText::_('COM_PHOCAGALLERY_NOT_CREATED').')';
 		}
 		$this->t['usersubcategory'] 		= $model->getCountUserSubCat($user->id);
@@ -269,7 +271,7 @@ class PhocaGalleryViewUser extends JViewLegacy
 		// SUBCATEGORY
 		// - - - - - - - - - - -
 
-
+		$lists_subcat = array();
 		if (!empty($ownerMainCategory->id)) {
 
 			// EDIT
@@ -295,8 +297,10 @@ class PhocaGalleryViewUser extends JViewLegacy
 			$search_subcat			= StringHelper::strtolower( $search_subcat );
 
 			$categories 				= $model->getCategoryList($user->id);
+
+
 			if (!empty($categories)) {
-				$javascript 	= 'class="inputbox" onchange="document.phocagallerysubcatform.submit();"';
+				$javascript 	= 'class="form-select" onchange="document.phocagallerysubcatform.submit();"';
 				$tree = array();
 				$text = '';
 				$tree = PhocaGalleryCategoryhtml::CategoryTreeOption($categories, $tree,0, $text, -1);
@@ -312,7 +316,7 @@ class PhocaGalleryViewUser extends JViewLegacy
 			$state_subcat[] 		= Joomla\CMS\HTML\HTMLHelper::_('select.option',  '', '- '. JText::_( 'COM_PHOCAGALLERY_SELECT_STATE' ) .' -' );
 			$state_subcat[] 		= Joomla\CMS\HTML\HTMLHelper::_('select.option',  'P', JText::_( 'COM_PHOCAGALLERY_PUBLISHED' ) );
 			$state_subcat[] 		= Joomla\CMS\HTML\HTMLHelper::_('select.option',  'U', JText::_( 'COM_PHOCAGALLERY_UNPUBLISHED') );
-			$lists_subcat['state']	= Joomla\CMS\HTML\HTMLHelper::_('select.genericlist',   $state_subcat, 'filter_published_subcat', 'class="inputbox" size="1" onchange="document.phocagallerysubcatform.submit();"', 'value', 'text', $filter_published_subcat );
+			$lists_subcat['state']	= Joomla\CMS\HTML\HTMLHelper::_('select.genericlist',   $state_subcat, 'filter_published_subcat', 'class="form-select" size="1" onchange="document.phocagallerysubcatform.submit();"', 'value', 'text', $filter_published_subcat );
 
 			// table ordering
 			$lists_subcat['order_Dir'] 	= $filter_order_Dir_subcat;
@@ -329,6 +333,7 @@ class PhocaGalleryViewUser extends JViewLegacy
 		// - - - - - - - - - - -
 		// IMAGES
 		// - - - - - - - - - - -
+		$lists_image = array();
 		if (!empty($ownerMainCategory->id)) {
 			$catAccess		= PhocaGalleryAccess::getCategoryAccess((int)$ownerMainCategory->id);
 
@@ -352,7 +357,7 @@ class PhocaGalleryViewUser extends JViewLegacy
 			$categoriesImage 		= $model->getCategoryList($user->id);
 			if (!empty($categoriesImage)) {
 				//$javascript     = 'class="inputbox" size="1" onchange="document.phocagalleryimageform.submit();"';
-$javascript     = 'class="inputbox" size="1" onchange="document.getElementById(\'phocagalleryimageform\').submit();"';
+$javascript     = 'class="form-select" size="1" onchange="document.getElementById(\'phocagalleryimageform\').submit();"';
 				$tree = array();
 				$text = '';
 				$tree = PhocaGalleryCategoryhtml::CategoryTreeOption($categoriesImage, $tree,0, $text, -1);
@@ -365,7 +370,7 @@ $javascript     = 'class="inputbox" size="1" onchange="document.getElementById(\
 			$state_image[] 		= Joomla\CMS\HTML\HTMLHelper::_('select.option',  '', '- '. JText::_( 'COM_PHOCAGALLERY_SELECT_STATE' ) .' -' );
 			$state_image[] 		= Joomla\CMS\HTML\HTMLHelper::_('select.option', 'P', JText::_( 'COM_PHOCAGALLERY_FIELD_PUBLISHED_LABEL' ) );
 			$state_image[] 		= Joomla\CMS\HTML\HTMLHelper::_('select.option', 'U', JText::_( 'COM_PHOCAGALLERY_FIELD_UNPUBLISHED_LABEL') );
-			$lists_image['state']	= Joomla\CMS\HTML\HTMLHelper::_('select.genericlist',   $state_image, 'filter_published_image', 'class="inputbox" size="1" onchange="document.getElementById(\'phocagalleryimageform\').submit();"', 'value', 'text', $filter_published_image );
+			$lists_image['state']	= Joomla\CMS\HTML\HTMLHelper::_('select.genericlist',   $state_image, 'filter_published_image', 'class="form-select" size="1" onchange="document.getElementById(\'phocagalleryimageform\').submit();"', 'value', 'text', $filter_published_image );
 
 			// table ordering
 			$lists_image['order_Dir'] 	= $filter_order_Dir_image;
@@ -398,7 +403,8 @@ $javascript     = 'class="inputbox" size="1" onchange="document.getElementById(\
 				$rightDisplay = PhocaGalleryAccess::getUserRight ('accessuserid', $catAccess->accessuserid, $catAccess->access, $user->getAuthorisedViewLevels(), $user->get('id', 0), 1);
 			}
 			if ($rightDisplay == 0) {
-				$app->redirect(JRoute::_($this->t['pl'], false), JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'));
+				$app->enqueueMessage(JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'), 'error');
+				$app->redirect(JRoute::_($this->t['pl'], false));
 				exit;
 			}
 			// - - - - - - - - - - - - - - - - - - - - -
@@ -454,7 +460,7 @@ $javascript     = 'class="inputbox" size="1" onchange="document.getElementById(\
 				.JText::_('COM_PHOCAGALLERY_COUNT_UPLOADED_IMG'). ': ' . $muUploaded .'<br />'
 				.JText::_('COM_PHOCAGALLERY_COUNT_NOT_UPLOADED_IMG'). ': ' . $muFailed.'</div>';
 			} else if ($muFailed > 0 && $muUploaded == 0) {
-				$this->t['mu_response_msg'] = '<div class="alert alert-error">'
+				$this->t['mu_response_msg'] = '<div class="alert alert-error alert-danger">'
 				.JText::_('COM_PHOCAGALLERY_COUNT_NOT_UPLOADED_IMG'). ': ' . $muFailed.'</div>';
 			} else if ($muFailed == 0 && $muUploaded > 0){
 				$this->t['mu_response_msg'] = '<div class="alert alert-success">'
@@ -528,12 +534,12 @@ $javascript     = 'class="inputbox" size="1" onchange="document.getElementById(\
 		}
 
 		// ASIGN
-		$this->assignRef( 'listssubcat',	$lists_subcat);
-		$this->assignRef( 'listsimage',		$lists_image);
+		$this->listssubcat =	$lists_subcat;
+		$this->listsimage =		$lists_image;
 		//$this->assignRef( 'tmpl', $this->t);
 		//$this->assignRef( 'params', $this->params);
 		$sess = JFactory::getSession();
-		$this->assignRef( 'session', $sess);
+		$this->session = $sess;
 		$this->_prepareDocument();
 		parent::display($tpl);
 	}

@@ -141,7 +141,7 @@ class PhocaGalleryCpViewPhocaGalleryM extends JViewLegacy
 			.JText::_('COM_PHOCAGALLERY_COUNT_UPLOADED_IMG'). ': ' . $muUploaded .'<br />'
 			.JText::_('COM_PHOCAGALLERY_COUNT_NOT_UPLOADED_IMG'). ': ' . $muFailed.'</div>';
 		} else if ($muFailed > 0 && $muUploaded == 0) {
-			$this->t['mu_response_msg'] = '<div class="alert alert-error">'
+			$this->t['mu_response_msg'] = '<div class="alert alert-error alert-danger">'
 			.'<button type="button" class="close" data-dismiss="alert">&times;</button>'
 			.JText::_('COM_PHOCAGALLERY_COUNT_NOT_UPLOADED_IMG'). ': ' . $muFailed.'</div>';
 		} else if ($muFailed == 0 && $muUploaded > 0){

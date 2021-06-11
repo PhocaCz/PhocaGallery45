@@ -99,17 +99,23 @@ if ($this->t['detailbuttons'] == 1){
 
 
 
-if ($this->itemnext[0] || $this->itemprev[0]) {
+if ((isset($this->itemnext[0]) && $this->itemnext[0])  || (isset($this->itemprev[0]) && $this->itemprev[0])) {
+
+	$suffix = '';
+	if ($this->t['tmpl'] == 'component') {
+		$suffix = 'tmpl=component';
+	}
+
 	echo '<div class="pg-detail-nav-box">';
-	if($this->itemprev[0]) {
+	if(isset($this->itemprev[0]) && $this->itemprev[0]) {
 		$p = $this->itemprev[0];
-		$linkPrev = JRoute::_(PhocaGalleryRoute::getImageRoute($p->id, $p->catid, $p->alias, $p->categoryalias));
+		$linkPrev = JRoute::_(PhocaGalleryRoute::getImageRoute($p->id, $p->catid, $p->alias, $p->categoryalias, 'detail', $suffix));
 		echo '<div class="ph-left"><a href="'.$linkPrev.'" class="btn btn-primary ph-image-navigation" role="button"><svg class="ph-si ph-si-prev-btn"><use xlink:href="#ph-si-prev"></use></svg> '.JText::_('COM_PHOCAGALLERY_PREVIOUS').'</a></div>';
 	}
 
-	if($this->itemnext[0]) {
+	if(isset($this->itemnext[0]) && $this->itemnext[0]) {
 		$n = $this->itemnext[0];
-		$linkNext = JRoute::_(PhocaGalleryRoute::getImageRoute($n->id, $n->catid, $n->alias, $n->categoryalias));
+		$linkNext = JRoute::_(PhocaGalleryRoute::getImageRoute($n->id, $n->catid, $n->alias, $n->categoryalias, 'detail', $suffix));
 		echo '<div class="ph-right"><a href="'.$linkNext.'" class="btn btn-primary ph-image-navigation" role="button">'.JText::_('COM_PHOCAGALLERY_NEXT').' <svg class="ph-si ph-si-next-btn"><use xlink:href="#ph-si-next"></use></svg></a></div>';
 	}
 
@@ -124,7 +130,7 @@ echo $this->loadTemplate('rating');
 if ($this->t['displaying_tags_output'] != '') {
 	echo '<div class="pg-detail-item-tag-box">'.$this->t['displaying_tags_output'].'</div>';
 }
-if ($this->t['detailwindow'] == 7) {
+if ($this->t['display_comment_img'] == 1 || $this->t['display_comment_img'] == 3 || ($this->t['display_comment_img'] == 2 && $this->t['tmpl'] == 'component')) {
 
 	$d          = array();
 	$d['t']     = $this->t;

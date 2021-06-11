@@ -50,8 +50,13 @@ class PhocaGalleryViewDetail extends JViewLegacy
 		$path					= PhocaGalleryPath::getPath();
 		$this->itemId			= $app->input->get('Itemid', 0, 'int');
 
+		$this->t['tmpl']			= $app->input->get('tmpl', '', 'string');
+
 		$neededAccessLevels		= PhocaGalleryAccess::getNeededAccessLevels();
 		$access					= PhocaGalleryAccess::isAccess($user->getAuthorisedViewLevels(), $neededAccessLevels);
+
+		PhocaGalleryRenderFront::renderAllCSS();
+		PhocaGalleryRenderFront::renderMainJs();
 
 
 		// Information from the plugin - window is displayed after plugin action
@@ -59,6 +64,8 @@ class PhocaGalleryViewDetail extends JViewLegacy
 		$get['detail']		= $app->input->get( 'detail', '',  'string');
 		$get['buttons']		= $app->input->get( 'buttons', '',  'string' );
 		$get['ratingimg']	= $app->input->get( 'ratingimg', '', 'string' );
+
+		$this->t['tmpl']		= $app->input->get( 'tmpl', '',  'string');
 
 		$this->t['picasa_correct_width_l']		= (int)$this->params->get( 'large_image_width', 640 );
 		$this->t['picasa_correct_height_l']		= (int)$this->params->get( 'large_image_height', 480 );
@@ -81,6 +88,9 @@ class PhocaGalleryViewDetail extends JViewLegacy
 		$this->t['display_title_description']	= $this->params->get( 'display_title_description', 0);
 		$this->t['responsive']					= $this->params->get( 'responsive', 0 );
 		$this->t['bootstrap_icons']				= $this->params->get( 'bootstrap_icons', 0 );
+
+		$this->t['display_comment_img']				= $this->params->get( 'display_comment_img', 0 );
+
 
 		// CSS
 		PhocaGalleryRenderFront::renderAllCSS(1);
@@ -224,7 +234,7 @@ class PhocaGalleryViewDetail extends JViewLegacy
 			$pathAvatarAbs	= $path->avatar_abs  .'thumbs/phoca_thumb_s_'. $userAvatar->avatar;
 			$pathAvatarRel	= $path->avatar_rel . 'thumbs/phoca_thumb_s_'. $userAvatar->avatar;
 			if (JFile::exists($pathAvatarAbs)){
-				$sIH	= $this->params->get( 'small_image_height', 50 );
+				$sIH	= $this->params->get( 'small_image_height', 96 );
 				$sIHR	= @getImageSize($pathAvatarAbs);
 				if (isset($sIHR[1])) {
 					$sIH = $sIHR[1];
@@ -250,7 +260,7 @@ class PhocaGalleryViewDetail extends JViewLegacy
 			echo $close['html'];
 			//Some problem with cache - Joomla! return this message if there is no reason for do it.
 			//$this->t['pl']		= 'index.php?option=com_users&view=login&return='.base64_encode($uri->toString());
-			//$app->redirect(JRoute::_($this->t['pl'], false), JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'));
+			//$app->redirect(JRoute::_($this->t['pl'], false));
 			exit;
 
 		}
@@ -441,10 +451,11 @@ class PhocaGalleryViewDetail extends JViewLegacy
 
 			parent::display('video');
 		} else {
-			parent::display('slideshowjs');
-			if ($item->slideshow == 1) {
+			//parent::display('slideshowjs');
+			/*if ($item->slideshow == 1) {
 				parent::display('slideshow');
-			} else if ($item->download > 0) {
+			} else*/
+            if ($item->download > 0) {
 
 				if ($this->t['display_icon_download'] == 2) {
 					$backLink = 'index.php?option=com_phocagallery&view=category&id='. $item->catslug.'&Itemid='. $this->itemId;

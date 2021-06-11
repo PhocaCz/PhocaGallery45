@@ -43,7 +43,7 @@ echo $r->startForm($option, $tasks, 'adminForm');
 
 echo $r->startMainContainer();
 if (isset($this->t['notapproved']->count) && (int)$this->t['notapproved']->count > 0 ) {
-	echo '<div class="alert alert-error"><a class="close" data-dismiss="alert" href="#">&times;</a>'.JText::_($OPT.'_NOT_APPROVED_CATEGORY_IN_GALLERY').': '
+	echo '<div class="alert alert-error alert-danger"><a class="close" data-dismiss="alert" href="#">&times;</a>'.JText::_($OPT.'_NOT_APPROVED_CATEGORY_IN_GALLERY').': '
 	.(int)$this->t['notapproved']->count.'</div>';
 }
 if ($this->t['search']) {

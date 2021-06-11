@@ -28,14 +28,16 @@ $app	= JFactory::getApplication();
 $link	= 'index.php?option=com_phocagallery';
 if (!function_exists('curl_init')) {
 	$msg = JText::_('COM_PHOCAGALLERY_FACEBOOK_NOT_LOADED_CURL');
-	$app->redirect(JRoute::_($link, false), $msg, 'error');
+	$app->enqueueMessage($msg, 'error');
+	$app->redirect(JRoute::_($link, false));
 	exit;
 }
 
 
 if (!function_exists('json_decode')) {
 	$msg = JText::_('COM_PHOCAGALLERY_FACEBOOK_NOT_LOADED_JSON');
-	$app->redirect(JRoute::_($link, false), $msg);
+	$app->enqueueMessage($msg, 'error');
+	$app->redirect(JRoute::_($link, false));
 	exit;
 }
 
@@ -90,7 +92,8 @@ class FacebookApiException extends Exception
 		exit;
 	} else {
 		$msg = JText::_('COM_PHOCAGALLERY_ERROR_FACEBOOK_API'). ': '.$msg.' ('.$code.')';
-		$app->redirect(JRoute::_($link, false), $msg, 'error');
+		$app->enqueueMessage($msg, 'error');
+		$app->redirect(JRoute::_($link, false));
 		exit;
 	}
 

@@ -119,9 +119,11 @@ class PhocaGalleryCpViewPhocaGalleryImgs extends JViewLegacy
 		if ($canDo->get('core.create')) {
 
 			/*
-			$bar->appendButton( 'Custom', '<a href="#" onclick="javascript:if(document.adminForm.boxchecked.value==0){alert(\''.JText::_('COM_PHOCAGALLERY_WARNING_RECREATE_MAKE_SELECTION').'\');}else{if(confirm(\''.JText::_('COM_PHOCAGALLERY_WARNING_RECREATE_THUMBNAILS').'\')){submitbutton(\'phocagalleryimg.recreate\');}}" class="toolbar"><span class="icon-32-recreate" title="'.JText::_('COM_PHOCAGALLERY_RECREATE_THUMBS').'" type="Custom"></span>'.JText::_('COM_PHOCAGALLERY_RECREATE').'</a>');*/
+			$bar->appendButton( 'Custom', '<a href="#" onclick="javascript:if(document.adminForm.boxchecked.value==0){alert(\''.JText::_('COM_PHOCAGALLERY_WARNING_RECREATE_MAKE_SELECTION').'\');}else{if(confirm(\''.JText::_('COM_PHOCAGALLERY_WARNING_RECREATE_THUMBNAILS').'\')){Joomla.submitbutton(\'phocagalleryimg.recreate\');}}" class="toolbar"><span class="icon-32-recreate" title="'.JText::_('COM_PHOCAGALLERY_RECREATE_THUMBS').'" type="Custom"></span>'.JText::_('COM_PHOCAGALLERY_RECREATE').'</a>');*/
 
-			$dhtml = '<button class="btn btn-small" onclick="javascript:if(document.adminForm.boxchecked.value==0){alert(\''.JText::_('COM_PHOCAGALLERY_WARNING_RECREATE_MAKE_SELECTION').'\');}else{if(confirm(\''.JText::_('COM_PHOCAGALLERY_WARNING_RECREATE_THUMBNAILS').'\')){submitbutton(\'phocagalleryimg.recreate\');}}" ><i class="icon-recreate" title="'.JText::_('COM_PHOCAGALLERY_RECREATE_THUMBS').'"></i> '.JText::_('COM_PHOCAGALLERY_RECREATE_THUMBS').'</button>';
+			$dhtml = '<joomla-toolbar-button id="toolbar-recreate-thumbnails" list-selection>';
+			$dhtml .= '<button class="btn btn-small" onclick="javascript:if(document.adminForm.boxchecked.value==0){alert(\''.JText::_('COM_PHOCAGALLERY_WARNING_RECREATE_MAKE_SELECTION').'\');}else{if(confirm(\''.JText::_('COM_PHOCAGALLERY_WARNING_RECREATE_THUMBNAILS').'\')){Joomla.submitbutton(\'phocagalleryimg.recreate\');}}" ><i class="icon-recreate" title="'.JText::_('COM_PHOCAGALLERY_RECREATE_THUMBS').'"></i> '.JText::_('COM_PHOCAGALLERY_RECREATE_THUMBS').'</button>';
+			$dhtml .= '</joomla-toolbar-button>';
 			$bar->appendButton('Custom', $dhtml);
 
 		}
@@ -145,9 +147,11 @@ class PhocaGalleryCpViewPhocaGalleryImgs extends JViewLegacy
 		{
 			Joomla\CMS\HTML\HTMLHelper::_('bootstrap.renderModal', 'collapseModal');
 			$title = JText::_('JToolbar_BATCH');
-			$dhtml = "<button data-toggle=\"modal\" data-target=\"#collapseModal\" class=\"btn btn-small\">
+			$dhtml = '<joomla-toolbar-button id="toolbar-batch" list-selection>';
+			$dhtml .= "<button data-toggle=\"modal\" data-target=\"#collapseModal\" class=\"btn btn-small\">
 						<i class=\"icon-checkbox-partial\" title=\"$title\"></i>
 						$title</button>";
+			$dhtml .= '</joomla-toolbar-button>';
 			$bar->appendButton('Custom', $dhtml, 'batch');
 		}
 

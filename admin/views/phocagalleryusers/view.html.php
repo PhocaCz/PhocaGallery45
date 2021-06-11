@@ -102,9 +102,9 @@ class PhocaGalleryCpViewPhocaGalleryUsers extends JViewLegacy
 
 		if ($canDo->get('core.admin')) {
 			$bar = JToolbar::getInstance('toolbar');
-		/*$bar->appendButton( 'Custom', '<a href="#" onclick="javascript:if(confirm(\''.addslashes(JText::_('COM_PHOCAGALLERY_WARNING_AUTHORIZE_ALL')).'\')){submitbutton(\'phocagalleryusers.approveall\');}" class="toolbar"><span class="icon-32-authorizeall" title="'.JText::_('COM_PHOCAGALLERY_APPROVE_ALL').'" type="Custom"></span>'.JText::_('COM_PHOCAGALLERY_APPROVE_ALL').'</a>');*/
+		/*$bar->appendButton( 'Custom', '<a href="#" onclick="javascript:if(confirm(\''.addslashes(JText::_('COM_PHOCAGALLERY_WARNING_AUTHORIZE_ALL')).'\')){Joomla.submitbutton(\'phocagalleryusers.approveall\');}" class="toolbar"><span class="icon-32-authorizeall" title="'.JText::_('COM_PHOCAGALLERY_APPROVE_ALL').'" type="Custom"></span>'.JText::_('COM_PHOCAGALLERY_APPROVE_ALL').'</a>');*/
 
-			$dhtml = '<button class="btn btn-small" onclick="javascript:if(confirm(\''.addslashes(JText::_('COM_PHOCAGALLERY_WARNING_AUTHORIZE_ALL')).'\')){submitbutton(\'phocagalleryusers.approveall\');}" ><i class="icon-authorizeall" title="'.JText::_('COM_PHOCAGALLERY_APPROVE_ALL').'"></i> '.JText::_('COM_PHOCAGALLERY_APPROVE_ALL').'</button>';
+			$dhtml = '<button class="btn btn-small" onclick="javascript:if(confirm(\''.addslashes(JText::_('COM_PHOCAGALLERY_WARNING_AUTHORIZE_ALL')).'\')){Joomla.submitbutton(\'phocagalleryusers.approveall\');}" ><i class="icon-authorizeall" title="'.JText::_('COM_PHOCAGALLERY_APPROVE_ALL').'"></i> '.JText::_('COM_PHOCAGALLERY_APPROVE_ALL').'</button>';
 			$bar->appendButton('Custom', $dhtml);
 
 

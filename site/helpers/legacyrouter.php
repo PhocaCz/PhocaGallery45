@@ -29,7 +29,6 @@ class PhocagalleryRouterRulesLegacy implements JComponentRouterRulesInterface
 	{
 
 
-
 		// Get a menu item based on Itemid or currently active
 		$params = JComponentHelper::getParams('com_phocagallery');
 		$advanced = $params->get('sef_advanced_link', 0);
@@ -215,7 +214,6 @@ class PhocagalleryRouterRulesLegacy implements JComponentRouterRulesInterface
 	public function parse(&$segments, &$vars)
 	{
 		$total = count($segments);
-
 
 
 		for ($i = 0; $i < $total; $i++)

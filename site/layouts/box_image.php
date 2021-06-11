@@ -19,13 +19,17 @@ $t      = $d['t'];
 echo '<a class="'.$item->class.'" href="'. $item->link.'" data-img-title="'.$item->title.'" id="pgImg'.$item->id.'"';
 
 if (isset($item->onclick) && $item->onclick != '') {
-    echo 'onclick="'.$item->onclick.'"';
+    echo ' onclick="'.$item->onclick.'"';
+}
+
+if (isset($item->itemprop) && $item->itemprop != '') {
+    echo ' itemprop="'.$item->itemprop.'"';
 }
 
 if (isset($item->datasize)) { echo ' '. $item->datasize;}
 
 if (isset($item->videocode) && $item->videocode != '' && $item->videocode != '0') {
-    echo 'data-type="video" data-video="<div class=\'ph-pswp-wrapper\'><div class=\'ph-pswp-video-wrapper\'>' . str_replace('"', "'", PhocaGalleryYoutube::displayVideo($item->videocode)) . '</div></div>"';
+    echo ' data-type="video" data-video="<div class=\'ph-pswp-wrapper\'><div class=\'ph-pswp-video-wrapper\'>' . str_replace('"', "'", PhocaGalleryYoutube::displayVideo($item->videocode)) . '</div></div>"';
 }
 
 echo ' >';

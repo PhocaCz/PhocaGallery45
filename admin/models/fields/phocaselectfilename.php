@@ -24,6 +24,11 @@ class JFormFieldPhocaSelectFilename extends JFormField
 		$size     = ($v = $this->element['size']) ? ' size="' . $v . '"' : '';
 		$class    = ($v = $this->element['class']) ? ' class="' . $v . '"' : 'class="text_area"';
 		$required = ($v = $this->element['required']) ? ' required="required"' : '';
+
+		// Initialize some field attributes.
+		$attr = $this->element['class'] ? ' class="'.(string) $this->element['class'].'"' : '';
+		$attr .= $this->element['size'] ? ' size="'.(int) $this->element['size'].'"' : '';
+
 		$idA		= 'phFileNameModal';
 
 		// If external image, we don't need the filename will be required
@@ -33,8 +38,8 @@ class JFormFieldPhocaSelectFilename extends JFormField
 			$attr		= '';
 			return '<input type="text" name="'.$this->name.'" id="'.$this->id.'" value="-" '.$attr.$readonly.' />';
 		}
-		
-		
+
+
 		/*$script 	= array();
 		$script[] 	= '	function phocaSelectFileName_'.$this->id.'(title) {';
 		$script[] 	= '		document.getElementById("'.$this->id.'").value = title;';
@@ -42,16 +47,54 @@ class JFormFieldPhocaSelectFilename extends JFormField
 		$script[]	= '		jQuery(\'#'.$idA.'\').modal(\'toggle\');';
 		$script[] 	= '	}';
 		JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));*/
-		
+
 		Joomla\CMS\HTML\HTMLHelper::_('jquery.framework');
-		
-		JFactory::getDocument()->addScriptDeclaration('
+
+	/*	JFactory::getDocument()->addScriptDeclaration('
 			function phocaSelectFileName_' . $this->id . '(name) {
 				document.getElementById("' . $this->id . '").value = name;
 				jQuery(\'#'.$idA.'\').modal(\'toggle\');
 			}
-		');
-		
+		');*/
+
+		$script = array();
+		$script[] = '	function phocaSelectFileName_'.$this->id.'(title) {';
+		$script[] = '		document.getElementById("'.$this->id.'").value = title;';
+		$script[] = '		'.$onchange;
+		//$script[] = '		jModalClose();';
+
+		$script[] = '   jQuery(\'#'.$idA.'\').modal(\'toggle\');';
+
+		//$script[] = '		SqueezeBox.close();';
+		//$script[] = '		jQuery(\'#'.$idA.'\').modal(\'toggle\');';
+		$script[] = '	}';
+
+		// Add the script to the document head.
+		JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
+
+		$html[] = '<div class="input-append">';
+        $html[] = '<span class="input-append"><input type="text" id="' . $this->id . '" name="' . $this->name . '"'
+            . ' value="' . $this->value . '"' . $attr . ' />';
+        $html[] = '<a href="'.$link.'" role="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#'.$idA.'" title="' . JText::_('COM_PHOCAGALLERY_FORM_SELECT_FILENAME') . '">'
+            . '<span class="icon-list icon-white"></span> '
+            . JText::_('COM_PHOCAGALLERY_FORM_SELECT_FILENAME') . '</a></span>';
+        $html[] = '</div>'. "\n";
+
+        $html[] = Joomla\CMS\HTML\HTMLHelper::_(
+            'bootstrap.renderModal',
+            $idA,
+            array(
+                'url'    => $link,
+                'title'  => JText::_('COM_PHOCAGALLERY_FORM_SELECT_FILENAME'),
+                'width'  => '560px',
+                'height' => '470px',
+                'modalWidth' => '50',
+                'bodyHeight' => '70',
+                'footer' => '<div  class="ph-info-modal"></div><button type="button" class="btn" data-bs-dismiss="modal" aria-hidden="true">'
+                    . JText::_('COM_PHOCAGALLERY_CLOSE') . '</button>'
+            )
+        );
+/*
 //readonly="readonly"
 		$html[] = '<span class="input-append"><input type="text" ' . $required . ' id="' . $this->id . '" name="' . $this->name . '"'
 			. ' value="' . $this->value . '"' . $size . $class . ' />';
@@ -71,8 +114,8 @@ class JFormFieldPhocaSelectFilename extends JFormField
 				'footer' => '<button type="button" class="btn" data-dismiss="modal" aria-hidden="true">'
 					. JText::_('COM_PHOCAGALLERY_CLOSE') . '</button>'
 			)
-		);
-		
+		);*/
+
 		// We don't use hidden field name, we can edit it the filename form field, there are three ways of adding filename:
 		// - manually typed
 		// - selected by image select box
@@ -82,7 +125,7 @@ class JFormFieldPhocaSelectFilename extends JFormField
 		//
 		//$html[] = '<input class="input-small" type="hidden" name="' . $this->name . '" value="'
 		//	. htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '" />';
-			
+
 
 		return implode("\n", $html);
 	}

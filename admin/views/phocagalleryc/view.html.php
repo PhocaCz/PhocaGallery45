@@ -105,11 +105,11 @@ class PhocaGalleryCpViewPhocaGalleryC extends JViewLegacy
 			JToolbarHelper ::apply('phocagalleryc.apply', 'JToolbar_APPLY');
 			JToolbarHelper ::save('phocagalleryc.save', 'JToolbar_SAVE');
 			JToolbarHelper ::addNew('phocagalleryc.save2new', 'JToolbar_SAVE_AND_NEW');
-			$this->t['enablepicasaloading'] = $paramsC->get( 'enable_picasa_loading', 1 );
+			/*$this->t['enablepicasaloading'] = $paramsC->get( 'enable_picasa_loading', 1 );
 			///$this->t['enablefacebookloading'] = $paramsC->get( 'enable_facebook_loading', 1 );
 			if($this->t['enablepicasaloading'] == 1){
 				JToolbarHelper ::custom('phocagalleryc.loadextimgp', 'loadextp.png', '', 'COM_PHOCAGALLERY_P_IMPORT' , false);
-			}
+			}*/
 
 			JToolbarHelper ::custom('phocagalleryc.loadextimgi', 'loadexti.png', '', 'COM_PHOCAGALLERY_I_IMPORT' , false);
 ///			if($this->t['enablefacebookloading'] == 1){

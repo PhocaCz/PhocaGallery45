@@ -28,12 +28,12 @@ if ($this->t['displayupload'] == 1) {
 
 	<tr>
 		<td><?php echo JText::_( 'COM_PHOCAGALLERY_DESCRIPTION' ); ?>:</td>
-		<td><textarea id="phocagallery-upload-description" name="phocagalleryuploaddescription" onkeyup="countCharsUpload();" cols="30" rows="10" class="comment-input"><?php echo $this->t['imageedit']->description; ?></textarea></td>
+		<td><textarea id="phocagallery-upload-description" name="phocagalleryuploaddescription" onkeyup="countCharsUpload();" cols="30" rows="10" class="form-control comment-input"><?php echo $this->t['imageedit']->description; ?></textarea></td>
 	</tr>
 
 	<tr>
 		<td>&nbsp;</td>
-		<td><?php echo JText::_('COM_PHOCAGALLERY_CHARACTERS_WRITTEN');?> <input name="phocagalleryuploadcountin" value="0" readonly="readonly" class="comment-input2" /> <?php echo JText::_('COM_PHOCAGALLERY_AND_LEFT_FOR_DESCRIPTION');?> <input name="phocagalleryuploadcountleft" value="<?php echo $this->t['maxcreatecatchar'];?>" readonly="readonly" class="comment-input2" />
+		<td><?php echo JText::_('COM_PHOCAGALLERY_CHARACTERS_WRITTEN');?> <input name="phocagalleryuploadcountin" value="0" readonly="readonly" class="form-control comment-input2" /> <?php echo JText::_('COM_PHOCAGALLERY_AND_LEFT_FOR_DESCRIPTION');?> <input name="phocagalleryuploadcountleft" value="<?php echo $this->t['maxcreatecatchar'];?>" readonly="readonly" class="comment-input2" />
 		</td>
 	</tr>
 
@@ -60,8 +60,9 @@ if ($this->t['displayupload'] == 1) {
 	} else {
 
 
-?><div style="float:left" class="filter-search btn-group pull-left" ><h4><?php echo JText::_( 'COM_PHOCAGALLERY_IMAGES' ); ?></h4>
-<form action="<?php echo htmlspecialchars($this->t['action']);?>" method="post" name="phocagalleryimageform" id="phocagalleryimageform">
+?><h4><?php echo JText::_( 'COM_PHOCAGALLERY_IMAGES' ); ?></h4>
+<div style="float:left" class="filter-search btn-group pull-left" >
+        <form action="<?php echo htmlspecialchars($this->t['action']);?>" method="post" name="phocagalleryimageform" id="phocagalleryimageform">
 
 
 		<?php /* <td align="left" width="100%"><?php echo JText::_( 'COM_PHOCAGALLERY_FILTER' ); ?>:
@@ -76,17 +77,14 @@ if ($this->t['displayupload'] == 1) {
 		<input type="text" name="phocagalleryimagesearch" id="phocagalleryimagesearch" placeholder="<?php echo JText::_( 'COM_PHOCAGALLERY_SEARCH' ); ?>" value="<?php echo $this->listsimage['search'];?>" title="<?php echo JText::_( 'COM_PHOCAGALLERY_SEARCH' ); ?>" /></div>
 
 		<div class="btn-group pull-left hidden-phone">
-		<button class="btn tip hasTooltip" type="submit" onclick="this.form.submit();"  title="<?php echo JText::_( 'COM_PHOCAGALLERY_SEARCH' ); ?>"><?php echo PhocaGalleryRenderFront::renderIcon('search', $this->t['pi'].'icon-remove.png', JText::_('COM_PHOCAGALLERY_SEARCH')) ?></button>
-		<button class="btn tip hasTooltip" type="button" onclick="document.getElementById('phocagalleryimagesearch').value='';document.getElementById(\'phocagalleryimageform\').submit();" title="<?php echo JText::_( 'COM_PHOCAGALLERY_CLEAR' ); ?>"><?php echo PhocaGalleryRenderFront::renderIcon('remove', $this->t['pi'].'icon-remove.png', JText::_('COM_PHOCAGALLERY_CLEAR')) ?></button>
+		<button class="btn btn-primary tip hasTooltip" type="submit" onclick="this.form.submit();"  title="<?php echo JText::_( 'COM_PHOCAGALLERY_SEARCH' ); ?>"><?php echo '<svg class="ph-si ph-si-search"><title>'.JText::_('COM_PHOCAGALLERY_SEARCH').'</title><use xlink:href="#ph-si-search"></use></svg>' ?></button>
+		<button class="btn btn-secondary tip hasTooltip" type="button" onclick="document.getElementById('phocagalleryimagesearch').value='';document.getElementById(\'phocagalleryimageform\').submit();" title="<?php echo JText::_( 'COM_PHOCAGALLERY_CLEAR' ); ?>"><?php echo JText::_( 'COM_PHOCAGALLERY_CLEAR' ); ?></button>
 		</div>
 
-		</div><div style="float:right">
-		<?php echo $this->listsimage['catid'] ?>
-		<br />
-		<?php echo $this->listsimage['state']; ?>
 		</div>
+        <div class="ph-adminlist-select-row"><?php echo $this->listsimage['catid'] ?> <?php echo $this->listsimage['state']; ?></div>
 
-<table class="adminlist">
+<table class="ph-adminlist">
 <thead>
 	<tr>
 	<th width="5"><?php echo JText::_( 'COM_PHOCAGALLERY_NUM' ); ?></th>
@@ -100,7 +98,8 @@ if ($this->t['displayupload'] == 1) {
 	<?php echo PhocaGalleryGrid::sort(   'COM_PHOCAGALLERY_ORDER', 'a.ordering', $this->listsimage['order_Dir'], $this->listsimage['order'],'image', 'asc', '', 'phocagalleryimageform', '_image' );
 	//$image = '<img src="'.JURI::base(true).'/'.$this->t['pi'].'icon-filesave.png'.'" width="16" height="16" border="0" alt="'.JText::_( 'COM_PHOCAGALLERY_SAVE_ORDER' ).'" />';
 
-	$image = PhocaGalleryRenderFront::renderIcon('save', $this->t['pi'].'icon-filesave.png', JText::_('COM_PHOCAGALLERY_SAVE_ORDER'));
+	//$image = PhocaGalleryRenderFront::renderIcon('save', $this->t['pi'].'icon-filesave.png', JText::_('COM_PHOCAGALLERY_SAVE_ORDER'));
+	$image = '<svg class="ph-si ph-si-save"><title>'.JText::_('COM_PHOCAGALLERY_SAVE_ORDER').'</title><use xlink:href="#ph-si-save"></use></svg>';
 
 	$task = 'saveordersubcat';
 	$href = '<a href="javascript:saveorderimage()" title="'.JText::_( 'COM_PHOCAGALLERY_SAVE_ORDER' ).'"> '.$image.'</a>';
@@ -147,13 +146,15 @@ if (is_array($rows)) {
 	if ($row->published == 1) {
 		echo ' <a title="'.JText::_('COM_PHOCAGALLERY_UNPUBLISH').'" href="'. JRoute::_($this->t['pp'].'&id='.$row->slug.'&task=unpublishimage'. $this->t['psi']).'">';
 		//echo Joomla\CMS\HTML\HTMLHelper::_('image', $this->t['pi'].'icon-publish.png', JText::_('COM_PHOCAGALLERY_UNPUBLISH'))
-		echo PhocaGalleryRenderFront::renderIcon('publish', $this->t['pi'].'icon-publish.png', JText::_('COM_PHOCAGALLERY_UNPUBLISH'))
+		//echo PhocaGalleryRenderFront::renderIcon('publish', $this->t['pi'].'icon-publish.png', JText::_('COM_PHOCAGALLERY_UNPUBLISH'))
+        echo '<svg class="ph-si ph-si-enabled"><title>'.JText::_('COM_PHOCAGALLERY_UNPUBLISH').'</title><use xlink:href="#ph-si-enabled"></use></svg>'
 		.'</a>';
 	}
 	if ($row->published == 0) {
 		echo ' <a title="'.JText::_('COM_PHOCAGALLERY_PUBLISH').'" href="'. JRoute::_($this->t['pp'].'&id='.$row->slug.'&task=publishimage'.$this->t['psi']).'">';
 		//echo Joomla\CMS\HTML\HTMLHelper::_('image', $this->t['pi'].'icon-unpublish.png', JText::_('COM_PHOCAGALLERY_PUBLISH'))
-		echo PhocaGalleryRenderFront::renderIcon('unpublish', $this->t['pi'].'icon-unpublish.png', JText::_('COM_PHOCAGALLERY_PUBLISH'))
+		//echo PhocaGalleryRenderFront::renderIcon('unpublish', $this->t['pi'].'icon-unpublish.png', JText::_('COM_PHOCAGALLERY_PUBLISH'))
+        echo '<svg class="ph-si ph-si-disabled"><title>'.JText::_('COM_PHOCAGALLERY_PUBLISH').'</title><use xlink:href="#ph-si-disabled"></use></svg>'
 		.'</a>';
 	}
 	echo '</td>';
@@ -178,11 +179,13 @@ if (is_array($rows)) {
 	if ($rightDisplayDelete) {
 		echo ' <a onclick="return confirm(\''.JText::_('COM_PHOCAGALLERY_WARNING_DELETE_ITEMS').'\')" title="'.JText::_('COM_PHOCAGALLERY_DELETE').'" href="'. JRoute::_($this->t['pp'].'&id='.$row->slug.'&task=removeimage'.$this->t['psi'] ).'">';
 		//echo Joomla\CMS\HTML\HTMLHelper::_('image',  $this->t['pi'].'icon-trash.png', JText::_('COM_PHOCAGALLERY_DELETE'))
-		echo PhocaGalleryRenderFront::renderIcon('trash', $this->t['pi'].'icon-trash.png', JText::_('COM_PHOCAGALLERY_DELETE') )
+		//echo PhocaGalleryRenderFront::renderIcon('trash', $this->t['pi'].'icon-trash.png', JText::_('COM_PHOCAGALLERY_DELETE') )
+        echo '<svg class="ph-si ph-si-trash"><title>'.JText::_('COM_PHOCAGALLERY_DELETE').'</title><use xlink:href="#ph-si-trash"></use></svg>'
 		.'</a>';
 	} else {
 		//echo Joomla\CMS\HTML\HTMLHelper::_('image', $this->t['pi'].'icon-trash-g.png', JText::_('COM_PHOCAGALLERY_DELETE'));
-		echo PhocaGalleryRenderFront::renderIcon('trash', $this->t['pi'].'icon-trash-g.png', JText::_('COM_PHOCAGALLERY_DELETE'),'ph-icon-disabled');
+		//echo PhocaGalleryRenderFront::renderIcon('trash', $this->t['pi'].'icon-trash-g.png', JText::_('COM_PHOCAGALLERY_DELETE'),'ph-icon-disabled');
+		echo '<svg class="ph-si ph-si-disabled"><title>'.JText::_('COM_PHOCAGALLERY_DELETE').'</title><use xlink:href="#ph-si-disabled"></use></svg>';
 	}
 	echo '</td>';
 
@@ -190,10 +193,12 @@ if (is_array($rows)) {
 	echo '<td align="center">';
 	if ($row->approved == 1) {
 		//echo Joomla\CMS\HTML\HTMLHelper::_('image', $this->t['pi'].'icon-publish.png', JText::_('COM_PHOCAGALLERY_APPROVED'));
-		echo PhocaGalleryRenderFront::renderIcon('publish', $this->t['pi'].'icon-publish.png', JText::_('COM_PHOCAGALLERY_APPROVED'));
+		//echo PhocaGalleryRenderFront::renderIcon('publish', $this->t['pi'].'icon-publish.png', JText::_('COM_PHOCAGALLERY_APPROVED'));
+		echo '<svg class="ph-si ph-si-enabled"><title>'.JText::_('COM_PHOCAGALLERY_APPROVED').'</title><use xlink:href="#ph-si-enabled"></use></svg>';
 	} else {
 		//echo Joomla\CMS\HTML\HTMLHelper::_('image', $this->t['pi'].'icon-unpublish.png', JText::_('COM_PHOCAGALLERY_NOT_APPROVED'));
-		echo PhocaGalleryRenderFront::renderIcon('unpublish', $this->t['pi'].'icon-unpublish.png', JText::_('COM_PHOCAGALLERY_NOT_APPROVED'));
+		//echo PhocaGalleryRenderFront::renderIcon('unpublish', $this->t['pi'].'icon-unpublish.png', JText::_('COM_PHOCAGALLERY_NOT_APPROVED'));
+		echo '<svg class="ph-si ph-si-disabled"><title>'.JText::_('COM_PHOCAGALLERY_NOT_APPROVED').'</title><use xlink:href="#ph-si-disabled"></use></svg>';
 	}
 	echo '</td>';
 
@@ -205,7 +210,7 @@ if (is_array($rows)) {
 	.'<span>'. $this->t['imagepagination']->orderDownIcon( $i, $n, ($row->catid == @$this->t['imageitems'][$i+1]->catid), $linkDown, 'COM_PHOCAGALLERY_MOVE_UP', $this->t['imageordering'] ).'</span> ';
 
 	$disabled = $this->t['imageordering'] ?  '' : 'disabled="disabled"';
-	echo '<input type="text" name="order[]" size="5" value="'. $row->ordering.'" '. $disabled.' class="inputbox input-mini" style="text-align: center" />';
+	echo '<input type="text" name="order[]" size="5" value="'. $row->ordering.'" '. $disabled.' class="form-control inputbox input-mini" style="text-align: center" />';
 	echo '</td>';
 
 	echo '<td align="center">'. $row->category .'</td>';
@@ -276,10 +281,10 @@ if (count($this->t['imageitems'])) {
 		echo $this->loadTemplate('multipleupload');
 	}
 
-	if($this->t['enablejava'] == 1) {
+	/*if($this->t['enablejava'] == 1) {
 		echo '<h4>'. JText::_('COM_PHOCAGALLERY_JAVA_UPLOAD').'</h4>';
 		echo $this->loadTemplate('javaupload');
-	}
+	}*/
 
 
 	}

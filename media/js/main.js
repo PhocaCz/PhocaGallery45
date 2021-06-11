@@ -8,9 +8,9 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 
-document.addEventListener("DOMContentLoaded", () => { 
-  	
-	
+document.addEventListener("DOMContentLoaded", () => {
+
+
 
 	/*var anchors = document.querySelectorAll('.pg-modal-button');
 	for (var i = 0, length = anchors.length; i < length; i++) {
@@ -25,9 +25,9 @@ document.addEventListener("DOMContentLoaded", () => {
 	// Events
 	document.querySelectorAll('.pg-bs-modal-button').forEach(item => {
 
-		
+
 		item.addEventListener('click', function(event) {
-		  
+
 			event.preventDefault();
 			let href = this.getAttribute('href');
 			let title = this.getAttribute('data-img-title');
@@ -45,10 +45,11 @@ document.addEventListener("DOMContentLoaded", () => {
 			/*modal.addEventListener('shown.bs.modal', function () {
 			myInput.focus()
 			})*/
+			//console.log(href);
 			let modal = new bootstrap.Modal(modalItem);
 			modal.show();
-	
-		})  
+
+		})
 	})
 
 	/* Events */
@@ -56,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		document.getElementById("filterOptionsInput").value = "";
 		filterOptions("");
 	})
-	
+
 	document.getElementById("filterOptionsInput").addEventListener("input", (event) => {
 		let eV = event.currentTarget.value;
 		filterOptions(eV);
@@ -101,14 +102,14 @@ function pgPasteTag(tag, closingTag, prependText, appendText) {
 	var pe 			= document.getElementById( 'phocagallery-comments-editor' );
 	var startTag 	= '[' + tag + ']';
 	var endTag 		= '[/' + tag + ']';
-	
+
 	if (typeof pe.selectionStart != 'undefined') {
 		var tagText = pe.value.substring(pe.selectionStart, pe.selectionEnd);
 	} else if (typeof document.selection != 'undefined') {
 		var tagText = document.selection.createRange().text;
 	} else {
 	}
-	
+
 	if (typeof closingTag == 'undefined') {
 		var closingTag	= true;
 	}
@@ -120,15 +121,15 @@ function pgPasteTag(tag, closingTag, prependText, appendText) {
 	}
 	if (!closingTag) {
 		endTag 			= '';
-	}	
+	}
 	var totalText 		= prependText + startTag + tagText + endTag + appendText;
 	pe.focus();
-	
+
 	if (typeof pe.selectionStart != 'undefined') {
 		var start	= pe.selectionStart;
 		var end 	= pe.selectionEnd;
 		pe.value 	= pe.value.substr(0, start) + totalText + pe.value.substr(end);
-		
+
 		if (typeof selectionStart != 'undefined' && typeof selectionEnd != 'undefined') {
 			pe.selectionStart 	= start + selectionStart;
 			pe.selectionEnd 	= start + selectionEnd;
@@ -144,7 +145,7 @@ function pgPasteTag(tag, closingTag, prependText, appendText) {
 	} else if (typeof document.selection != 'undefined') {
 		var range 	= document.selection.createRange();
 		range.text 	= totalText;
-		
+
 		if (typeof selectionStart != 'undefined' && typeof selectionEnd != 'undefined') {
 			range.moveStart('character', -totalText.length + selectionStart);
 			range.moveEnd('character', -totalText.length + selectionEnd);
@@ -167,12 +168,12 @@ function pgPasteSmiley( smiley ) {
 		var start	= pe.selectionStart;
 		var end 	= pe.selectionEnd;
 		pe.value 	= pe.value.substring( 0, start ) + smiley + pe.value.substring( end );
-		
+
 		newPosition	= start + smiley.length;
-		
+
 		pe.selectionStart	= newPosition;
 		pe.selectionEnd		= newPosition;
-		
+
 	} else if (typeof document.selection != 'undefined') {
 		pe.focus();
 		range = document.selection.createRange();

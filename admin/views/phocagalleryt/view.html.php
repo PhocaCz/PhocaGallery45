@@ -47,8 +47,8 @@ class PhocaGalleryCpViewPhocaGalleryT extends JViewLegacy
 
 
 		// Small
-		$this->t['siw']		= $params->get('small_image_width', 50 );
-		$this->t['sih']		= $params->get('small_image_height', 50 );
+		$this->t['siw']		= $params->get('small_image_width', 128 );
+		$this->t['sih']		= $params->get('small_image_height', 96 );
 
 		//After creating an image (post with data);
 		$this->t['ssbgc']	= JFactory::getApplication()->input->get( 'ssbgc', '', '', 'string' );
@@ -72,8 +72,8 @@ class PhocaGalleryCpViewPhocaGalleryT extends JViewLegacy
 		if ((int)$sih > 0) 			{$this->t['sih'] = (int)$sih;}
 
 		// Medium
-		$this->t['miw']		= $params->get('medium_image_width', 100 );
-		$this->t['mih']		= $params->get('medium_image_height', 100 );
+		$this->t['miw']		= $params->get('medium_image_width', 256 );
+		$this->t['mih']		= $params->get('medium_image_height', 192 );
 
 		//After creating an image (post with data);
 		$this->t['msbgc']	= JFactory::getApplication()->input->get( 'msbgc', '', '', 'string' );

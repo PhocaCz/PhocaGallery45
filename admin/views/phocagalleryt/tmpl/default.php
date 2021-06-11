@@ -69,9 +69,9 @@ if ($this->require_ftp) {
 		<td>
 
 			<input type="file" id="sfile-upload" class="input" name="Filedata" size="57" />
-			<?php /* <input class="button" type="button" value="<?php echo JText::_( 'COM_PHOCAGALLERY_UPLOAD_FILE' ); ?> &amp; <?php echo JText::_( 'COM_PHOCAGALLERY_INSTALL' ); ?>" onclick="submitbutton()" /> */ ?>
+			<?php /* <input class="button" type="button" value="<?php echo JText::_( 'COM_PHOCAGALLERY_UPLOAD_FILE' ); ?> &amp; <?php echo JText::_( 'COM_PHOCAGALLERY_INSTALL' ); ?>" onclick="Joomla.submitbutton()" /> */ ?>
 
-			<button onclick="submitbutton()" class="btn btn-primary" id="upload-submit"><i class="icon-upload icon-white"></i> <?php echo JText::_( 'COM_PHOCAGALLERY_UPLOAD_FILE' ); ?> &amp; <?php echo JText::_( 'COM_PHOCAGALLERY_INSTALL' ); ?></button>
+			<button onclick="Joomla.submitbutton()" class="btn btn-primary" id="upload-submit"><i class="icon-upload icon-white"></i> <?php echo JText::_( 'COM_PHOCAGALLERY_UPLOAD_FILE' ); ?> &amp; <?php echo JText::_( 'COM_PHOCAGALLERY_INSTALL' ); ?></button>
 
 		</td>
 	</tr>

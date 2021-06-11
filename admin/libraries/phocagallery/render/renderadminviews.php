@@ -38,22 +38,28 @@ class PhocaGalleryRenderAdminViews extends AdminViews
 
 	}
 
-	public function tdImage($item, $button, $txtE, $class = '', $avatarAbs = '', $avatarRel = '') {
-		$o = '<td class="'.$class.'">'. "\n";
-		$o .= '<div class="pg-msnr-container"><div class="phocagallery-box-file">'. "\n"
-			.' <center>'. "\n"
+	public function tdImage($item, $classButton, $txtE, $class = '', $avatarAbs = '', $avatarRel = '') {
+		$o = '';
+
+		$o .= '<td class="'.$class.'">'. "\n";
+		$o .= '<div class="pg-item-box">'. "\n"
+
+			.'<figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">';
+			/*.' <center>'. "\n"
+
 			.'  <div class="phocagallery-box-file-first">'. "\n"
 			.'   <div class="phocagallery-box-file-second">'. "\n"
 			.'    <div class="phocagallery-box-file-third">'. "\n"
-			.'     <center>'. "\n";
+			.'     <center>'. "\n";*/
 
 		if ($avatarAbs != '' && $avatarRel != '') {
 			// AVATAR
 			if (JFile::exists($avatarAbs.$item->avatar)){
-				$o .= '<a class="'. $button->methodname.'"'
+				$o .= '<a class="'. $classButton.'"'
 				//.' title="'. $button->text.'"'
 				.' href="'.JURI::root().$avatarRel.$item->avatar.'" '
 				//.' rel="'. $button->options.'"'
+				.' data-size="640x480"'
 				. ' >'
 				.'<img src="'.JURI::root().$avatarRel.$item->avatar.'?imagesid='.md5(uniqid(time())).'" alt="'.JText::_($txtE).'" />'
 				.'</a>';
@@ -70,7 +76,7 @@ class PhocaGalleryRenderAdminViews extends AdminViews
 				$imgLink			= $item->extl;
 
 				//$o .= '<a class="'. $button->modalname.'" title="'.$button->text.'" href="'. $imgLink .'" rel="'. $button->options.'" >'
-				$o .= '<a class="'. $button->methodname.'"  href="'. $imgLink .'" >'
+				$o .= '<a class="'. $classButton.'"  href="'. $imgLink .'" data-size="640x480">'
 				. '<img src="'.$item->exts.'?imagesid='.md5(uniqid(time())).'" width="'.$correctImageRes['width'].'" height="'.$correctImageRes['height'].'" alt="'.JText::_($txtE).'" />'
 				.'</a>'. "\n";
 			} else if (isset ($item->fileoriginalexist) && $item->fileoriginalexist == 1) {
@@ -80,19 +86,21 @@ class PhocaGalleryRenderAdminViews extends AdminViews
 				$imgLink			= PhocaGalleryFileThumbnail::getThumbnailName($item->filename, 'large');
 
 				//$o .= '<a class="'. $button->modalname.'" title="'. $button->text.'" href="'. JURI::root(). $imgLink->rel.'" rel="'. $button->options.'" >'
-				$o .= '<a class="'. $button->methodname.'"  href="'. JURI::root(). $imgLink->rel.'"  >'
+				$o .= '<a class="'. $classButton.'"  href="'. JURI::root(). $imgLink->rel.'" data-size="640x480">'
 				. '<img src="'.JURI::root().$item->linkthumbnailpath.'?imagesid='.md5(uniqid(time())).'" width="'.$correctImageRes['width'].'" height="'.$correctImageRes['height'].'" alt="'.JText::_($txtE).'" itemprop="thumbnail" />'
 				.'</a>'. "\n";
 			} else {
 				$o .= Joomla\CMS\HTML\HTMLHelper::_( 'image', 'media/com_phocagallery/images/administrator/phoca_thumb_s_no_image.gif', '');
 			}
 		}
-		$o .= '     </center>'. "\n"
+		/*$o .= '     </center>'. "\n"
 			.'    </div>'. "\n"
 			.'   </div>'. "\n"
 			.'  </div>'. "\n"
 			.' </center>'. "\n"
-			.'</div></div>'. "\n";
+			.'</div></div>'. "\n";*/
+
+		$o .= '</figure></div>';
 		$o .=  '</td>'. "\n";
 		return $o;
 	}

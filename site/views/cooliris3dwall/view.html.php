@@ -60,12 +60,12 @@ class PhocaGalleryViewCooliris3DWall extends JViewLegacy
 
 			// ASIGN
 			$this->t['display_category']		= 1;
-			$this->assignRef( 'tmpl',		$this->t);
-			$this->assignRef( 'category',	$category);
-			$this->assignRef( 'params' ,	$this->params);
+			$this->tmpl =		$this->t;
+			$this->category =	$category;
+			//$this->params = 	$this->params;
 		} else {
 			$this->t['display_category']		= 0;
-			$this->assignRef( 'tmpl',		$this->t);
+			$this->tmpl =		$this->t;
 		}
 			parent::display($tpl);
 	}

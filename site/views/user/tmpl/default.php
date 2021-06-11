@@ -8,9 +8,21 @@
  * @copyright Copyright (C) Jan Pavelka www.phoca.cz
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
+
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Layout\FileLayout;
+
 defined('_JEXEC') or die('Restricted access');
 
-Joomla\CMS\HTML\HTMLHelper::_('jquery.framework', false);
+HTMLHelper::_('jquery.framework', false);
+
+$layoutSVG 	= new FileLayout('svg_definitions', null, array('component' => 'com_phocagallery'));
+
+// SVG Definitions
+$d          = array();
+echo $layoutSVG->render($d);
+
+
 $document	= JFactory::getDocument();
 // jQuery(\'input[type=file]\').click(function(){
 $document->addScriptDeclaration(
@@ -62,7 +74,7 @@ if ($this->t['displaytabs'] > 0) {
 
 	$tabItems[0] = array('id' => 'user', 'title' => JText::_('COM_PHOCAGALLERY_USER'), 'image' => 'user', 'icon' => 'user');
 	$tabItems[1] = array('id' => 'category', 'title' => $this->t['categorycreateoredithead'], 'image' => 'folder-small', 'icon' => 'category');
-	$tabItems[2] = array('id' => 'subcategories', 'title' => JText::_('COM_PHOCAGALLERY_SUBCATEGORIES'), 'image' => 'subcategories', 'icon' => 'subcategory');
+	$tabItems[2] = array('id' => 'subcategories', 'title' => JText::_('COM_PHOCAGALLERY_SUBCATEGORIES'), 'image' => 'subcategories', 'icon' => 'category');
 	$tabItems[3] = array('id' => 'images', 'title' => JText::_('COM_PHOCAGALLERY_IMAGES'), 'image' => 'images', 'icon' => 'image');
 
 	$tabs->setActiveTab(isset($tabItems[$this->t['tab']]['id']) ? $tabItems[$this->t['tab']]['id'] : 0);

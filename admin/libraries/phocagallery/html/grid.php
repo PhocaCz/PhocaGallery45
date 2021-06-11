@@ -22,9 +22,9 @@ if (! class_exists('JHtmlGrid')) {
 
 
 class PhocaGalleryGrid extends JHtmlGrid
-{	
+{
 
-	public static function id($rowNum, $recId, $checkedOut = false, $name = 'cid', $stub = 'cb')
+	public static function id($rowNum, $recId, $checkedOut = false, $name = 'cid', $stub = 'cb', $title = '', $formId = null)
 	{
 		if ($checkedOut)
 		{
@@ -38,7 +38,7 @@ class PhocaGalleryGrid extends JHtmlGrid
 			//	. '"  title="' . JText::sprintf('JGRID_CHECKBOX_ROW_N', ($rowNum + 1)) . '" />';
 		}
 	}
-	
+
 	/**
 	 * Method to sort a column in a grid
 	 *
@@ -54,14 +54,14 @@ class PhocaGalleryGrid extends JHtmlGrid
 	 *
 	 * @since   1.5
 	 */
-	 
-	 
+
+
 	 /*
 	 * GRID in frontend must be customized
 	 * because Joomla! takes "adminForm" as the only one name of form ??????????????????????????????????????????
 	 *
 	 */
-	
+
 	public static function sort($title, $order, $direction = 'asc', $selected = 0, $task = null, $new_direction = 'asc', $tip = '', $form = '', $suffix = '')
 	{
 		Joomla\CMS\HTML\HTMLHelper::_('behavior.core');
@@ -94,7 +94,7 @@ class PhocaGalleryGrid extends JHtmlGrid
 
 		if ($order == $selected)
 		{
-			
+
 			$html .= ' <i class="icon-' . $icon[$index] . ' glyphicon glyphicon-' . $icon[$index] . '"></i>';
 		}
 
@@ -102,11 +102,11 @@ class PhocaGalleryGrid extends JHtmlGrid
 
 		return $html;
 	}
-	
-	public static function renderSortJs() {
-	
 
-$o = '';	
+	public static function renderSortJs() {
+
+
+$o = '';
 $o .= '<script type="text/javascript">'."\n";
 $o .= ''."\n";
 $o .= 'Joomla.tableOrderingPhoca = function(order, dir, task, form, suffix) {'."\n";
@@ -119,19 +119,19 @@ $o .= ''."\n";
 $o .= '   if (typeof form == "string" || form instanceof String) {'."\n";
 $o .= '      form = document.getElementById(form);'."\n";
 $o .= '   }'."\n";
-$o .= ''."\n";    
+$o .= ''."\n";
 $o .= '   var orderS 		= "filter_order" + suffix;'."\n";
 $o .= '   var orderSDir 	= "filter_order_Dir" + suffix;'."\n";
 $o .= ''."\n";
 $o .= '   form[orderS].value = order;'."\n";
 $o .= '   form[orderSDir].value = dir;'."\n";
 $o .= '   Joomla.submitform(task, form);'."\n";
-$o .= ''."\n";	
+$o .= ''."\n";
 $o .= '}'."\n";
 $o .= '</script>'."\n";
 
 
-	
+
 		$document = JFactory::getDocument();
 		$document->addCustomTag($o);
 	}

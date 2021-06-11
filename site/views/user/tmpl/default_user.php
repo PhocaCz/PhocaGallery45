@@ -58,10 +58,12 @@ if ($this->t['enableuploadavatar'] == 1) {
 			<td><?php
 			if ($this->t['useravatarapproved'] == 1) {
 				//echo Joomla\CMS\HTML\HTMLHelper::_('image', $this->t['pi'].'icon-publish.png', JText::_('COM_PHOCAGALLERY_APPROVED'));
-				echo PhocaGalleryRenderFront::renderIcon('publish', $this->t['pi'].'icon-publish.png', JText::_('COM_PHOCAGALLERY_APPROVED'));
+				//echo PhocaGalleryRenderFront::renderIcon('publish', $this->t['pi'].'icon-publish.png', JText::_('COM_PHOCAGALLERY_APPROVED'));
+				echo '<svg class="ph-si ph-si-enabled"><title>'.JText::_('COM_PHOCAGALLERY_APPROVED').'</title><use xlink:href="#ph-si-enabled"></use></svg>';
 			} else {
 				//echo Joomla\CMS\HTML\HTMLHelper::_('image', $this->t['pi'].'icon-unpublish.png', JText::_('COM_PHOCAGALLERY_NOT_APPROVED'));
-				echo PhocaGalleryRenderFront::renderIcon('unpublish', $this->t['pi'].'icon-unpublish.png', JText::_('COM_PHOCAGALLERY_NOT_APPROVED'));
+				//echo PhocaGalleryRenderFront::renderIcon('unpublish', $this->t['pi'].'icon-unpublish.png', JText::_('COM_PHOCAGALLERY_NOT_APPROVED'));
+				echo '<svg class="ph-si ph-si-disabled"><title>'.JText::_('COM_PHOCAGALLERY_NOT_APPROVED').'</title><use xlink:href="#ph-si-disabled"></use></svg>';
 			}
 		?></td>
 		</tr>
@@ -88,7 +90,7 @@ if ($this->t['enableuploadavatar'] == 1) {
 	<input type="hidden" name="Itemid" value="<?php echo $this->itemId ?>"/>
 </form>
 <?php /*<div id="loading-label-user" style="text-align:center"><?php echo Joomla\CMS\HTML\HTMLHelper::_('image', $this->t['pi'].'icon-switch.gif', '') . '  '. JText::_('COM_PHOCAGALLERY_LOADING'); ?></div>*/
-    echo '<div id="loading-label-user" style="text-align:center"><div class="ph-lds-ellipsis"><div></div><div></div><div></div><div></div></div><div>'. JText::_('COM_PHOCAGALLERY_LOADING') . '</div></div>';
+    echo '<div id="loading-label-user" class="ph-loading-text ph-loading-hidden"><div class="ph-lds-ellipsis"><div></div><div></div><div></div><div></div></div><div>'. JText::_('COM_PHOCAGALLERY_LOADING') . '</div></div>';
 }
 echo '</div>';
 ?>

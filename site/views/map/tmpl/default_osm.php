@@ -37,8 +37,15 @@ $map	= new PhocaGalleryRenderMaposm($id);
 		$cmw = 'width:'.$this->t['largemapwidth'].'px;';
 	}
 
+	$cmw = 'width: 100%;';
+
+
+	//$cmh = 'height:'.$this->t['largemapheight'].'px';
+	$cmh = 'height: 100vh;';
+
+
 	echo '<div align="center" style="margin:0;padding:0;margin-top:10px;text-align: center">';
-	echo '<div id="phocaGalleryMap'.$id.'" style="margin:0 auto;padding:0;'. $cmw. 'height:'.$this->t['largemapheight'].'px">';
+	echo '<div id="phocaGalleryMap'.$id.'" style="margin:0 auto;padding:0;'. $cmw. $cmh.'">';
 	echo '</div></div>';
 
 

@@ -135,11 +135,11 @@ class PhocaGalleryImageFront
 
 
 		if (!isset($extw[0])) {$extw[0] = $paramsC->get( 'large_image_width', 640 );}
-		if (!isset($extw[1])) {$extw[1] = $paramsC->get( 'medium_image_width', 100 );}
-		if (!isset($extw[2])) {$extw[2] = $paramsC->get( 'small_image_width', 50 );}
+		if (!isset($extw[1])) {$extw[1] = $paramsC->get( 'medium_image_width', 256 );}
+		if (!isset($extw[2])) {$extw[2] = $paramsC->get( 'small_image_width', 128 );}
 		if (!isset($exth[0])) {$exth[0] = $paramsC->get( 'large_image_height', 480 );}
-		if (!isset($exth[1])) {$exth[1] = $paramsC->get( 'medium_image_height', 100 );}
-		if (!isset($exth[2])) {$exth[2] = $paramsC->get( 'small_image_height', 50 );}
+		if (!isset($exth[1])) {$exth[1] = $paramsC->get( 'medium_image_height', 192 );}
+		if (!isset($exth[2])) {$exth[2] = $paramsC->get( 'small_image_height', 96 );}
 
 		// if category is not accessable, display the key in the image:
 		$key = '';
@@ -1024,6 +1024,183 @@ class PhocaGalleryImageFront
 		}
 
 		return $f;
+	}
+
+
+	public static function assignValues(&$item, $t) {
+
+
+
+		$thumbLink		= PhocaGalleryFileThumbnail::getThumbnailName($item->filename, 'large');
+		$imgLinkOrig	= JURI::base(true) . '/' . PhocaGalleryFile::getFileOriginal($item->filename, 1);
+
+
+		if ($t['detail_window'] == 7) {
+			$siteLink = JRoute::_('index.php?option=com_phocagallery&view=detail&catid=' . $item->catslug . '&id=' . $item->slug . '&Itemid=' . $t['itemid']);
+		} else {
+			$siteLink = JRoute::_('index.php?option=com_phocagallery&view=detail&catid=' . $item->catslug . '&id=' . $item->slug . '&tmpl=component' . '&Itemid=' . $t['itemid']);
+		}
+		$imgLink = $thumbLink->rel;
+
+
+		$extImage = PhocaGalleryImage::isExtImage($item->extid);
+		if ($extImage) {
+			$imgLink     = $item->extl;
+			$imgLinkOrig = $item->exto;
+		}
+
+		// Detail Window
+		if ($t['detail_window'] == 0) {
+			// BS MODAL
+			$item->class		= 'pg-bs-modal-button';
+			$item->class2		= $item->class;
+			$item->class3		= $item->class;
+			$item->link 		= $siteLink;
+			$item->link2 		= $siteLink;//'javascript:void(0)';
+			$item->link3		= $siteLink;
+			$item->onclick		= '';
+			$item->onclick2		= $item->onclick;
+			$item->onclick3		= $item->onclick;
+			$item->linkorig		= $imgLinkOrig;
+
+		} else if ($t['detail_window'] == 1) {
+			// STANDARD POPUP
+			$item->class		= 'pg-js-popup-button';
+			$item->class2		= $item->class;
+			$item->class3		= $item->class;
+			$item->onclick		= "window.open(this.href,'win2','width=".$t['popup_width'].",height=".$t['popup_height'].",scrollbars=yes,menubar=no,resizable=yes'); return false;";
+			$item->onclick2		= $item->onclick;
+			$item->onclick3		= $item->onclick;
+			$item->link 		= $siteLink;
+			$item->link2 		= $siteLink;
+			$item->link3		= $siteLink;
+			$item->linkorig		= $imgLinkOrig;
+
+		} else if ( $t['detail_window'] == 12 ) {
+			// MAGNIFIC
+
+			$item->class		= 'pg-magnific-button';
+			$item->class2		= 'pg-magnific2-button';
+			$item->class3		= 'pg-magnific3-button';
+			$item->link 		= $imgLink;
+			$item->link2 		= $imgLink;
+			$item->link3		= $siteLink;
+			$item->linkorig		= $imgLinkOrig;
+			$item->onclick		= '';
+			$item->onclick2		= 'document.getElementById(\'pgImg'.$item->id.'\').click();"';
+			$item->onclick3		= $item->onclick;
+
+		} else if ( $t['detail_window'] == 14 ) {
+			// PHOTOSWIPE
+			$item->class		= 'pg-photoswipe-button';
+			$item->class2		= 'pg-photoswipe-button-copy';
+			$item->class3		= 'pg-bs-modal-button';
+			$item->link 		= $imgLink;
+			$item->link2 		= 'javascript:void(0)';
+			$item->link3		= $siteLink;
+			$item->linkorig		= $imgLinkOrig;
+			$item->onclick		= '';
+			$item->itemprop		= 'contentUrl';
+			$item->onclick2		= 'document.getElementById(\'pgImg'.$item->id.'\').click();"';
+			$item->onclick3		= $item->onclick;
+
+
+			switch ($t['photoswipe_display_caption']) {
+				case 0:
+					$item->photoswipecaption = '';
+					break;
+
+				case 2:
+					$item->photoswipecaption = PhocaGalleryText::strTrimAll(( $item->description));
+					break;
+
+				case 3:
+					$item->photoswipecaption = PhocaGalleryText::strTrimAll(($item->title));
+					if ($item->description != '') {
+						$item->photoswipecaption .='<br />' .PhocaGalleryText::strTrimAll(($item->description));
+					}
+					break;
+
+				case 1:
+				default:
+					$item->photoswipecaption = PhocaGalleryText::strTrimAll(($item->title));
+					break;
+			}
+
+		} else {
+			$item->class		= 'pg-nopopup-button';
+			$item->class2		= $item->class;
+			$item->class3		= $item->class;;
+			$item->link 		= $siteLink;
+			$item->link2 		= $siteLink;
+			$item->link3		= $siteLink;
+			$item->linkorig		= $imgLinkOrig;
+			$item->onclick		= '';
+			$item->onclick2		= $item->onclick;
+			$item->onclick3		= $item->onclick;
+
+
+		}
+
+		$item->display_icon_detail 	= $t['display_icon_detail'];
+		$item->display_icon_download= $t['display_icon_download'];
+		$item->display_name 		= $t['display_name'];
+		$item->display_icon_vm 		= '';
+		$item->display_icon_pc 		= '';
+		$item->start_cooliris 		= $t['start_cooliris'] ;
+		$item->type					= 2;
+
+
+
+		// ALT VALUE
+		$altValue	= PhocaGalleryRenderFront::getAltValue($t['altvalue'], $item->title, $item->description, $item->metadesc);
+		$item->altvalue				= $altValue;
+
+		// TITLE TAG - Description Output in Title Tag
+		$imgAlt = $imgTitle = '';
+
+		// Some methods cannot use Alt because of conflicting with Title and popup methods
+		if ($t['detail_window'] == 3 || $t['detail_window'] == 9 || $t['detail_window'] == 10 || $t['detail_window'] == 12 ) {
+			$imgAlt 	= $item->altvalue;
+			$imgTitle	= $item->title;
+			if ($imgAlt == $imgTitle) {
+				$imgAlt = '';
+			}
+			$item->oimgalt = $imgAlt;
+		} else {
+			$item->oimgalt = $altValue;
+		}
+
+
+		// TITLE TAG - Detail
+		if ($t['detail_window'] == 9 || $t['detail_window'] == 10) {
+			$detailAlt 		= $item->altvalue;
+			$detailTitle	= $item->title;
+			if ($detailAlt == $detailTitle) {
+				$detailAlt = '';
+			}
+		} else {
+			$detailAlt 		= JText::_('COM_PHOCAGALLERY_IMAGE_DETAIL');
+			$detailTitle 	= JText::_('COM_PHOCAGALLERY_IMAGE_DETAIL');
+		}
+		$item->oimgaltdetail 		= $detailAlt;
+		$item->oimgtitledetail 	= $detailTitle;
+
+		$titleDesc = '';
+		if ($t['display_title_description'] == 1) {
+			$titleDesc .= $item->title;
+			if ($item->description != '' && $titleDesc != '') {
+				$titleDesc .= ' - ';
+			}
+		}
+
+		if (($t['detail_window'] == 8 || $t['detail_window'] == 10 || $t['detail_window'] == 12) && $t['displaydescriptiondetail'] > 0) {
+			$item->odesctitletag = strip_tags($titleDesc).strip_tags($item->description);
+		} else {
+			$item->odesctitletag = strip_tags($imgTitle);
+		}
+
+
 	}
 
 }

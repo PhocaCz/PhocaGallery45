@@ -61,7 +61,7 @@ if ($t['already_commented']) {
 
 		<tr>
 			<td><?php echo Text::_('COM_PHOCAGALLERY_TITLE');?>:</td>
-			<td><input type="text" name="phocagallerycommentstitle" id="phocagallery-comments-title" value="" maxlength="255" class="comment-input" /></td>
+			<td><input type="text" name="phocagallerycommentstitle" id="phocagallery-comments-title" value="" maxlength="255" class="form-control comment-input" /></td>
 		</tr>
 
 		<tr>
@@ -84,13 +84,13 @@ if ($t['already_commented']) {
 		<tr>
 			<td>&nbsp;</td>
 			<td>
-				<textarea name="phocagallerycommentseditor" id="phocagallery-comments-editor" cols="30" rows="10"  class= "comment-input" onkeyup="pgCountChars(<?php echo $t['max_comment_char'];?>);" ></textarea>
+				<textarea name="phocagallerycommentseditor" id="phocagallery-comments-editor" cols="30" rows="10"  class= "form-control comment-input" onkeyup="pgCountChars(<?php echo $t['max_comment_char'];?>);" ></textarea>
 			</td>
 		</tr>
 
 		<tr>
 			<td>&nbsp;</td>
-			<td><?php echo Text::_('COM_PHOCAGALLERY_CHARACTERS_WRITTEN');?> <input name="phocagallerycommentscountin" value="0" readonly="readonly" class="comment-input2" /> <?php echo Text::_('COM_PHOCAGALLERY_AND_LEFT_FOR_COMMENT');?> <input name="phocagallerycommentscountleft" value="<?php echo $t['max_comment_char'];?>" readonly="readonly" class="comment-input2" />
+			<td><?php echo Text::_('COM_PHOCAGALLERY_CHARACTERS_WRITTEN');?> <input name="phocagallerycommentscountin" value="0" readonly="readonly" class="form-control comment-input2" /> <?php echo Text::_('COM_PHOCAGALLERY_AND_LEFT_FOR_COMMENT');?> <input name="phocagallerycommentscountleft" value="<?php echo $t['max_comment_char'];?>" readonly="readonly" class="form-control comment-input2" />
 			</td>
 		</tr>
 		<tr>

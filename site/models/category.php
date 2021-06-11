@@ -8,6 +8,10 @@
  * @copyright Copyright (C) Jan Pavelka www.phoca.cz
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+
 defined('_JEXEC') or die();
 jimport('joomla.application.component.model');
 phocagalleryimport('phocagallery.ordering.ordering');
@@ -177,7 +181,7 @@ class PhocagalleryModelCategory extends JModelLegacy
 	 */
 	function getCategory() {
 
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		if ($this->_id == 0) {
 			return '';
 		}
@@ -207,8 +211,10 @@ class PhocagalleryModelCategory extends JModelLegacy
 			if ($rightDisplay == 0) {
 				$uri 			= \Joomla\CMS\Uri\Uri::getInstance();
 				$t['pl']		= 'index.php?option=com_users&view=login&return='.base64_encode($uri->toString());
-				$app->redirect(JRoute::_($t['pl'], false), JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'));
-				exit;
+
+				$app->enqueueMessage(JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'));
+				$app->redirect(Route::_($t['pl'], false));
+				//exit;
 			}
 			// - - - - - - - - - - - - - - - -
 		}
@@ -603,8 +609,10 @@ class PhocagalleryModelCategory extends JModelLegacy
 
 	function getStatisticsImages($catId, $order, $order2 = 'ASC', $limit = 3) {
 
-		$query = 'SELECT i.*'
+		$query = 'SELECT i.*,'
+			.' CASE WHEN CHAR_LENGTH(cc.alias) THEN CONCAT_WS(\':\', cc.id, cc.alias) ELSE cc.id END as catslug'
 			.' FROM #__phocagallery AS i'
+			.' LEFT JOIN #__phocagallery_categories AS cc ON cc.id = i.catid'
 			.' WHERE i.catid = '.(int) $catId
 			.' AND i.published = 1'
 			.' AND i.approved = 1'

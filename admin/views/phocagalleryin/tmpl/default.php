@@ -29,7 +29,7 @@ echo '<table cellpadding="5" cellspacing="1">'
 	.'<td align="center">'.JText::_('COM_PHOCAGALLERY_CURRENT').'</td></tr>';
 
 if ($this->t['enablethumbcreation'] == 1) {
-	$bgStyle = 'class="alert alert-error"';
+	$bgStyle = 'class="alert alert-error alert-danger"';
 } else {
 	$bgStyle = 'class="alert alert-success"';
 }
@@ -50,7 +50,7 @@ if ($this->t['paginationthumbnailcreation'] == 1) {
 	$icon		= 'success';
 	$iconText	= JText::_('COM_PHOCAGALLERY_ENABLED');
 } else {
-	$bgStyle 	= 'class="alert alert-error"';
+	$bgStyle 	= 'class="alert alert-error alert-danger"';
 	$icon		= 'minus-circle';
 	$iconText	= JText::_('COM_PHOCAGALLERY_DISABLED');
 }
@@ -73,7 +73,7 @@ if ($this->t['cleanthumbnails'] == 0) {
 
 
 } else {
-	$bgStyle = 'class="alert alert-error"';
+	$bgStyle = 'class="alert alert-error alert-danger"';
 	$icon		= 'success';
 	$iconText	= JText::_('COM_PHOCAGALLERY_ENABLED');
 }
@@ -161,7 +161,7 @@ echo '<table cellpadding="5" cellspacing="1">'
 	.'<td align="center">'.JText::_('COM_PHOCAGALLERY_CURRENT').'</td></tr>';
 
 if ($this->t['enablethumbcreation'] == 1) {
-	$bgStyle = 'class="alert alert-error"';
+	$bgStyle = 'class="alert alert-error alert-danger"';
 } else {
 	$bgStyle = 'class="alert alert-success"';
 }
@@ -181,7 +181,7 @@ if ($this->t['paginationthumbnailcreation'] == 1) {
 	$icon		= 'true';
 	$iconText	= JText::_('COM_PHOCAGALLERY_ENABLED');
 } else {
-	$bgStyle 	= 'class="alert alert-error"';
+	$bgStyle 	= 'class="alert alert-error alert-danger"';
 	$icon		= 'false';
 	$iconText	= JText::_('COM_PHOCAGALLERY_DISABLED');
 }
@@ -200,7 +200,7 @@ if ($this->t['cleanthumbnails'] == 0) {
 
 
 } else {
-	$bgStyle = 'class="alert alert-error"';
+	$bgStyle = 'class="alert alert-error alert-danger"';
 	$icon		= 'true';
 	$iconText	= JText::_('COM_PHOCAGALLERY_ENABLED');
 }

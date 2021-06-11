@@ -52,7 +52,7 @@ class PhocaGalleryCpViewPhocaGalleryIn extends JViewLegacy
 				$icon		= 'success';
 				$iconText	= JText::_('COM_PHOCAGALLERY_ENABLED');
 			} else {
-				$bgStyle = 'class="alert alert-error"';
+				$bgStyle = 'class="alert alert-error alert-danger"';
 				//$icon		= 'false';
 				$icon		= 'minus-circle';
 				$iconText	= JText::_('COM_PHOCAGALLERY_DISABLED');
@@ -71,7 +71,7 @@ class PhocaGalleryCpViewPhocaGalleryIn extends JViewLegacy
 		$this->foutput .= '<tr><td align="left"><b>'. JText::_('COM_PHOCAGALLERY_PICASA_SUPPORT').'</b></td></tr>';
 
 		if(!PhocaGalleryUtils::iniGetBool('allow_url_fopen')){
-			$bgStyle 	= 'class="alert alert-error"';
+			$bgStyle 	= 'class="alert alert-error alert-danger"';
 			$icon		= 'minus-circle';
 			$iconText	= JText::_('COM_PHOCAGALLERY_DISABLED');
 		} else {
@@ -92,7 +92,7 @@ class PhocaGalleryCpViewPhocaGalleryIn extends JViewLegacy
 			$icon		= 'success';
 			$iconText	= JText::_('COM_PHOCAGALLERY_ENABLED');
 		} else {
-			$bgStyle = 'class="alert alert-error"';
+			$bgStyle = 'class="alert alert-error alert-danger"';
 			$icon		= 'minus-circle';
 			$iconText	= JText::_('COM_PHOCAGALLERY_DISABLED');
 		}
@@ -102,7 +102,7 @@ class PhocaGalleryCpViewPhocaGalleryIn extends JViewLegacy
 			$iconj		= 'success';
 			$iconTextj	= JText::_('COM_PHOCAGALLERY_ENABLED');
 		} else {
-			$bgStylej = 'class="alert alert-error"';
+			$bgStylej = 'class="alert alert-error alert-danger"';
 			$iconj		= 'minus-circle';
 			$iconTextj	= JText::_('COM_PHOCAGALLERY_DISABLED');
 		}

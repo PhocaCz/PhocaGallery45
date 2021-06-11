@@ -1,3 +1,12 @@
+/*
+ * @package Joomla
+ * @copyright Copyright (C) 2005 Open Source Matters. All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+ *
+ * @extension Phoca Gallery
+ * @copyright Copyright (C) Jan Pavelka www.phoca.cz
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ */
 var initPhotoSwipeFromDOM = function(gallerySelector) {
 
     // parse slide data (url, title, size ...) from DOM elements
@@ -22,7 +31,6 @@ var initPhotoSwipeFromDOM = function(gallerySelector) {
             }
 
             linkEl = figureEl.children[0]; // <a> element
-
             size = linkEl.getAttribute('data-size').split('x');
 
             // create slide object
@@ -58,6 +66,7 @@ var initPhotoSwipeFromDOM = function(gallerySelector) {
             }
 
             item.el = figureEl; // save link to element for getThumbBoundsFn
+       
             items.push(item);
         }
 
@@ -72,6 +81,7 @@ var initPhotoSwipeFromDOM = function(gallerySelector) {
     // triggers when user clicks on thumbnail
     //var onThumbnailsClick = function(e) {
 		var onThumbnailsClick = jQuery('.pg-photoswipe-button').on('click', function(e) {
+            
         e = e || window.event;
         e.preventDefault ? e.preventDefault() : e.returnValue = false;
 
@@ -115,7 +125,7 @@ var initPhotoSwipeFromDOM = function(gallerySelector) {
 
 
         if(index >= 0) {
-
+            
             // open PhotoSwipe if valid index found
             openPhotoSwipe( index, clickedGallery );
         }
@@ -341,3 +351,4 @@ var initPhotoSwipeFromDOM = function(gallerySelector) {
 
 // execute above function
 initPhotoSwipeFromDOM('.pg-photoswipe');
+

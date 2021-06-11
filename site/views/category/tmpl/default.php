@@ -9,6 +9,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Layout\FileLayout;
 
 defined('_JEXEC') or die('Restricted access');
@@ -96,6 +97,8 @@ if ((int)$this->tagId > 0) {
 	echo $this->loadTemplate('pagination');
 
 
+
+
 	if ($this->t['displaytabs'] > 0) {
 
 	    $tabItems = array();
@@ -152,6 +155,7 @@ if ((int)$this->tagId > 0) {
         }*/
 
         $tabs->setActiveTab(isset($tabItems[$this->t['tab']]['id']) ? $tabItems[$this->t['tab']]['id'] : 0);
+
         echo $tabs->renderTabsHeader($tabItems);
 
 
@@ -164,6 +168,8 @@ if ((int)$this->tagId > 0) {
 		if ((int)$this->t['display_rating'] == 1) {
 		    echo $tabs->startTab('pgvotes');
 			echo $this->loadTemplate('rating');
+
+
 			echo $tabs->endTab();
 		    //echo Joomla\CMS\HTML\HTMLHelper::_('tabs.panel', PhocaGalleryRenderFront::renderIcon('vote', 'media/com_phocagallery/images/icon-vote.png', ''). '&nbsp;'. JText::_('COM_PHOCAGALLERY_RATING'), 'pgvotes' );
 

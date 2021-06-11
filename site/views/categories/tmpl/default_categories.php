@@ -16,13 +16,35 @@ defined('_JEXEC') or die('Restricted access');
 
 echo '<div class="pg-categories-items-box">';
 
+
 foreach ($this->categories as $k => $item) {
 
     echo '<div class="pg-category-box">';
 
-    echo '<div class="pg-category-box-image">';
-    echo '<a href="' . Route::_($item->link) . '">' . HTMLHelper::_('image', $item->linkthumbnailpath, $item->title) . '</a>';
-    echo '</div>';
+
+
+    if (isset($item->rightdisplaykey) && $item->rightdisplaykey == 0) {
+
+        echo '<div class="pg-category-box-image pg-svg-box">';
+        echo '<svg alt="' . htmlspecialchars($item->title) . '" class="ph-si ph-si-lock-medium pg-image c-Image c-Image--shaded" style="width:' . $this->t['medium_image_width'] . 'px;height:' . $this->t['medium_image_height'] . 'px" itemprop="thumbnail"><use xlink:href="#ph-si-lock"></use></svg>';
+        echo '</div>';
+    } else {
+
+        if($this->t['image_categories_size'] == 2  || $this->t['image_categories_size'] == 3 ) {
+            // Folders instead of icons
+            echo '<div class="pg-category-box-image pg-svg-box">';
+            echo '<a href="' . Route::_($item->link) . '"><svg alt="' . htmlspecialchars($item->title) . '" class="ph-si ph-si-category pg-image c-Image c-Image--shaded" style="width:' . $this->t['imagewidth'] . 'px;height:' . $this->t['imageheight'] . 'px" itemprop="thumbnail"><use xlink:href="#ph-si-category"></use></svg></a>';
+            echo '</div>';
+        } else {
+            // Images
+            echo '<div class="pg-category-box-image">';
+            echo '<a href="' . Route::_($item->link) . '">' . HTMLHelper::_('image', $item->linkthumbnailpath, $item->title) . '</a>';
+            echo '</div>';
+        }
+
+
+
+    }
 
     echo '<div class="pg-category-box-title">';
     echo '<svg class="ph-si ph-si-category"><use xlink:href="#ph-si-category"></use></svg>';
@@ -37,6 +59,7 @@ foreach ($this->categories as $k => $item) {
         echo '<div class="pg-category-box-description">' . (HTMLHelper::_('content.prepare', $item->description, 'com_phocagallery.category')) . '</div>';
     }
 
+    $this->cv = $item;
     echo $this->loadTemplate('rating');
 
     echo '</div>';

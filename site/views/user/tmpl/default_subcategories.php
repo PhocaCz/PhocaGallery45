@@ -22,7 +22,7 @@ if ($this->t['displaysubcategory'] == 1) {
 <table>
 	<tr>
 		<td><?php echo JText::_('COM_PHOCAGALLERY_SUBCATEGORY');?>:</td>
-		<td><input type="text" id="subcategoryname" name="subcategoryname" maxlength="255" class="comment-input" value="<?php echo $this->t['categorysubcatedit']->title ?>" /></td>
+		<td><input type="text" id="subcategoryname" name="subcategoryname" maxlength="255" class="form-control comment-input" value="<?php echo $this->t['categorysubcatedit']->title ?>" /></td>
 	</tr>
 
 	<tr>
@@ -32,13 +32,13 @@ if ($this->t['displaysubcategory'] == 1) {
 
 	<tr>
 		<td>&nbsp;</td>
-		<td><?php echo JText::_('COM_PHOCAGALLERY_CHARACTERS_WRITTEN');?> <input name="phocagallerycreatesubcatcountin" value="0" readonly="readonly" class="comment-input2" /> <?php echo JText::_('COM_PHOCAGALLERY_AND_LEFT_FOR_DESCRIPTION');?> <input name="phocagallerycreatesubcatcountleft" value="<?php echo $this->t['maxcreatecatchar'];?>" readonly="readonly" class="comment-input2" />
+		<td><?php echo JText::_('COM_PHOCAGALLERY_CHARACTERS_WRITTEN');?> <input name="phocagallerycreatesubcatcountin" value="0" readonly="readonly" class="form-control comment-input2" /> <?php echo JText::_('COM_PHOCAGALLERY_AND_LEFT_FOR_DESCRIPTION');?> <input name="phocagallerycreatesubcatcountleft" value="<?php echo $this->t['maxcreatecatchar'];?>" readonly="readonly" class="form-control comment-input2" />
 		</td>
 	</tr>
 
 	<tr>
 		<td>&nbsp;</td>
-		<td align="right"><button class="btn" onclick="window.location='<?php echo JRoute::_($this->t['pp'].$this->t['ps']);?>'" id="phocagallerycreatesubcatcancel"><?php echo JText::_('COM_PHOCAGALLERY_CANCEL'); ?></button> <button class="btn" type="submit" onclick="return(checkCreateSubCatForm());" id="phocagallerycreatesubcatsubmit"><?php echo JText::_('COM_PHOCAGALLERY_EDIT'); ?></button></td>
+		<td align="right"><button class="btn btn-primary" onclick="window.location='<?php echo JRoute::_($this->t['pp'].$this->t['ps']);?>'" id="phocagallerycreatesubcatcancel"><?php echo JText::_('COM_PHOCAGALLERY_CANCEL'); ?></button> <button class="btn" type="submit" onclick="return(checkCreateSubCatForm());" id="phocagallerycreatesubcatsubmit"><?php echo JText::_('COM_PHOCAGALLERY_EDIT'); ?></button></td>
 	</tr>
 </table>
 
@@ -58,7 +58,8 @@ if ($this->t['displaysubcategory'] == 1) {
 <?php
 	} else {
 
-		?><div style="float:left" class="filter-search btn-group pull-left" ><h4><?php echo JText::_( 'COM_PHOCAGALLERY_SUBCATEGORIES' ); ?></h4>
+		?><h4><?php echo JText::_( 'COM_PHOCAGALLERY_SUBCATEGORIES' ); ?></h4>
+        <div style="float:left" class="filter-search btn-group pull-left" >
 		<form action="<?php echo htmlspecialchars($this->t['action']);?>" method="post" name="phocagallerysubcatform" id="phocagallerysubcatform">
 
 		<?php /*
@@ -71,20 +72,19 @@ if ($this->t['displaysubcategory'] == 1) {
 
 		<div class="filter-search btn-group pull-left">
 		<label for="filter_search" class="element-invisible"><?php echo JText::_( 'COM_PHOCAGALLERY_FILTER' ); ?></label>
-		<input type="text" name="phocagallerysubcatsearch" id="phocagallerysubcatsearch" placeholder="<?php echo JText::_( 'COM_PHOCAGALLERY_SEARCH' ); ?>" value="<?php echo $this->listssubcat['search'];?>" title="<?php echo JText::_( 'COM_PHOCAGALLERY_SEARCH' ); ?>" /></div>
+		<input type="text" name="phocagallerysubcatsearch" id="phocagallerysubcatsearch" class="form-control" placeholder="<?php echo JText::_( 'COM_PHOCAGALLERY_SEARCH' ); ?>" value="<?php echo $this->listssubcat['search'];?>" title="<?php echo JText::_( 'COM_PHOCAGALLERY_SEARCH' ); ?>" /></div>
 
 		<div class="btn-group pull-left hidden-phone">
-		<button class="btn tip hasTooltip" type="submit" onclick="this.form.submit();"  title="<?php echo JText::_( 'COM_PHOCAGALLERY_SEARCH' ); ?>"><?php echo PhocaGalleryRenderFront::renderIcon('search', $this->t['pi'].'icon-remove.png', JText::_('COM_PHOCAGALLERY_SEARCH')) ?></button>
-		<button class="btn tip hasTooltip" type="button" onclick="document.getElementById('phocagallerysubcatsearch').value='';document.phocagallerysubcatform.submit();" title="<?php echo JText::_( 'COM_PHOCAGALLERY_CLEAR' ); ?>"><?php echo PhocaGalleryRenderFront::renderIcon('remove', $this->t['pi'].'icon-remove.png', JText::_('COM_PHOCAGALLERY_CLEAR')) ?></button></div>
+		<button class="btn btn-primary tip hasTooltip" type="submit" onclick="this.form.submit();"  title="<?php echo JText::_( 'COM_PHOCAGALLERY_SEARCH' ); ?>"><?php echo '<svg class="ph-si ph-si-search"><title>'.JText::_('COM_PHOCAGALLERY_SEARCH').'</title><use xlink:href="#ph-si-search"></use></svg>' ?></button>
+		<button class="btn btn-secondary tip hasTooltip" type="button" onclick="document.getElementById('phocagallerysubcatsearch').value='';document.phocagallerysubcatform.submit();" title="<?php echo JText::_( 'COM_PHOCAGALLERY_CLEAR' ); ?>"><?php echo JText::_( 'COM_PHOCAGALLERY_CLEAR' ); ?></button></div>
 
 
 
-		</div><div style="float:right">
-		<?php echo $this->listssubcat['catid'] ?>
-		<br />
-		<?php echo $this->listssubcat['state']; ?>
 		</div>
-<table class="adminlist">
+
+        <div class="ph-adminlist-select-row"><?php echo $this->listssubcat['catid'] ?> <?php echo $this->listssubcat['state']; ?></div>
+
+<table class="ph-adminlist">
 <thead>
 	<tr>
 	<th width="5"><?php echo JText::_( 'COM_PHOCAGALLERY_NUM' ); ?></th>
@@ -96,7 +96,8 @@ if ($this->t['displaysubcategory'] == 1) {
 
 	<?php echo PhocaGalleryGrid::sort('COM_PHOCAGALLERY_ORDER', 'a.ordering', $this->listssubcat['order_Dir'], $this->listssubcat['order'], 'subcategory', 'asc', '', 'phocagallerysubcatform', '_subcat' );
 	//$image = '<img src="'.JURI::base(true).'/'. $this->t['pi'].'icon-filesave.png'.'" width="16" height="16" border="0" alt="'.JText::_( 'COM_PHOCAGALLERY_SAVE_ORDER' ).'" />';
-	$image = PhocaGalleryRenderFront::renderIcon('save', $this->t['pi'].'icon-filesave.png', JText::_('COM_PHOCAGALLERY_SAVE_ORDER'));
+	//$image = PhocaGalleryRenderFront::renderIcon('save', $this->t['pi'].'icon-filesave.png', JText::_('COM_PHOCAGALLERY_SAVE_ORDER'));
+	$image = '<svg class="ph-si ph-si-save"><title>'.JText::_('COM_PHOCAGALLERY_SAVE_ORDER').'</title><use xlink:href="#ph-si-save"></use></svg>';
 	$task = 'saveordersubcat';
 	$href = '<a href="javascript:saveordersubcat()" title="'.JText::_( 'COM_PHOCAGALLERY_SAVE_ORDER' ).'">'.$image.'</a>';
 	echo $href;
@@ -129,13 +130,16 @@ if (is_array($rows)) {
 	if ($row->published == 1) {
 		echo ' <a title="'.JText::_('COM_PHOCAGALLERY_UNPUBLISH').'" href="'. JRoute::_($this->t['pp'].'&id='.$row->slug.'&task=unpublishsubcat'. $this->t['ps']).'">';
 		//echo Joomla\CMS\HTML\HTMLHelper::_('image', $this->t['pi'].'icon-publish.png', JText::_('COM_PHOCAGALLERY_UNPUBLISH'))
-		echo PhocaGalleryRenderFront::renderIcon('publish', $this->t['pi'].'icon-publish.png', JText::_('COM_PHOCAGALLERY_UNPUBLISH'))
+		//echo PhocaGalleryRenderFront::renderIcon('publish', $this->t['pi'].'icon-publish.png', JText::_('COM_PHOCAGALLERY_UNPUBLISH'))
+        echo '<svg class="ph-si ph-si-enabled"><title>'.JText::_('COM_PHOCAGALLERY_UNPUBLISH').'</title><use xlink:href="#ph-si-enabled"></use></svg>'
+
 		.'</a>';
 	}
 	if ($row->published == 0) {
 		echo ' <a title="'.JText::_('COM_PHOCAGALLERY_PUBLISH').'" href="'. JRoute::_($this->t['pp'].'&id='.$row->slug.'&task=publishsubcat'.$this->t['ps']).'">';
 		//echo Joomla\CMS\HTML\HTMLHelper::_('image', $this->t['pi'].'icon-unpublish.png', JText::_('COM_PHOCAGALLERY_PUBLISH'))
-		echo PhocaGalleryRenderFront::renderIcon('unpublish', $this->t['pi'].'icon-unpublish.png', JText::_('COM_PHOCAGALLERY_PUBLISH'))
+		//echo PhocaGalleryRenderFront::renderIcon('unpublish', $this->t['pi'].'icon-unpublish.png', JText::_('COM_PHOCAGALLERY_PUBLISH'))
+        echo '<svg class="ph-si ph-si-disabled"><title>'.JText::_('COM_PHOCAGALLERY_PUBLISH').'</title><use xlink:href="#ph-si-disabled"></use></svg>'
 		.'</a>';
 	}
 	echo '</td>';
@@ -144,7 +148,8 @@ if (is_array($rows)) {
 	echo '<td align="center">';
 	echo ' <a onclick="return confirm(\''.JText::_('COM_PHOCAGALLERY_WARNING_DELETE_ITEMS').'\')" title="'.JText::_('COM_PHOCAGALLERY_DELETE').'" href="'. JRoute::_($this->t['pp'].'&id='.$row->slug.'&task=removesubcat'.$this->t['ps'] ).'">';
 	//echo Joomla\CMS\HTML\HTMLHelper::_('image',  $this->t['pi'].'icon-trash.png', JText::_('COM_PHOCAGALLERY_UNPUBLISH')).'</a>';
-	echo PhocaGalleryRenderFront::renderIcon('trash', $this->t['pi'].'icon-trash.png', JText::_('COM_PHOCAGALLERY_DELETE'))
+	//echo PhocaGalleryRenderFront::renderIcon('trash', $this->t['pi'].'icon-trash.png', JText::_('COM_PHOCAGALLERY_DELETE'))
+    echo '<svg class="ph-si ph-si-trash"><title>'.JText::_('COM_PHOCAGALLERY_DELETE').'</title><use xlink:href="#ph-si-trash"></use></svg>'
 		.'</a>';
 	echo '</td>';
 
@@ -152,10 +157,12 @@ if (is_array($rows)) {
 	echo '<td align="center">';
 	if ($row->approved == 1) {
 		//echo Joomla\CMS\HTML\HTMLHelper::_('image', $this->t['pi'].'icon-publish.png', JText::_('COM_PHOCAGALLERY_APPROVED'));
-		echo PhocaGalleryRenderFront::renderIcon('publish', $this->t['pi'].'icon-publish.png', JText::_('COM_PHOCAGALLERY_APPROVED'));
+		//echo PhocaGalleryRenderFront::renderIcon('publish', $this->t['pi'].'icon-publish.png', JText::_('COM_PHOCAGALLERY_APPROVED'));
+		echo '<svg class="ph-si ph-si-enabled"><title>'.JText::_('COM_PHOCAGALLERY_APPROVED').'</title><use xlink:href="#ph-si-enabled"></use></svg>';
 	} else {
 		//echo Joomla\CMS\HTML\HTMLHelper::_('image', $this->t['pi'].'icon-unpublish.png', JText::_('COM_PHOCAGALLERY_NOT_APPROVED'));
-		echo PhocaGalleryRenderFront::renderIcon('unpublish', $this->t['pi'].'icon-unpublish.png', JText::_('COM_PHOCAGALLERY_NOT_APPROVED'));
+		//echo PhocaGalleryRenderFront::renderIcon('unpublish', $this->t['pi'].'icon-unpublish.png', JText::_('COM_PHOCAGALLERY_NOT_APPROVED'));
+		echo '<svg class="ph-si ph-si-disabled"><title>'.JText::_('COM_PHOCAGALLERY_NOT_APPROVED').'</title><use xlink:href="#ph-si-disabled"></use></svg>';
 	}
 	echo '</td>';
 
@@ -167,7 +174,7 @@ if (is_array($rows)) {
 	.'<span>'. $this->t['subcategorypagination']->orderDownIcon( $i, $n, $row->orderdown == 1, $linkDown, JText::_('COM_PHOCAGALLERY_MOVE_DOWN'), $this->t['subcategoryordering'] ).'</span> ';
 
 	$disabled = $this->t['subcategoryordering'] ?  '' : 'disabled="disabled"';
-	echo '<input type="text" name="order[]" size="5" value="'. $row->ordering.'" '. $disabled.' class="inputbox input-mini" style="text-align: center" />';
+	echo '<input type="text" name="order[]" size="5" value="'. $row->ordering.'" '. $disabled.' class="form-control inputbox input-mini" style="text-align: center" />';
 	echo '</td>';
 
 	echo '<td align="center">'. $row->id .'</td>'
@@ -223,23 +230,23 @@ if (count($this->t['subcategoryitems'])) {
 <table>
 	<tr>
 		<td><strong><?php echo JText::_('COM_PHOCAGALLERY_SUBCATEGORY');?>:</strong></td>
-		<td><input type="text" id="subcategoryname" name="subcategoryname" maxlength="255" class="comment-input" value="" /></td>
+		<td><input type="text" id="subcategoryname" name="subcategoryname" maxlength="255" class="form-control comment-input" value="" /></td>
 	</tr>
 
 	<tr>
 		<td><strong><?php echo JText::_( 'COM_PHOCAGALLERY_DESCRIPTION' ); ?>:</strong></td>
-		<td><textarea id="phocagallery-create-subcat-description" name="phocagallerycreatesubcatdescription" onkeyup="countCharsCreateSubCat();" cols="30" rows="10" class="comment-input"></textarea></td>
+		<td><textarea id="phocagallery-create-subcat-description" name="phocagallerycreatesubcatdescription" onkeyup="countCharsCreateSubCat();" cols="30" rows="10" class="form-control comment-input"></textarea></td>
 	</tr>
 
 	<tr>
 		<td>&nbsp;</td>
-		<td><?php echo JText::_('COM_PHOCAGALLERY_CHARACTERS_WRITTEN');?> <input name="phocagallerycreatesubcatcountin" value="0" readonly="readonly" class="comment-input2" /> <?php echo JText::_('COM_PHOCAGALLERY_AND_LEFT_FOR_DESCRIPTION');?> <input name="phocagallerycreatesubcatcountleft" value="<?php echo $this->t['maxcreatecatchar'];?>" readonly="readonly" class="comment-input2" />
+		<td><?php echo JText::_('COM_PHOCAGALLERY_CHARACTERS_WRITTEN');?> <input name="phocagallerycreatesubcatcountin" value="0" readonly="readonly" class="form-control comment-input2" /> <?php echo JText::_('COM_PHOCAGALLERY_AND_LEFT_FOR_DESCRIPTION');?> <input name="phocagallerycreatesubcatcountleft" value="<?php echo $this->t['maxcreatecatchar'];?>" readonly="readonly" class="form-control comment-input2" />
 		</td>
 	</tr>
 
 	<tr>
 		<td>&nbsp;</td>
-		<td align="right"><button class="btn" onclick="return(checkCreateSubCatForm());" id="phocagallerycreatesubcatsubmit"><?php echo JText::_('COM_PHOCAGALLERY_CREATE_SUBCATEGORY'); ?></button></td>
+		<td align="right"><button class="btn btn-primary" onclick="return(checkCreateSubCatForm());" id="phocagallerycreatesubcatsubmit"><?php echo JText::_('COM_PHOCAGALLERY_CREATE_SUBCATEGORY'); ?></button></td>
 	</tr>
 </table>
 

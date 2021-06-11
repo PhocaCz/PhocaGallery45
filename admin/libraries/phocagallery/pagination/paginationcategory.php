@@ -32,9 +32,9 @@ class PhocaGalleryPaginationCategory extends JPagination
 
 		// Build the select list
 		if ($app->isClient('administrator')) {
-			$html = Joomla\CMS\HTML\HTMLHelper::_('select.genericlist',  $limits, 'limit', 'class="inputbox input-mini" size="1" onchange="Joomla.submitform();"', 'value', 'text', $selected);
+			$html = Joomla\CMS\HTML\HTMLHelper::_('select.genericlist',  $limits, 'limit', 'class="form-select" size="1" onchange="Joomla.submitform();"', 'value', 'text', $selected);
 		} else {
-			$html = Joomla\CMS\HTML\HTMLHelper::_('select.genericlist',  $limits, 'limit', 'class="inputbox input-mini" size="1" onchange="this.form.submit()"', 'value', 'text', $selected);
+			$html = Joomla\CMS\HTML\HTMLHelper::_('select.genericlist',  $limits, 'limit', 'class="form-select" size="1" onchange="this.form.submit()"', 'value', 'text', $selected);
 		}
 		return $html;
 	}

@@ -55,7 +55,7 @@ $tabs = array (
 'general' 		=> JText::_($OPT.'_GENERAL_OPTIONS'),
 'publishing' 	=> JText::_($OPT.'_PUBLISHING_OPTIONS'),
 'metadata'		=> JText::_($OPT.'_METADATA_OPTIONS'),
-'picasa'		=> JText::_($OPT.'_PICASA_SETTINGS'),
+/*'picasa'		=> JText::_($OPT.'_PICASA_SETTINGS'),*/
 'imgur'		    => JText::_($OPT.'_IMGUR_SETTINGS')/*,
 'facebook'		=> JText::_($OPT.'_FB_SETTINGS')*/);
 echo $r->navigation($tabs);
@@ -84,14 +84,14 @@ echo $r->endTab();
 echo $r->startTab('metadata', $tabs['metadata']);
 echo $this->loadTemplate('metadata');
 echo $r->endTab();
-
+/*
 if ($this->t['enablepicasaloading'] == 1) {
 	echo $r->startTab('picasa', $tabs['picasa']);
 	$formArray = array ('extu', 'exta', 'extauth');
 	echo $r->group($this->form, $formArray);
 	echo $r->endTab();
 }
-
+*/
 echo $r->startTab('imgur', $tabs['imgur']);
 $formArray = array ('imgurclient', 'imguralbum');
 echo $r->group($this->form, $formArray);

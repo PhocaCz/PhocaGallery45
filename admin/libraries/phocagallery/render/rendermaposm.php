@@ -6,6 +6,9 @@
  * @copyright Copyright (C) Jan Pavelka www.phoca.cz
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
+
+use Joomla\CMS\HTML\HTMLHelper;
+
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class PhocaGalleryRenderMaposm
@@ -137,6 +140,9 @@ class PhocaGalleryRenderMaposm
 		$o 	= array();
 
 		$o[]= 'var map'.$this->name.$this->id.' = L.map("'.$this->name.$this->id.'", '.$options.').setView(['.PhocaGalleryText::filterValue($lat, 'number2').', '.PhocaGalleryText::filterValue($lng, 'number2').'], '.(int)$zoom.');';
+
+
+		$o[]= 'jQuery(\'.phTabs ul li a\').click(function(){ setTimeout(function() { map'.$this->name.$this->id.'.invalidateSize(); }, 0);});';
 
 
 		$this->output[] = implode("\n", $o);
@@ -604,6 +610,8 @@ class PhocaGalleryRenderMaposm
 	}
 
 	public function renderMap() {
+
+		HTMLHelper::_('jquery.framework', false);
 		$o = array();
 		$o[] = 'jQuery(document).ready(function() {';
 		$o[] = implode("\n", $this->output);

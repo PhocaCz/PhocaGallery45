@@ -46,21 +46,7 @@ echo '<h3>'.  JText::_($this->t['l'] . '_TRANSLATION').': '. JText::_($this->t['
 .'<p>'.JText::_($this->t['l'] . '_TRANSLATION_SUPPORT_URL').'</p>';
 
 ?>
-<p>&nbsp;</p>
-<p><strong><?php echo JText::_('COM_PHOCAGALLERY_SHADOWBOX_LICENCE_HEAD');?></strong></p>
-<p class="license"><?php echo JText::_('COM_PHOCAGALLERY_SHADOWBOX_LICENCE');?></p>
-<p><a href="http://www.shadowbox-js.com/" target="_blank">Shadowbox.js</a> by <a target="_blank" href="http://www.shadowbox-js.com/">Michael J. I. Jackson</a><br />
-<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Creative Commons Attribution-Noncommercial-Share Alike</a></p>
 
-<p><strong><?php echo JText::_('COM_PHOCAGALLERY_HIGHSLIDE_LICENCE_HEAD');?></strong></p>
-<p class="license"><?php echo JText::_('COM_PHOCAGALLERY_HIGHSLIDE_LICENCE');?></p>
-<p><a href="http://highslide.com/" target="_blank">Highslide JS</a> by <a target="_blank" href="http://highslide.com/">Torstein Hønsi</a><br />
-<a target="_blank" href="http://creativecommons.org/licenses/by-nc/2.5/">Creative Commons Attribution-NonCommercial 2.5  License</a></p>
-
-<p><strong><?php echo JText::_('COM_PHOCAGALLERY_BOXPLUS_LICENCE_HEAD');?></strong></p>
-<p class="license"><?php echo JText::_('COM_PHOCAGALLERY_BOXPLUS_LICENCE');?></p>
-<p><a href="http://hunyadi.info.hu/en/projects/boxplus" target="_blank">boxplus</a> by <a target="_blank" href="http://hunyadi.info.hu/">Levente Hunyadi</a><br />
-<a target="_blank" href="http://www.gnu.org/licenses/gpl.html">GPL</a></p>
 
 <p>Google™, Google Maps™, Google Picasa™, Google+™, Google Photos™ and YouTube Broadcast Yourself™ are registered trademarks of Google Inc.</p>
 
@@ -71,10 +57,11 @@ echo '<div style="border-top:1px solid #c2c2c2"></div><p>&nbsp;</p>'
 .'<div style="float:right; margin: 0 10px"><a href="https://www.phoca.cz/" target="_blank">'.Joomla\CMS\HTML\HTMLHelper::_('image', $this->t['i'] . 'logo.png', 'Phoca.cz' ).'</a></div>';
 
 echo '</div>';
-
+/*
 echo '<div class="ph-extension-links-box">';
 echo $r->getLinks();
 echo '</div>';
+*/
 
 echo '</div>';
 

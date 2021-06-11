@@ -166,8 +166,8 @@ final class PhocaGalleryCategory
 				$query = 'SELECT a.title, a.alias, a.id, a.parent_id'
 				. ' FROM #__phocagallery_categories AS a'
 				. ' WHERE a.parent_id = '.(int)$id
-				. ' ORDER BY a.ordering'
-				. ' LIMIT 1';
+				. ' ORDER BY a.ordering';
+				//. ' LIMIT 1'; We need all subcategories
 				$db->setQuery( $query );
 				$subcategories = $db->loadObjectList();
 				if (!empty($subcategories)) {

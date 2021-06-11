@@ -552,8 +552,8 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 
 
 		$lw 		= $paramsC->get( 'large_image_width', 640 );
-		$mw 		= $paramsC->get( 'medium_image_width', 100 );
-		$sw 		= $paramsC->get( 'small_image_width', 50 );
+		$mw 		= $paramsC->get( 'medium_image_width', 256 );
+		$sw 		= $paramsC->get( 'small_image_width', 128 );
 
 		$dataImg = array();
 		if (isset($data['extfbuid']) && $data['extfbuid'] > 0 && isset($data['extfbcatid']) && $data['extfbcatid'] != '' ) {
@@ -805,8 +805,8 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 		$paramsC 	= JComponentHelper::getParams('com_phocagallery');
 
 		$lw 		= $paramsC->get( 'large_image_width', 640 );
-		$mw 		= $paramsC->get( 'medium_image_width', 100 );
-		$sw 		= $paramsC->get( 'small_image_width', 50 );
+		$mw 		= $paramsC->get( 'medium_image_width', 256 );
+		$sw 		= $paramsC->get( 'small_image_width', 128 );
 
 		$dataImg = array();
 		if (isset($data['extfbuid']) && $data['extfbuid'] > 0 && isset($data['extfbcatid']) && $data['extfbcatid'] != '' ) {
@@ -1421,7 +1421,8 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 					$msg .= JText::plural( 'COM_PHOCAGALLERY_ERROR_DELETE_CONTAIN_IMG', $cids_img );
 				}
 				$link = 'index.php?option=com_phocagallery&view=phocagallerycs';
-				$app->redirect($link, $msg);
+				$app->enqueueMessage($msg);
+				$app->redirect($link);
 			}
 		}
 		return true;

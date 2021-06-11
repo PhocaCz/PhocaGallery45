@@ -22,8 +22,8 @@ class PhocaGalleryPicasa
 		$paramsC 	= JComponentHelper::getParams('com_phocagallery');
 
 		$lw 		= $paramsC->get( 'large_image_width', 640 );
-		$mw 		= $paramsC->get( 'medium_image_width', 100 );
-		$sw 		= $paramsC->get( 'small_image_width', 50 );
+		$mw 		= $paramsC->get( 'medium_image_width', 256 );
+		$sw 		= $paramsC->get( 'small_image_width', 128 );
 		$crop 		= $paramsC->get( 'crop_thumbnail', 5 );
 		$output		= array();
 		$outputS	= $outputM	= $outputL	=	$outputLargeSize = '';
