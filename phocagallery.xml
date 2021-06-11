@@ -38,10 +38,8 @@
 		<folder>layouts</folder>
 		<filename>router.php</filename>
 		<filename>index.html</filename>
-		<filename>router2.php</filename>
 		<filename>phocagallery.php</filename>
 		<filename>controller.php</filename>
-		<filename>routerx.php</filename>
 	</files>
 
 	<media destination="com_phocagallery" folder="media">
