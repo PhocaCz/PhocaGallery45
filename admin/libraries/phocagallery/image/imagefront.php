@@ -1105,7 +1105,7 @@ class PhocaGalleryImageFront
 			$item->link3		= $siteLink;
 			$item->linkorig		= $imgLinkOrig;
 			$item->onclick		= '';
-			$item->onclick2		= 'document.getElementById(\'pgImg'.$item->id.'\').click();"';
+			$item->onclick2		= 'document.getElementById(\'pgImg'.$item->id.'\').click();';
 			$item->onclick3		= $item->onclick;
 
 		} else if ( $t['detail_window'] == 14 ) {
@@ -1119,7 +1119,7 @@ class PhocaGalleryImageFront
 			$item->linkorig		= $imgLinkOrig;
 			$item->onclick		= '';
 			$item->itemprop		= 'contentUrl';
-			$item->onclick2		= 'document.getElementById(\'pgImg'.$item->id.'\').click();"';
+			$item->onclick2		= 'document.getElementById(\'pgImg'.$item->id.'\').click();';
 			$item->onclick3		= $item->onclick;
 
 
