@@ -1119,7 +1119,7 @@ class PhocaGalleryImageFront
 			$item->linkorig		= $imgLinkOrig;
 			$item->onclick		= '';
 			$item->itemprop		= 'contentUrl';
-			$item->onclick2		= 'document.getElementById(\'pgImg'.$item->id.'\').click();"';
+			$item->onclick2		= 'document.getElementById(\'pgImg'.$item->id.'\').click();';
 			$item->onclick3		= $item->onclick;
 
 
