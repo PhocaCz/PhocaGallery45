@@ -9,9 +9,13 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('JPATH_BASE') or die;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 jimport('joomla.form.formfield');
 
-class JFormFieldPhocaSelectFilename extends JFormField
+class JFormFieldPhocaSelectFilename extends FormField
 {
 	public $type = 'PhocaSelectFilename';
 
@@ -48,7 +52,7 @@ class JFormFieldPhocaSelectFilename extends JFormField
 		$script[] 	= '	}';
 		JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));*/
 
-		Joomla\CMS\HTML\HTMLHelper::_('jquery.framework');
+		HTMLHelper::_('jquery.framework');
 
 	/*	JFactory::getDocument()->addScriptDeclaration('
 			function phocaSelectFileName_' . $this->id . '(name) {
@@ -70,49 +74,49 @@ class JFormFieldPhocaSelectFilename extends JFormField
 		$script[] = '	}';
 
 		// Add the script to the document head.
-		JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
+		Factory::getDocument()->addScriptDeclaration(implode("\n", $script));
 
 		$html[] = '<div class="input-append">';
         $html[] = '<span class="input-append"><input type="text" id="' . $this->id . '" name="' . $this->name . '"'
             . ' value="' . $this->value . '"' . $attr . ' />';
-        $html[] = '<a href="'.$link.'" role="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#'.$idA.'" title="' . JText::_('COM_PHOCAGALLERY_FORM_SELECT_FILENAME') . '">'
+        $html[] = '<a href="'.$link.'" role="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#'.$idA.'" title="' . Text::_('COM_PHOCAGALLERY_FORM_SELECT_FILENAME') . '">'
             . '<span class="icon-list icon-white"></span> '
-            . JText::_('COM_PHOCAGALLERY_FORM_SELECT_FILENAME') . '</a></span>';
+            . Text::_('COM_PHOCAGALLERY_FORM_SELECT_FILENAME') . '</a></span>';
         $html[] = '</div>'. "\n";
 
-        $html[] = Joomla\CMS\HTML\HTMLHelper::_(
+        $html[] = HTMLHelper::_(
             'bootstrap.renderModal',
             $idA,
             array(
                 'url'    => $link,
-                'title'  => JText::_('COM_PHOCAGALLERY_FORM_SELECT_FILENAME'),
+                'title'  => Text::_('COM_PHOCAGALLERY_FORM_SELECT_FILENAME'),
                 'width'  => '560px',
                 'height' => '470px',
                 'modalWidth' => '50',
                 'bodyHeight' => '70',
                 'footer' => '<div  class="ph-info-modal"></div><button type="button" class="btn" data-bs-dismiss="modal" aria-hidden="true">'
-                    . JText::_('COM_PHOCAGALLERY_CLOSE') . '</button>'
+                    . Text::_('COM_PHOCAGALLERY_CLOSE') . '</button>'
             )
         );
 /*
 //readonly="readonly"
 		$html[] = '<span class="input-append"><input type="text" ' . $required . ' id="' . $this->id . '" name="' . $this->name . '"'
 			. ' value="' . $this->value . '"' . $size . $class . ' />';
-		$html[] = '<a href="#'.$idA.'" role="button" class="btn btn-primary" data-toggle="modal" title="' . JText::_('COM_PHOCAGALLERY_FORM_SELECT_FILENAME') . '">'
+		$html[] = '<a href="#'.$idA.'" role="button" class="btn btn-primary" data-toggle="modal" title="' . Text::_('COM_PHOCAGALLERY_FORM_SELECT_FILENAME') . '">'
 			. '<span class="icon-list icon-white"></span> '
-			. JText::_('COM_PHOCAGALLERY_FORM_SELECT_FILENAME') . '</a></span>';
-		$html[] = Joomla\CMS\HTML\HTMLHelper::_(
+			. Text::_('COM_PHOCAGALLERY_FORM_SELECT_FILENAME') . '</a></span>';
+		$html[] = HTMLHelper::_(
 			'bootstrap.renderModal',
 			$idA,
 			array(
 				'url'    => $link,
-				'title'  => JText::_('COM_PHOCAGALLERY_FORM_SELECT_FILENAME'),
+				'title'  => Text::_('COM_PHOCAGALLERY_FORM_SELECT_FILENAME'),
 				'width'  => '700px',
 				'height' => '400px',
 				'modalWidth' => '80',
 				'bodyHeight' => '70',
 				'footer' => '<button type="button" class="btn" data-dismiss="modal" aria-hidden="true">'
-					. JText::_('COM_PHOCAGALLERY_CLOSE') . '</button>'
+					. Text::_('COM_PHOCAGALLERY_CLOSE') . '</button>'
 			)
 		);*/
 

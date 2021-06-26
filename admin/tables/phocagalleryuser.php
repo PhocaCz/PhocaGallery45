@@ -9,9 +9,11 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Language\Text;
 jimport('joomla.filter.input');
 
-class TablePhocaGalleryUser extends JTable
+class TablePhocaGalleryUser extends Table
 {
 	function __construct(& $db) {
 		parent::__construct('#__phocagallery_user', 'id', $db);
@@ -35,7 +37,7 @@ class TablePhocaGalleryUser extends JTable
 			}
 			// Nothing to set publishing state on, return false.
 			else {
-				$this->setError(JText::_('JLIB_DATABASE_ERROR_NO_ROWS_SELECTED'));
+				$this->setError(Text::_('JLIB_DATABASE_ERROR_NO_ROWS_SELECTED'));
 				return false;
 			}
 		}

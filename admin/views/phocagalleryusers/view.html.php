@@ -9,12 +9,18 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Object\CMSObject;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Toolbar\Toolbar;
 jimport( 'joomla.application.component.view' );
 phocagalleryimport('phocagallery.library.library');
 phocagalleryimport('phocagallery.render.renderdetailwindow');
 
 jimport( 'joomla.filesystem.file' );
-class PhocaGalleryCpViewPhocaGalleryUsers extends JViewLegacy
+class PhocaGalleryCpViewPhocaGalleryUsers extends HtmlView
 {
 
 	protected $items;
@@ -47,16 +53,16 @@ class PhocaGalleryCpViewPhocaGalleryUsers extends JViewLegacy
 		$this->t['avtrpathrel']		= $path->avatar_rel;
 
 
-		$document	= JFactory::getDocument();
+		$document	= Factory::getDocument();
 
 
 		// Button
 		/*
-		$this->button = new JObject();
+		$this->button = new CMSObject();
 		$this->button->set('modal', true);
 		$this->button->set('methodname', 'modal-button');
 		//$this->button->set('link', $link);
-		$this->button->set('text', JText::_('COM_PHOCAGALLERY_DISPLAY_IMAGE_DETAIL'));
+		$this->button->set('text', Text::_('COM_PHOCAGALLERY_DISPLAY_IMAGE_DETAIL'));
 		//$this->button->set('name', 'image');
 		$this->button->set('modalname', 'modal_phocagalleryusers');
 		$this->button->set('options', "{handler: 'image', size: {x: 200, y: 150}}");*/
@@ -89,43 +95,43 @@ class PhocaGalleryCpViewPhocaGalleryUsers extends JViewLegacy
 		$state	= $this->get('State');
 		$canDo	= PhocaGalleryUsersHelper::getActions($state->get('filter.category_id'));
 
-		JToolbarHelper ::title( JText::_( 'COM_PHOCAGALLERY_USERS' ), 'users' );
+		ToolbarHelper::title( Text::_( 'COM_PHOCAGALLERY_USERS' ), 'users' );
 
 		if ($canDo->get('core.edit.state')) {
 
-			JToolbarHelper ::custom('phocagalleryusers.publish', 'publish.png', 'publish_f2.png','JToolbar_PUBLISH', true);
-			JToolbarHelper ::custom('phocagalleryusers.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JToolbar_UNPUBLISH', true);
-			JToolbarHelper ::custom( 'phocagalleryusers.approve', 'approve.png', '', 'COM_PHOCAGALLERY_APPROVE' , true);
-			JToolbarHelper ::custom( 'phocagalleryusers.disapprove', 'disapprove.png', '', 'COM_PHOCAGALLERY_NOT_APPROVE' , true);
-			JToolbarHelper ::divider();
+			ToolbarHelper::custom('phocagalleryusers.publish', 'publish.png', 'publish_f2.png','JToolbar_PUBLISH', true);
+			ToolbarHelper::custom('phocagalleryusers.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JToolbar_UNPUBLISH', true);
+			ToolbarHelper::custom( 'phocagalleryusers.approve', 'approve.png', '', 'COM_PHOCAGALLERY_APPROVE' , true);
+			ToolbarHelper::custom( 'phocagalleryusers.disapprove', 'disapprove.png', '', 'COM_PHOCAGALLERY_NOT_APPROVE' , true);
+			ToolbarHelper::divider();
 		}
 
 		if ($canDo->get('core.admin')) {
-			$bar = JToolbar::getInstance('toolbar');
+			$bar = Toolbar::getInstance('toolbar');
 		/*$bar->appendButton( 'Custom', '<a href="#" onclick="javascript:if(confirm(\''.addslashes(JText::_('COM_PHOCAGALLERY_WARNING_AUTHORIZE_ALL')).'\')){Joomla.submitbutton(\'phocagalleryusers.approveall\');}" class="toolbar"><span class="icon-32-authorizeall" title="'.JText::_('COM_PHOCAGALLERY_APPROVE_ALL').'" type="Custom"></span>'.JText::_('COM_PHOCAGALLERY_APPROVE_ALL').'</a>');*/
 
-			$dhtml = '<button class="btn btn-small" onclick="javascript:if(confirm(\''.addslashes(JText::_('COM_PHOCAGALLERY_WARNING_AUTHORIZE_ALL')).'\')){Joomla.submitbutton(\'phocagalleryusers.approveall\');}" ><i class="icon-authorizeall" title="'.JText::_('COM_PHOCAGALLERY_APPROVE_ALL').'"></i> '.JText::_('COM_PHOCAGALLERY_APPROVE_ALL').'</button>';
+			$dhtml = '<button class="btn btn-small" onclick="javascript:if(confirm(\''.addslashes(Text::_('COM_PHOCAGALLERY_WARNING_AUTHORIZE_ALL')).'\')){Joomla.submitbutton(\'phocagalleryusers.approveall\');}" ><i class="icon-authorizeall" title="'.Text::_('COM_PHOCAGALLERY_APPROVE_ALL').'"></i> '.Text::_('COM_PHOCAGALLERY_APPROVE_ALL').'</button>';
 			$bar->appendButton('Custom', $dhtml);
 
 
-			JToolbarHelper ::divider();
+			ToolbarHelper::divider();
 		}
 
 		if ($canDo->get('core.delete')) {
-			JToolbarHelper ::deleteList(  'COM_PHOCAGALLERY_WARNING_DELETE_ITEMS_AVATAR', 'phocagalleryusers.delete', 'COM_PHOCAGALLERY_DELETE');
+			ToolbarHelper::deleteList(  'COM_PHOCAGALLERY_WARNING_DELETE_ITEMS_AVATAR', 'phocagalleryusers.delete', 'COM_PHOCAGALLERY_DELETE');
 		}
 
-		JToolbarHelper ::divider();
-		JToolbarHelper ::help( 'screen.phocagallery', true );
+		ToolbarHelper::divider();
+		ToolbarHelper::help( 'screen.phocagallery', true );
 	}
 
 	protected function getSortFields() {
 		return array(
-			'a.ordering'	=> JText::_('JGRID_HEADING_ORDERING'),
-			'ua.username' 	=> JText::_('COM_PHOCAGALLERY_USER'),
-			'a.published' 	=> JText::_('COM_PHOCAGALLERY_PUBLISHED'),
-			'a.approved' 	=> JText::_('COM_PHOCAGALLERY_APPROVED'),
-			'a.id' 			=> JText::_('JGRID_HEADING_ID')
+			'a.ordering'	=> Text::_('JGRID_HEADING_ORDERING'),
+			'ua.username' 	=> Text::_('COM_PHOCAGALLERY_USER'),
+			'a.published' 	=> Text::_('COM_PHOCAGALLERY_PUBLISHED'),
+			'a.approved' 	=> Text::_('COM_PHOCAGALLERY_APPROVED'),
+			'a.id' 			=> Text::_('JGRID_HEADING_ID')
 		);
 	}
 }

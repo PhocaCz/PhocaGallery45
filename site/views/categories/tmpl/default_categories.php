@@ -30,7 +30,7 @@ foreach ($this->categories as $k => $item) {
         echo '</div>';
     } else {
 
-        if($this->t['image_categories_size'] == 2  || $this->t['image_categories_size'] == 3 ) {
+        if($this->t['image_categories_size'] == 2  || $this->t['image_categories_size'] == 3 || $item->linkthumbnailpath == '') {
             // Folders instead of icons
             echo '<div class="pg-category-box-image pg-svg-box">';
             echo '<a href="' . Route::_($item->link) . '"><svg alt="' . htmlspecialchars($item->title) . '" class="ph-si ph-si-category pg-image c-Image c-Image--shaded" style="width:' . $this->t['imagewidth'] . 'px;height:' . $this->t['imageheight'] . 'px" itemprop="thumbnail"><use xlink:href="#ph-si-category"></use></svg></a>';

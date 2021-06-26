@@ -9,9 +9,16 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Pagination\Pagination;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Pagination\PaginationObject;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
 
 jimport('joomla.html.pagination');
-class PhocaGalleryPaginationUserSubCat extends JPagination
+class PhocaGalleryPaginationUserSubCat extends Pagination
 {
 	var $_tabId;
 
@@ -29,15 +36,15 @@ class PhocaGalleryPaginationUserSubCat extends JPagination
 		// Initialize variables
 		$data = new stdClass();
 
-		$data->all	= new JPaginationObject(JText::_('COM_PHOCAGALLERY_VIEW_ALL'));
+		$data->all	= new JPaginationObject(Text::_('COM_PHOCAGALLERY_VIEW_ALL'));
 		if (!$this->viewall) {
 			$data->all->base	= '0';
-			$data->all->link	= JRoute::_($tabLink."&limitstartsubcat=");
+			$data->all->link	= Route::_($tabLink."&limitstartsubcat=");
 		}
 
 		// Set the start and previous data objects
-		$data->start	= new JPaginationObject(JText::_('COM_PHOCAGALLERY_PAG_START'));
-		$data->previous	= new JPaginationObject(JText::_('COM_PHOCAGALLERY_PAG_PREV'));
+		$data->start	= new JPaginationObject(Text::_('COM_PHOCAGALLERY_PAG_START'));
+		$data->previous	= new JPaginationObject(Text::_('COM_PHOCAGALLERY_PAG_PREV'));
 
 		if ($this->pagesCurrent > 1)
 		{
@@ -46,14 +53,14 @@ class PhocaGalleryPaginationUserSubCat extends JPagination
 			$page = $page == 0 ? '' : $page; //set the empty for removal from route
 
 			$data->start->base	= '0';
-			$data->start->link	= JRoute::_($tabLink."&limitstartsubcat=");
+			$data->start->link	= Route::_($tabLink."&limitstartsubcat=");
 			$data->previous->base	= $page;
-			$data->previous->link	= JRoute::_($tabLink."&limitstartsubcat=".$page);
+			$data->previous->link	= Route::_($tabLink."&limitstartsubcat=".$page);
 		}
 
 		// Set the next and end data objects
-		$data->next	= new JPaginationObject(JText::_('COM_PHOCAGALLERY_PAG_NEXT'));
-		$data->end	= new JPaginationObject(JText::_('COM_PHOCAGALLERY_PAG_END'));
+		$data->next	= new JPaginationObject(Text::_('COM_PHOCAGALLERY_PAG_NEXT'));
+		$data->end	= new JPaginationObject(Text::_('COM_PHOCAGALLERY_PAG_END'));
 
 		if ($this->pagesCurrent < $this->pagesTotal)
 		{
@@ -61,9 +68,9 @@ class PhocaGalleryPaginationUserSubCat extends JPagination
 			$end  = ($this->pagesTotal -1) * $this->limit;
 
 			$data->next->base	= $next;
-			$data->next->link	= JRoute::_($tabLink."&limitstartsubcat=".$next);
+			$data->next->link	= Route::_($tabLink."&limitstartsubcat=".$next);
 			$data->end->base	= $end;
-			$data->end->link	= JRoute::_($tabLink."&limitstartsubcat=".$end);
+			$data->end->link	= Route::_($tabLink."&limitstartsubcat=".$end);
 		}
 
 		$data->pages = array();
@@ -74,11 +81,11 @@ class PhocaGalleryPaginationUserSubCat extends JPagination
 
 			$offset = $offset == 0 ? '' : $offset;  //set the empty for removal from route
 
-			$data->pages[$i] = new JPaginationObject($i);
+			$data->pages[$i] = new PaginationObject($i);
 			if ($i != $this->pagesCurrent || $this->viewall)
 			{
 				$data->pages[$i]->base	= $offset;
-				$data->pages[$i]->link	= JRoute::_($tabLink."&limitstartsubcat=".$offset);
+				$data->pages[$i]->link	= Route::_($tabLink."&limitstartsubcat=".$offset);
 			}
 		}
 		return $data;
@@ -86,26 +93,26 @@ class PhocaGalleryPaginationUserSubCat extends JPagination
 
 	public function getLimitBox()
 	{
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 
 		// Initialize variables
 		$limits = array ();
 
 		// Make the option list
 		for ($i = 5; $i <= 30; $i += 5) {
-			$limits[] = Joomla\CMS\HTML\HTMLHelper::_('select.option', "$i");
+			$limits[] = HTMLHelper::_('select.option', "$i");
 		}
-		$limits[] = Joomla\CMS\HTML\HTMLHelper::_('select.option', '50');
-		$limits[] = Joomla\CMS\HTML\HTMLHelper::_('select.option', '100');
-		$limits[] = Joomla\CMS\HTML\HTMLHelper::_('select.option', '0', JText::_('COM_PHOCAGALLERY_ALL'));
+		$limits[] = HTMLHelper::_('select.option', '50');
+		$limits[] = HTMLHelper::_('select.option', '100');
+		$limits[] = HTMLHelper::_('select.option', '0', Text::_('COM_PHOCAGALLERY_ALL'));
 
 		$selected = $this->viewall ? 0 : $this->limit;
 
 		// Build the select list
 		if ($app->isClient('administrator')) {
-			$html = Joomla\CMS\HTML\HTMLHelper::_('select.genericlist',  $limits, 'limitsubcat', 'class="inputbox input-mini" size="1" onchange="Joomla.submitform();"', 'value', 'text', $selected);
+			$html = HTMLHelper::_('select.genericlist',  $limits, 'limitsubcat', 'class="form-control input-mini" size="1" onchange="Joomla.submitform();"', 'value', 'text', $selected);
 		} else {
-			$html = Joomla\CMS\HTML\HTMLHelper::_('select.genericlist',  $limits, 'limitsubcat', 'class="inputbox input-mini" size="1"  onchange="this.form.submit()"', 'value', 'text', $selected);
+			$html = HTMLHelper::_('select.genericlist',  $limits, 'limitsubcat', 'class="form-control input-mini" size="1"  onchange="this.form.submit()"', 'value', 'text', $selected);
 		}
 		return $html;
 	}
@@ -114,7 +121,7 @@ class PhocaGalleryPaginationUserSubCat extends JPagination
 	public function orderUpIcon($i, $condition = true, $task = '#', $alt = 'COM_PHOCAGALLERY_MOVE_UP', $enabled = true, $checkbox = 'cb') {
 
 
-		$alt = JText::_($alt);
+		$alt = Text::_($alt);
 
 
 		$html = '&nbsp;';
@@ -122,10 +129,10 @@ class PhocaGalleryPaginationUserSubCat extends JPagination
 		{
 			if($enabled) {
 				$html	= '<a href="'.$task.'" title="'.$alt.'">';
-				$html	.= '   <img src="'.JURI::base(true).'/media/com_phocagallery/images/icon-uparrow.png" width="16" height="16" border="0" alt="'.$alt.'" />';
+				$html	.= '   <img src="'.Uri::base(true).'/media/com_phocagallery/images/icon-uparrow.png" width="16" height="16" border="0" alt="'.$alt.'" />';
 				$html	.= '</a>';
 			} else {
-				$html	= '<img src="'.JURI::base(true).'/media/com_phocagallery/images/icon-uparrow0.png" width="16" height="16" border="0" alt="'.$alt.'" />';
+				$html	= '<img src="'.Uri::base(true).'/media/com_phocagallery/images/icon-uparrow0.png" width="16" height="16" border="0" alt="'.$alt.'" />';
 			}
 		}
 
@@ -135,17 +142,17 @@ class PhocaGalleryPaginationUserSubCat extends JPagination
 
 	public function orderDownIcon($i, $n, $condition = true, $task = '#', $alt = 'COM_PHOCAGALLERY_MOVE_DOWN', $enabled = true, $checkbox = 'cb'){
 
-		$alt = JText::_($alt);
+		$alt = Text::_($alt);
 
 		$html = '&nbsp;';
 		if (($i < $n -1 || $i + $this->limitstart < $this->total - 1) && $condition)
 		{
 			if($enabled) {
 				$html	= '<a href="'.$task.'" title="'.$alt.'">';
-				$html	.= '  <img src="'.JURI::base(true).'/media/com_phocagallery/images/icon-downarrow.png" width="16" height="16" border="0" alt="'.$alt.'" />';
+				$html	.= '  <img src="'.Uri::base(true).'/media/com_phocagallery/images/icon-downarrow.png" width="16" height="16" border="0" alt="'.$alt.'" />';
 				$html	.= '</a>';
 			} else {
-				$html	= '<img src="'.JURI::base(true).'/media/com_phocagallery/images/icon-downarrow0.png" width="16" height="16" border="0" alt="'.$alt.'" />';
+				$html	= '<img src="'.Uri::base(true).'/media/com_phocagallery/images/icon-downarrow0.png" width="16" height="16" border="0" alt="'.$alt.'" />';
 			}
 		}
 

@@ -9,12 +9,15 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
 
 class PhocaGalleryTag
 {
 	public static function getTags($imgId, $select = 0) {
 
-		$db =JFactory::getDBO();
+		$db =Factory::getDBO();
 
 		if ($select == 1) {
 			$query = 'SELECT r.tagid';
@@ -43,7 +46,7 @@ class PhocaGalleryTag
 
 
 		if ((int)$imgId > 0) {
-			$db =JFactory::getDBO();
+			$db =Factory::getDBO();
 			$query = ' DELETE '
 					.' FROM #__phocagallery_tags_ref'
 					. ' WHERE imgid = '. (int)$imgId;
@@ -76,7 +79,7 @@ class PhocaGalleryTag
 
 	public static function getAllTagsSelectBox($name, $id, $activeArray, $javascript = NULL, $order = 'id' ) {
 
-		$db =JFactory::getDBO();
+		$db =Factory::getDBO();
 		$query = 'SELECT a.id AS value, a.title AS text'
 				.' FROM #__phocagallery_tags AS a'
 				. ' ORDER BY '. $order;
@@ -86,7 +89,7 @@ class PhocaGalleryTag
 
 		$tags = $db->loadObjectList();
 
-		$tagsO = Joomla\CMS\HTML\HTMLHelper::_('select.genericlist', $tags, $name, 'class="inputbox" size="4" multiple="multiple"'. $javascript, 'value', 'text', $activeArray, $id);
+		$tagsO = HTMLHelper::_('select.genericlist', $tags, $name, 'class="form-control" size="4" multiple="multiple"'. $javascript, 'value', 'text', $activeArray, $id);
 
 		return $tagsO;
 	}
@@ -94,8 +97,8 @@ class PhocaGalleryTag
 	public static function displayTags($imgId, $popupLink = 0) {
 
 		$o 		= '';
-		$db 	= JFactory::getDBO();
-		$params = JComponentHelper::getParams('com_phocagallery') ;
+		$db 	= Factory::getDBO();
+		$params = ComponentHelper::getParams('com_phocagallery') ;
 
 		$query = 'SELECT a.id, a.title, a.link_ext, a.link_cat'
 		.' FROM #__phocagallery_tags AS a'

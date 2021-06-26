@@ -9,15 +9,20 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 jimport( 'joomla.application.component.view');
-class PhocaGalleryViewMap extends JViewLegacy
+class PhocaGalleryViewMap extends HtmlView
 {
 	public 		$t;
 	protected	$params;
 
 	function display($tpl = null) {
-		$app	= JFactory::getApplication();
-		$document		= JFactory::getDocument();
+		$app	= Factory::getApplication();
+		$document		= Factory::getDocument();
 		$this->params	= $app->getParams();
 		// PLUGIN WINDOW - we get information from plugin
 		$get		= array();
@@ -153,9 +158,9 @@ class PhocaGalleryViewMap extends JViewLegacy
 		$this->t['backbutton'] = '';
 		if ($this->t['detailwindow'] == 7) {
 			phocagalleryimport('phocagallery.image.image');
-			$this->t['backbutton'] = '<div><a href="'.JRoute::_('index.php?option=com_phocagallery&view=category&id='. $map->catslug.'&Itemid='. $app->input->get('Itemid', 0, 'int')).'"'
-				.' title="'.JText::_( 'COM_PHOCAGALLERY_BACK_TO_CATEGORY' ).'">'
-				. PhocaGalleryRenderFront::renderIcon('icon-up-images', 'media/com_phocagallery/images/icon-up-images.png', JText::_('COM_PHOCAGALLERY_BACK_TO_CATEGORY'), 'ph-icon-up-images ph-icon-button').'</a></div>';
+			$this->t['backbutton'] = '<div><a href="'.Route::_('index.php?option=com_phocagallery&view=category&id='. $map->catslug.'&Itemid='. $app->input->get('Itemid', 0, 'int')).'"'
+				.' title="'.Text::_( 'COM_PHOCAGALLERY_BACK_TO_CATEGORY' ).'">'
+				. PhocaGalleryRenderFront::renderIcon('icon-up-images', 'media/com_phocagallery/images/icon-up-images.png', Text::_('COM_PHOCAGALLERY_BACK_TO_CATEGORY'), 'ph-icon-up-images ph-icon-button').'</a></div>';
 		}
 
 		// ASIGN
@@ -173,13 +178,13 @@ class PhocaGalleryViewMap extends JViewLegacy
 
 	protected function _prepareDocument($item) {
 
-		$app			= JFactory::getApplication();
+		$app			= Factory::getApplication();
 		$menus			= $app->getMenu();
 		$pathway 		= $app->getPathway();
 		$this->params	= $app->getParams();
 		$title 			= null;
 
-		Joomla\CMS\HTML\HTMLHelper::_('jquery.framework', false);
+		HTMLHelper::_('jquery.framework', false);
 
 		$this->t['gallerymetakey'] 		= $this->params->get( 'gallery_metakey', '' );
 		$this->t['gallerymetadesc'] 		= $this->params->get( 'gallery_metadesc', '' );
@@ -189,14 +194,14 @@ class PhocaGalleryViewMap extends JViewLegacy
 		if ($menu) {
 			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
 		} else {
-			$this->params->def('page_heading', JText::_('JGLOBAL_ARTICLES'));
+			$this->params->def('page_heading', Text::_('JGLOBAL_ARTICLES'));
 		}
 
 		$title = $this->params->get('page_title', '');
 		if (empty($title)) {
 			$title = htmlspecialchars_decode($app->get('sitename'));
 		} else if ($app->get('sitename_pagetitles', 0) == 1) {
-			$title = JText::sprintf('JPAGETITLE', htmlspecialchars_decode($app->get('sitename')), $title);
+			$title = Text::sprintf('JPAGETITLE', htmlspecialchars_decode($app->get('sitename')), $title);
 
 			if (isset($item->title) && $item->title != '') {
 				$title = $title .' - ' .  $item->title;
@@ -208,7 +213,7 @@ class PhocaGalleryViewMap extends JViewLegacy
 				$title = $title .' - ' .  $item->title;
 			}
 
-			$title = JText::sprintf('JPAGETITLE', $title, htmlspecialchars_decode($app->get('sitename')));
+			$title = Text::sprintf('JPAGETITLE', $title, htmlspecialchars_decode($app->get('sitename')));
 		}
 		$this->document->setTitle($title);
 	/*
@@ -247,7 +252,7 @@ class PhocaGalleryViewMap extends JViewLegacy
 		/*if (isset($this->category[0]->parentid)) {
 			if ($this->category[0]->parentid == 1) {
 			} else if ($this->category[0]->parentid > 0) {
-				$pathway->addItem($this->category[0]->parenttitle, JRoute::_(PhocaDocumentationHelperRoute::getCategoryRoute($this->category[0]->parentid, $this->category[0]->parentalias)));
+				$pathway->addItem($this->category[0]->parenttitle, Route::_(PhocaDocumentationHelperRoute::getCategoryRoute($this->category[0]->parentid, $this->category[0]->parentalias)));
 			}
 		}
 

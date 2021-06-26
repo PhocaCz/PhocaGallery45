@@ -9,6 +9,14 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Client\ClientHelper;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Plugin\PluginHelper;
 phocagalleryimport('phocagallery.access.access');
 jimport( 'joomla.filesystem.file' );
 jimport( 'joomla.filesystem.folder' );
@@ -27,15 +35,15 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 {
 
 	function display($cachable = false, $urlparams = false) {
-		if ( ! JFactory::getApplication()->input->get( 'view' ) ) {
+		if ( ! Factory::getApplication()->input->get( 'view' ) ) {
 			$this->input->set('view', 'category' );
 		}
 		parent::display($cachable, $urlparams);
     }
 
 	function remove() {
-		$app		= JFactory::getApplication();
-		$user 		= JFactory::getUser();
+		$app		= Factory::getApplication();
+		$user 		= Factory::getUser();
 		$view 		= $this->input->get('view', '');
 		$id 		= $this->input->get( 'removeid', '', 'int');
 		$catid 		= $this->input->get( 'id', '', 'string');// ID of category
@@ -69,26 +77,26 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 		// - - - - - - - - - - - - - - - - - - -
 
 		if ($view != 'category') {
-			$app->enqueueMessage( JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'), 'error');
-			$app->redirect( JRoute::_('index.php?option=com_phocagallery', false) );
+			$app->enqueueMessage( Text::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'), 'error');
+			$app->redirect( Route::_('index.php?option=com_phocagallery', false) );
 			exit;
 		}
 
 		if ((int)$id  < 1) {
-			$app->enqueueMessage( JText::_('COM_PHOCAGALLERY_ERROR_IMAGE_NOT_EXISTS'), 'error');
-			$app->redirect( JRoute::_('index.php?option=com_phocagallery', false) );
+			$app->enqueueMessage( Text::_('COM_PHOCAGALLERY_ERROR_IMAGE_NOT_EXISTS'), 'error');
+			$app->redirect( Route::_('index.php?option=com_phocagallery', false) );
 			exit;
 		}
 
 		if ($rightDisplayDelete == 1) {
 			if(!$model->delete((int)$id)) {
-			$msg = JText::_('COM_PHOCAGALLERY_ERROR_DELETING_ITEM');
+			$msg = Text::_('COM_PHOCAGALLERY_ERROR_DELETING_ITEM');
 			} else {
-			$msg = JText::_('COM_PHOCAGALLERY_SUCCESS_DELETING_ITEM');
+			$msg = Text::_('COM_PHOCAGALLERY_SUCCESS_DELETING_ITEM');
 			}
 		} else {
-			$app->enqueueMessage(JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'));
-			$app->redirect(JRoute::_('index.php?option=com_users&view=login', false));
+			$app->enqueueMessage(Text::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'));
+			$app->redirect(Route::_('index.php?option=com_users&view=login', false));
 			exit;
 		}
 
@@ -107,13 +115,13 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 			$limitStartUrl	= '';
 		}
 		$app->enqueueMessage($msg);
-		$this->setRedirect( JRoute::_('index.php?option=com_phocagallery&view=category&id='.$catidAlias.'&Itemid='. $Itemid . $limitStartUrl, false));
+		$this->setRedirect( Route::_('index.php?option=com_phocagallery&view=category&id='.$catidAlias.'&Itemid='. $Itemid . $limitStartUrl, false));
 	}
 
 	function publish() {
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 
-		$user 		= JFactory::getUser();
+		$user 		= Factory::getUser();
 		$view 		= $this->input->get('view', '', 'string');
 		$id 		= $this->input->get( 'publishid', '', 'int');
 		$catid 		= $this->input->get('id', '', 'string');// ID of category
@@ -145,26 +153,26 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 		// - - - - - - - - - - - - - - - - -
 
 		if ($view != 'category') {
-			$app->enqueueMessage( JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'), 'error');
-			$app->redirect( JRoute::_('index.php?option=com_phocagallery', false) );
+			$app->enqueueMessage( Text::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'), 'error');
+			$app->redirect( Route::_('index.php?option=com_phocagallery', false) );
 			exit;
 		}
 
 		if ((int)$id  < 1) {
-			$app->enqueueMessage( JText::_('COM_PHOCAGALLERY_ERROR_IMAGE_NOT_EXISTS'), 'error');
-			$app->redirect( JRoute::_('index.php?option=com_phocagallery', false) );
+			$app->enqueueMessage( Text::_('COM_PHOCAGALLERY_ERROR_IMAGE_NOT_EXISTS'), 'error');
+			$app->redirect( Route::_('index.php?option=com_phocagallery', false) );
 			exit;
 		}
 
 		if ($rightDisplayDelete == 1) {
 			if(!$model->publish((int)$id, 1)) {
-			$msg = JText::_('COM_PHOCAGALLERY_ERROR_PUBLISHING_ITEM');
+			$msg = Text::_('COM_PHOCAGALLERY_ERROR_PUBLISHING_ITEM');
 			} else {
-			$msg = JText::_('COM_PHOCAGALLERY_SUCCESS_PUBLISHING_ITEM');
+			$msg = Text::_('COM_PHOCAGALLERY_SUCCESS_PUBLISHING_ITEM');
 			}
 		} else {
-			$app->enqueueMessage(JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'));
-			$app->redirect(JRoute::_('index.php?option=com_users&view=login', false));
+			$app->enqueueMessage(Text::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'));
+			$app->redirect(Route::_('index.php?option=com_users&view=login', false));
 			exit;
 		}
 
@@ -174,12 +182,12 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 			$limitStartUrl	= '';
 		}
 		$app->enqueueMessage($msg);
-		$this->setRedirect( JRoute::_('index.php?option=com_phocagallery&view=category&id='.$catidAlias.'&Itemid='. $Itemid . $limitStartUrl, false));
+		$this->setRedirect( Route::_('index.php?option=com_phocagallery&view=category&id='.$catidAlias.'&Itemid='. $Itemid . $limitStartUrl, false));
 	}
 
 	function unpublish() {
-		$app	= JFactory::getApplication();
-		$user 		= JFactory::getUser();
+		$app	= Factory::getApplication();
+		$user 		= Factory::getUser();
 		$view 		= $this->input->get('view', '', 'string');
 		$id 		= $this->input->get( 'publishid', '', 'int');
 		$catid 		= $this->input->get('id', '', 'string');// ID of category
@@ -215,27 +223,27 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 
 
 		if ($view != 'category') {
-			$app->enqueueMessage( JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'), 'error');
-			$app->redirect( JRoute::_('index.php?option=com_phocagallery', false) );
+			$app->enqueueMessage( Text::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'), 'error');
+			$app->redirect( Route::_('index.php?option=com_phocagallery', false) );
 			exit;
 		}
 
 		if ((int)$id  < 1) {
-			$app->enqueueMessage( JText::_('COM_PHOCAGALLERY_ERROR_IMAGE_NOT_EXISTS'), 'error');
-			$app->redirect( JRoute::_('index.php?option=com_phocagallery', false) );
+			$app->enqueueMessage( Text::_('COM_PHOCAGALLERY_ERROR_IMAGE_NOT_EXISTS'), 'error');
+			$app->redirect( Route::_('index.php?option=com_phocagallery', false) );
 			exit;
 		}
 
 		if ($rightDisplayDelete == 1) {
 			if(!$model->publish((int)$id, 0)) {
-				$msg = JText::_('COM_PHOCAGALLERY_ERROR_UNPUBLISHING_ITEM');
+				$msg = Text::_('COM_PHOCAGALLERY_ERROR_UNPUBLISHING_ITEM');
 			} else {
 
-				$msg = JText::_('COM_PHOCAGALLERY_SUCCESS_UNPUBLISHING_ITEM');
+				$msg = Text::_('COM_PHOCAGALLERY_SUCCESS_UNPUBLISHING_ITEM');
 			}
 		} else {
-			$app->enqueueMessage( JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'));
-			$app->redirect(JRoute::_('index.php?option=com_users&view=login', false));
+			$app->enqueueMessage( Text::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'));
+			$app->redirect(Route::_('index.php?option=com_users&view=login', false));
 			exit;
 		}
 
@@ -245,7 +253,7 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 			$limitStartUrl	= '';
 		}
 		$app->enqueueMessage($msg);
-		$this->setRedirect( JRoute::_('index.php?option=com_phocagallery&view=category&id='.$catidAlias.'&Itemid='. $Itemid . $limitStartUrl, false) );
+		$this->setRedirect( Route::_('index.php?option=com_phocagallery&view=category&id='.$catidAlias.'&Itemid='. $Itemid . $limitStartUrl, false) );
 	}
 
 	/*
@@ -253,8 +261,8 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 	 */
 	 /*
 	function javaupload() {
-		$app	= JFactory::getApplication();
-		JSession::checkToken( 'request' ) or jexit( 'Invalid Token' );
+		$app	= Factory::getApplication();
+		Session::checkToken( 'request' ) or jexit( 'Invalid Token' );
 		$errUploadMsg	= '';
 		$redirectUrl 	= '';
 
@@ -266,15 +274,15 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 	}
 
 	function _realJavaUpload(&$errUploadMsg, &$redirectUrl) {
-		$app	= JFactory::getApplication();
-		JSession::checkToken( 'request' ) or jexit( 'Invalid Token' );
+		$app	= Factory::getApplication();
+		Session::checkToken( 'request' ) or jexit( 'Invalid Token' );
 		foreach ($ FILES as $file => $fileArray) {
 			echo('File key: '. $file . "\n");
 			foreach ($fileArray as $item=>$val) {
 				echo(' Data received: ' . $item.'=>'.$val . "\n");
 			}
 			if (!$this->_singleFileUpload($errUploadMsg, $fileArray, $redirectUrl)) {
-				$errUploadMsg = JText::_($errUploadMsg);
+				$errUploadMsg = Text::_($errUploadMsg);
 				return false;
 			}
 		}
@@ -284,12 +292,12 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 /*
 	function javaupload() {
 
-		JSession::checkToken( 'request' ) or exit( 'ERROR: '. JTEXT::_('COM_PHOCAGALLERY_INVALID_TOKEN'));
+		Session::checkToken( 'request' ) or exit( 'ERROR: '. Text::_('COM_PHOCAGALLERY_INVALID_TOKEN'));
 
 		jimport('joomla.client.helper');
-		$app		= JFactory::getApplication();
-		$ftp 		= JClientHelper::setCredentialsFromRequest('ftp');
-		$user 		= JFactory::getUser();
+		$app		= Factory::getApplication();
+		$ftp 		= ClientHelper::setCredentialsFromRequest('ftp');
+		$user 		= Factory::getUser();
 		$path		= PhocaGalleryPath::getPath();
 
 		$return 	= $this->input->get('return-url', null, 'base64');
@@ -302,7 +310,7 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 		$limitStart	= $this->input->get('limitstart', 0, 'int');
 		$catid 		= (int)$catid;
 
-		$paramsC 	= JComponentHelper::getParams('com_phocagallery') ;
+		$paramsC 	= ComponentHelper::getParams('com_phocagallery') ;
 
 		$model 			= $this->getModel('category');
 
@@ -327,11 +335,11 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 		if ($rightDisplayUpload == 1) {
 
 			if ($rightFolder == '') {
-				exit( 'ERROR: '.JText::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_DEFINED'));
+				exit( 'ERROR: '.Text::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_DEFINED'));
 				return false;
 			}
-			if (!JFolder::exists($path->image_abs . $rightFolder . '/')) {
-				exit( 'ERROR: '.JText::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_EXISTS'));
+			if (!Folder::exists($path->image_abs . $rightFolder . '/')) {
+				exit( 'ERROR: '.Text::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_EXISTS'));
 				return false;
 			}
 
@@ -340,7 +348,7 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 			$allFileSize		= PhocaGalleryFileUploadFront::getSizeAllOriginalImages($file, $this->_user->id);
 
 			if ($maxUserImageSize > 0 && (int) $allFileSize > $maxUserImageSize) {
-				$errUploadMsg = JText::_('COM_PHOCAGALLERY_WARNING_USERIMAGES_TOOLARGE');
+				$errUploadMsg = Text::_('COM_PHOCAGALLERY_WARNING_USERIMAGES_TOOLARGE');
 				$app->redirect($redirectUrl);
 				return false;
 			}*/
@@ -359,27 +367,27 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 					exit( 'SUCCESS');
 					return true;
 				} else {
-					exit( 'ERROR: '.JText::_('COM_PHOCAGALLERY_ERROR_UNABLE_TO_UPLOAD_FILE'));
+					exit( 'ERROR: '.Text::_('COM_PHOCAGALLERY_ERROR_UNABLE_TO_UPLOAD_FILE'));
 					return false;
 				}
 			}
 		} else {
-			exit( 'ERROR: '.JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'));
+			exit( 'ERROR: '.Text::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'));
 			return false;
 		}
 	}*/
 
 	function upload() {
 
-		JSession::checkToken() or jexit( 'Invalid Token' );
+		Session::checkToken() or jexit( 'Invalid Token' );
 
 		jimport('joomla.client.helper');
-		$app		= JFactory::getApplication();
-		$ftp 		= JClientHelper::setCredentialsFromRequest('ftp');
-		$user 		= JFactory::getUser();
+		$app		= Factory::getApplication();
+		$ftp 		= ClientHelper::setCredentialsFromRequest('ftp');
+		$user 		= Factory::getUser();
 		$path		= PhocaGalleryPath::getPath();
 
-		$paramsC 	= JComponentHelper::getParams('com_phocagallery') ;
+		$paramsC 	= ComponentHelper::getParams('com_phocagallery') ;
 
 		$return 	= $this->input->get('return-url', null, 'base64');
 		$format 	= $this->input->get('format', 'html', 'cmd');
@@ -400,7 +408,7 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 		}
 
 
-		$return			= JRoute::_('index.php?option=com_phocagallery&view=category&id='.$catidAlias.'&tab='.$tab.'&Itemid='.$Itemid.$limitStartUrl, false);
+		$return			= Route::_('index.php?option=com_phocagallery&view=category&id='.$catidAlias.'&tab='.$tab.'&Itemid='.$Itemid.$limitStartUrl, false);
 		$redirectUrl 	= $return;
 		$model 			= $this->getModel('category');
 
@@ -424,13 +432,13 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 		if ($rightDisplayUpload == 1) {
 
 			if ($rightFolder == '') {
-				$errUploadMsg = JText::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_DEFINED');
+				$errUploadMsg = Text::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_DEFINED');
 				$app->enqueueMessage($errUploadMsg, 'error');
 				$app->redirect($redirectUrl);
 				return false;
 			}
-			if (!JFolder::exists($path->image_abs . $rightFolder . '/')) {
-				$errUploadMsg = JText::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_EXISTS');
+			if (!Folder::exists($path->image_abs . $rightFolder . '/')) {
+				$errUploadMsg = Text::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_EXISTS');
 				$app->enqueueMessage($errUploadMsg, 'error');
 				$app->redirect($redirectUrl);
 				return false;
@@ -441,7 +449,7 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 			$allFileSize		= PhocaGalleryFileUploadFront::getSizeAllOriginalImages($file, $this->_user->id);
 
 			if ($maxUserImageSize > 0 && (int) $allFileSize > $maxUserImageSize) {
-				$errUploadMsg = JText::_('COM_PHOCAGALLERY_WARNING_USERIMAGES_TOOLARGE');
+				$errUploadMsg = Text::_('COM_PHOCAGALLERY_WARNING_USERIMAGES_TOOLARGE');
 				$app->redirect($redirectUrl);
 				return false;
 			}*/
@@ -465,8 +473,8 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 				}
 			}
 		} else {
-			$errUploadMsg = JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION');
-			$redirectUrl = JRoute::_('index.php?option=com_users&view=login', false);
+			$errUploadMsg = Text::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION');
+			$redirectUrl = Route::_('index.php?option=com_users&view=login', false);
 			$app->enqueueMessage($errUploadMsg, 'error');
 			$app->redirect($redirectUrl);
 			return false;
@@ -475,12 +483,12 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 
 	function ytbupload() {
 
-		JSession::checkToken() or jexit( 'Invalid Token' );
+		Session::checkToken() or jexit( 'Invalid Token' );
 
 		jimport('joomla.client.helper');
-		$app		= JFactory::getApplication();
-		$ftp 		= JClientHelper::setCredentialsFromRequest('ftp');
-		$user 		= JFactory::getUser();
+		$app		= Factory::getApplication();
+		$ftp 		= ClientHelper::setCredentialsFromRequest('ftp');
+		$user 		= Factory::getUser();
 		$path		= PhocaGalleryPath::getPath();
 
 		$return 	= $this->input->get('return-url', null, 'base64');
@@ -492,14 +500,14 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 		$Itemid		= $this->input->get('Itemid',0 , 'int');
 		$limitStart	= $this->input->get('limitstart', 0, 'int');
 
-		$paramsC 	= JComponentHelper::getParams('com_phocagallery') ;
+		$paramsC 	= ComponentHelper::getParams('com_phocagallery') ;
 		$catid 		= (int)$catid;
 
-		$return			= JRoute::_('index.php?option=com_phocagallery&view=category&id='.$catidAlias.'&tab='.$tab.'&Itemid='.$Itemid.$limitStartUrl, false);
+		$return			= Route::_('index.php?option=com_phocagallery&view=category&id='.$catidAlias.'&tab='.$tab.'&Itemid='.$Itemid.$limitStartUrl, false);
 		$redirectUrl 	= $return;
 
 		if ((int)$catid < 1) {
-			$app->enqueueMessage(JText::_('COM_PHOCAGALLERY_PLEASE_SELECT_CATEGORY'), 'error');
+			$app->enqueueMessage(Text::_('COM_PHOCAGALLERY_PLEASE_SELECT_CATEGORY'), 'error');
 			$app->redirect($redirectUrl);
 			return false;
 		}
@@ -543,13 +551,13 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 		if ($rightDisplayUpload == 1) {
 
 			if ($rightFolder == '') {
-				$errUploadMsg = JText::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_DEFINED');
+				$errUploadMsg = Text::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_DEFINED');
 				$app->enqueueMessage($errUploadMsg, 'error');
 				$app->redirect($redirectUrl);
 				return false;
 			}
-			if (!JFolder::exists($path->image_abs . $rightFolder . '/')) {
-				$errUploadMsg = JText::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_EXISTS');
+			if (!Folder::exists($path->image_abs . $rightFolder . '/')) {
+				$errUploadMsg = Text::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_EXISTS');
 				$app->enqueueMessage($errUploadMsg, 'error');
 				$app->redirect($redirectUrl);
 				return false;
@@ -600,7 +608,7 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 				}
 			}
 		} else {
-			$errUploadMsg = JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION');
+			$errUploadMsg = Text::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION');
 			$app->enqueueMessage($errUploadMsg, 'error');
 			$app->redirect($this->_loginurl);
 			return false;
@@ -610,7 +618,7 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 	function multipleupload() {
 
 
-		$app 	= JFactory::getApplication();
+		$app 	= Factory::getApplication();
 		$app->allowCache(false);
 
 
@@ -627,18 +635,18 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 
 
 
-		JSession::checkToken( 'request' ) or jexit(
+		Session::checkToken( 'request' ) or jexit(
 			json_encode(array( 'jsonrpc' => '2.0', 'result' => 'error', 'code' => 100,
-			'message' => JText::_('XXCOM_PHOCAGALLERY_ERROR').': ',
-			'details' => JTEXT::_('XXCOM_PHOCAGALLERY_INVALID_TOKEN')))
+			'message' => Text::_('XXCOM_PHOCAGALLERY_ERROR').': ',
+			'details' => Text::_('XXCOM_PHOCAGALLERY_INVALID_TOKEN')))
 		);
 
 
 
 		jimport('joomla.client.helper');
-		$app		= JFactory::getApplication();
-		$ftp 		= JClientHelper::setCredentialsFromRequest('ftp');
-		$user 		= JFactory::getUser();
+		$app		= Factory::getApplication();
+		$ftp 		= ClientHelper::setCredentialsFromRequest('ftp');
+		$user 		= Factory::getUser();
 		$path		= PhocaGalleryPath::getPath();
 		$return 	= $this->input->get('return-url', null, 'base64');
 		$format 	= $this->input->get('format', 'html', 'cmd');
@@ -648,7 +656,7 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 		$rating		= $this->input->get('rating', '', 'string');
 		$Itemid		= $this->input->get('Itemid', 0, 'int');
 		$limitStart	= $this->input->get('limitstart', 0, 'int');
-		$paramsC 	= JComponentHelper::getParams('com_phocagallery') ;
+		$paramsC 	= ComponentHelper::getParams('com_phocagallery') ;
 
 		$model 		= $this->getModel('category');
 		$catid 		= (int)$catid;
@@ -677,18 +685,18 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 
 			if ($rightFolder == '') {
 				jexit(json_encode(array( 'jsonrpc' => '2.0', 'result' => 'error', 'code' => 104,
-				'message' => JText::_('COM_PHOCAGALLERY_ERROR').': ',
-				'details' => JTEXT::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_DEFINED'))));
+				'message' => Text::_('COM_PHOCAGALLERY_ERROR').': ',
+				'details' => Text::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_DEFINED'))));
 				return false;
 			}
 
 
-			if (!JFolder::exists($path->image_abs . $rightFolder . '/')) {
+			if (!Folder::exists($path->image_abs . $rightFolder . '/')) {
 
 
 				jexit(json_encode(array( 'jsonrpc' => '2.0', 'result' => 'error', 'code' => 104,
-				'message' => JText::_('COM_PHOCAGALLERY_ERROR').': ',
-				'details' => JTEXT::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_EXISTS'))));
+				'message' => Text::_('COM_PHOCAGALLERY_ERROR').': ',
+				'details' => Text::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_EXISTS'))));
 				return false;
 			}
 
@@ -698,7 +706,7 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 			$allFileSize		= PhocaGalleryFileUploadFront::getSizeAllOriginalImages($file, $this->_user->id);
 
 			if ($maxUserImageSize > 0 && (int) $allFileSize > $maxUserImageSize) {
-				$errUploadMsg = JText::_('COM_PHOCAGALLERY_WARNING_USERIMAGES_TOOLARGE');
+				$errUploadMsg = Text::_('COM_PHOCAGALLERY_WARNING_USERIMAGES_TOOLARGE');
 				$app->red irect($redirectUrl, $errUploadMsg);
 				return false;
 			}*/
@@ -716,28 +724,28 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 				$fileName		= $rightFolder . '/' . strtolower($fileName);
 				if(PhocaGalleryControllerCategory::save((int)$catid, $fileName, false, $succeeded, $errUploadMsg, false)) {
 					jexit(json_encode(array( 'jsonrpc' => '2.0', 'result' => 'OK', 'code' => 200,
-					'message' => JText::_('COM_PHOCAGALERY_SUCCESS').': ',
-					'details' => JTEXT::_('COM_PHOCAGALLERY_IMAGES_UPLOADED'))));
+					'message' => Text::_('COM_PHOCAGALERY_SUCCESS').': ',
+					'details' => Text::_('COM_PHOCAGALLERY_IMAGES_UPLOADED'))));
 					return true;
 				} else {
 					jexit(json_encode(array( 'jsonrpc' => '2.0', 'result' => 'error', 'code' => 104,
-					'message' => JText::_('COM_PHOCAGALLERY_ERROR').': ',
-					'details' => JTEXT::_('COM_PHOCAGALLERY_ERROR_UNABLE_TO_UPLOAD_FILE'))));
+					'message' => Text::_('COM_PHOCAGALLERY_ERROR').': ',
+					'details' => Text::_('COM_PHOCAGALLERY_ERROR_UNABLE_TO_UPLOAD_FILE'))));
 					return false;
 				}
 			}
 		} else {
 			jexit(json_encode(array( 'jsonrpc' => '2.0', 'result' => 'error', 'code' => 104,
-			'message' => JText::_('COM_PHOCAGALLERY_ERROR').': ',
-			'details' => JTEXT::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'))));
+			'message' => Text::_('COM_PHOCAGALLERY_ERROR').': ',
+			'details' => Text::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'))));
 			return false;
 		}
 	}
 
 	function save($catid, $filename, $return, &$succeeded, &$errSaveMsg, $redirect=true, $ytbData = array()) {
 
-		$app	= JFactory::getApplication();
-		$user 	= JFactory::getUser();
+		$app	= Factory::getApplication();
+		$user 	= Factory::getUser();
 
 		$post['filename']		= $filename;
 		if (isset($ytbData['link'])) {
@@ -756,7 +764,7 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 		$post['catid']			= $catid;
 		$post['published']		= 1;
 
-		$paramsC 				= JComponentHelper::getParams('com_phocagallery') ;
+		$paramsC 				= ComponentHelper::getParams('com_phocagallery') ;
 		$maxUploadChar			= $paramsC->get( 'max_upload_char', 1000 );
 		if (isset($ytbData['desc'])) {
 		} else {
@@ -781,10 +789,10 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 
 		if ($model->store($post, $return)) {
 			$succeeded = true;
-			$errSaveMsg = JText::_( 'COM_PHOCAGALLERY_SUCCESS_SAVING_ITEM' );
+			$errSaveMsg = Text::_( 'COM_PHOCAGALLERY_SUCCESS_SAVING_ITEM' );
 		} else {
 			$succeeded = false;
-			$errSaveMsg = JText::_( 'COM_PHOCAGALLERY_ERROR_SAVING_ITEM' );
+			$errSaveMsg = Text::_( 'COM_PHOCAGALLERY_ERROR_SAVING_ITEM' );
 		}
 
 		if ($redirect) {
@@ -802,9 +810,9 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 
 
 	function rate() {
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 
-		$user 		= JFactory::getUser();
+		$user 		= Factory::getUser();
 		$view 		= $this->input->get('view', '', 'string');
 		$catid 		= $this->input->get('id', '', 'string');
 		$rating		= $this->input->get('rating', '', 'string');
@@ -824,7 +832,7 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 
 		$catidAlias 	= $catid; //Itemid
 		if ($view != 'category') {
-			$this->setRedirect( JRoute::_('index.php?option=com_phocagallery', false) );
+			$this->setRedirect( Route::_('index.php?option=com_phocagallery', false) );
 		}
 
 
@@ -834,27 +842,27 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 
 		// User has already rated this category
 		if ($checkUserVote) {
-			$msg = JText::_('COM_PHOCAGALLERY_RATING_CATEGORY_ALREADY_RATED');
+			$msg = Text::_('COM_PHOCAGALLERY_RATING_CATEGORY_ALREADY_RATED');
 		} else {
 			if ((int)$post['rating']  < 1 || (int)$post['rating'] > 5) {
-				$app->redirect( JRoute::_('index.php?option=com_phocagallery', false)  );
+				$app->redirect( Route::_('index.php?option=com_phocagallery', false)  );
 				exit;
 			}
 
 			if ($access && $user->id > 0) {
 				if(!$model->rate($post)) {
-				$msg = JText::_('COM_PHOCAGALLERY_ERROR_RATING_CATEGORY');
+				$msg = Text::_('COM_PHOCAGALLERY_ERROR_RATING_CATEGORY');
 				} else {
-				$msg = JText::_('COM_PHOCAGALLERY_SUCCESS_RATING_CATEGORY');
+				$msg = Text::_('COM_PHOCAGALLERY_SUCCESS_RATING_CATEGORY');
 				// Features added by Bernard Gilly - alphaplug.com
 				// load external plugins
 				//$dispatcher = JDispatcher::getInstance();
-				JPluginHelper::importPlugin('phocagallery');
-				$results = \JFactory::getApplication()->triggerEvent('onVoteCategory', array($catid, $rating, $user->id ) );
+				PluginHelper::importPlugin('phocagallery');
+				$results = Factory::getApplication()->triggerEvent('onVoteCategory', array($catid, $rating, $user->id ) );
 				}
 			} else {
-				$app->enqueueMessage( JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'));
-				$app->redirect(JRoute::_('index.php?option=com_users&view=login', false));
+				$app->enqueueMessage( Text::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'));
+				$app->redirect(Route::_('index.php?option=com_users&view=login', false));
 				exit;
 			}
 		}
@@ -876,16 +884,16 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 		}
 
 		$app->enqueueMessage( $msg);
-		$this->setRedirect( JRoute::_('index.php?option=com_phocagallery&view=category&id='.$catidAlias.'&tab='.$tab.'&Itemid='. $Itemid . $limitStartUrl, false) );
+		$this->setRedirect( Route::_('index.php?option=com_phocagallery&view=category&id='.$catidAlias.'&tab='.$tab.'&Itemid='. $Itemid . $limitStartUrl, false) );
 	}
 
 	function comment() {
 
-		JSession::checkToken() or jexit( 'Invalid Token' );
+		Session::checkToken() or jexit( 'Invalid Token' );
 		phocagalleryimport('phocagallery.comment.comment');
 		phocagalleryimport('phocagallery.comment.commentcategory');
-		$app	= JFactory::getApplication();
-		$user 			= JFactory::getUser();
+		$app	= Factory::getApplication();
+		$user 			= Factory::getUser();
 
 
 		$catid 		= $this->input->get('catid', '', 'string');
@@ -905,7 +913,7 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 		$neededAccessLevels	= PhocaGalleryAccess::getNeededAccessLevels();
 		$access				= PhocaGalleryAccess::isAccess($user->getAuthorisedViewLevels(), $neededAccessLevels);
 
-		$paramsC 		= JComponentHelper::getParams('com_phocagallery') ;
+		$paramsC 		= ComponentHelper::getParams('com_phocagallery') ;
 		$maxCommentChar	= $paramsC->get( 'max_comment_char', 1000 );
 		// Maximum of character, they will be saved in database
 		$post['comment']	= substr($post['comment'], 0, (int)$maxCommentChar);
@@ -921,7 +929,7 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 
 		$catidAlias 	= $catid; //Itemid
 		if ($view != 'category') {
-			$this->setRedirect( JRoute::_('index.php?option=com_phocagallery', false) );
+			$this->setRedirect( Route::_('index.php?option=com_phocagallery', false) );
 		}
 
 		$model = $this->getModel('category');
@@ -930,34 +938,34 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 
 		// User has already submitted a comment
 		if ($checkUserComment) {
-			$msg = JText::_('COM_PHOCAGALLERY_COMMENT_ALREADY_SUBMITTED');
+			$msg = Text::_('COM_PHOCAGALLERY_COMMENT_ALREADY_SUBMITTED');
 		} else {
 			// If javascript will not protect the empty form
 			$msg 		= '';
 			$emptyForm	= 0;
 			if ($post['title'] == '') {
-				$msg .= JText::_('COM_PHOCAGALLERY_ERROR_COMMENT_TITLE') . ' ';
+				$msg .= Text::_('COM_PHOCAGALLERY_ERROR_COMMENT_TITLE') . ' ';
 				$emtyForm = 1;
 			}
 			if ($post['comment'] == '') {
-				$msg .= JText::_('COM_PHOCAGALLERY_ERROR_COMMENT_COMMENT');
+				$msg .= Text::_('COM_PHOCAGALLERY_ERROR_COMMENT_COMMENT');
 				$emtyForm = 1;
 			}
 			if ($emptyForm == 0) {
 				if ($access > 0 && $user->id > 0) {
 					if(!$model->comment($post)) {
-					$msg = JText::_('COM_PHOCAGALLERY_ERROR_COMMENT_SUBMITTING');
+					$msg = Text::_('COM_PHOCAGALLERY_ERROR_COMMENT_SUBMITTING');
 					} else {
-					$msg = JText::_('COM_PHOCAGALLERY_SUCCESS_COMMENT_SUBMIT');
+					$msg = Text::_('COM_PHOCAGALLERY_SUCCESS_COMMENT_SUBMIT');
 					// Features by Bernard Gilly - alphaplug.com
 					// load external plugins
 					//$dispatcher = JDispatcher::getInstance();
-					JPluginHelper::importPlugin('phocagallery');
-					$results = \JFactory::getApplication()->triggerEvent('onCommentCategory', array($catid, $post['title'], $post['comment'], $user->id ) );
+					PluginHelper::importPlugin('phocagallery');
+					$results = Factory::getApplication()->triggerEvent('onCommentCategory', array($catid, $post['title'], $post['comment'], $user->id ) );
 					}
 				} else {
-					$app->enqueueMessage(JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'));
-					$app->redirect(JRoute::_('index.php?option=com_users&view=login', false));
+					$app->enqueueMessage(Text::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'));
+					$app->redirect(Route::_('index.php?option=com_users&view=login', false));
 					exit;
 				}
 			}
@@ -980,12 +988,12 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 		}
 
 		$app->enqueueMessage( $msg);
-		$this->setRedirect( JRoute::_('index.php?option=com_phocagallery&view=category&id='.$catidAlias.'&tab='.$tab.'&Itemid='. $Itemid . $limitStartUrl, false) );
+		$this->setRedirect( Route::_('index.php?option=com_phocagallery&view=category&id='.$catidAlias.'&tab='.$tab.'&Itemid='. $Itemid . $limitStartUrl, false) );
 	}
 
 	function createsubcategory() {
 
-		JSession::checkToken() or jexit( 'Invalid Token' );
+		Session::checkToken() or jexit( 'Invalid Token' );
 		$task 						= $this->input->get( 'task', '', 'string');
 		$post['title']				= $this->input->get( 'subcategoryname', '', 'string' );
 		$post['description']		= $this->input->get( 'phocagallerycreatesubcatdescription', '', 'string' );
@@ -1004,7 +1012,7 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 		$catid 		= (int)$catid;
 
 
-		$paramsC 					= JComponentHelper::getParams('com_phocagallery') ;
+		$paramsC 					= ComponentHelper::getParams('com_phocagallery') ;
 		$maxCreateCatChar			= $paramsC->get( 'max_create_cat_char', 1000 );
 		$enableUserSubCatApprove	= $paramsC->get( 'enable_usersubcat_approve', 0 );
 		$enableDirectSubCat     	= $paramsC->get( 'enable_direct_subcat', 0 );
@@ -1020,7 +1028,7 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 
 		$model 						= $this->getModel('user');
 		$userSubCatCount			= $paramsC->get( 'user_subcat_count', 5 );
-		$user 						= JFactory::getUser();
+		$user 						= Factory::getUser();
 		$post['approved']			= 0;
 		$id                         = $catid;
 
@@ -1041,7 +1049,7 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 		$neededAccessLevels	= PhocaGalleryAccess::getNeededAccessLevels();
 		$access				= PhocaGalleryAccess::isAccess($user->getAuthorisedViewLevels(), $neededAccessLevels);
 
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		// USER IS NOT LOGGED
 		if (!$access) {
 			$app->enqueueMessage($this->_loginstr);
@@ -1049,17 +1057,19 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 			exit;
 		}
 
+
+
 		if ($enableDirectSubCat != 1) {
-			$msg = JText::_( 'COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION' );
+			$msg = Text::_( 'COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION' );
 			$app->enqueueMessage($msg);
-			$this->setRedirect( JRoute::_('index.php?option=com_phocagallery&view=category&id='.$id.'&tab='.$tab.'&Itemid='. $Itemid . $limitStartUrl, false));
+			$this->setRedirect( Route::_('index.php?option=com_phocagallery&view=category&id='.$id.'&tab='.$tab.'&Itemid='. $Itemid . $limitStartUrl, false));
 			return;
 		}
 
 		if ((int)$post['parent_id'] < 1) {
-			$msg = JText::_( 'COM_PHOCAGALLERY_PARENT_CATEGORY_NOT_SELECTED' );
+			$msg = Text::_( 'COM_PHOCAGALLERY_PARENT_CATEGORY_NOT_SELECTED' );
 			$app->enqueueMessage($msg);
-			$this->setRedirect( JRoute::_('index.php?option=com_phocagallery&view=category&id='.$id.'&tab='.$tab.'&Itemid='. $Itemid . $limitStartUrl, false));
+			$this->setRedirect( Route::_('index.php?option=com_phocagallery&view=category&id='.$id.'&tab='.$tab.'&Itemid='. $Itemid . $limitStartUrl, false));
 			return;
 		}
 
@@ -1074,9 +1084,9 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 		$subCatCount = $model->getCountUserSubCat($user->id);
 		$subCatCount = (int)$subCatCount + 1;
 		if ((int)$subCatCount > (int)$userSubCatCount) {
-			$msg = JText::_( 'COM_PHOCAGALLERY_MAX_SUBCAT_COUNT_REACHED' );
+			$msg = Text::_( 'COM_PHOCAGALLERY_MAX_SUBCAT_COUNT_REACHED' );
 			$app->enqueueMessage($msg);
-			$this->setRedirect( JRoute::_('index.php?option=com_phocagallery&view=category&id='.$id.'&tab='.$tab.'&Itemid='. $Itemid . $limitStartUrl, false) );
+			$this->setRedirect( Route::_('index.php?option=com_phocagallery&view=category&id='.$id.'&tab='.$tab.'&Itemid='. $Itemid . $limitStartUrl, false) );
 			return;
 		}
 
@@ -1093,9 +1103,9 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 			$errorMsg	= '';
 			$createdFolder = PhocaGalleryFileFolder::createFolder($userFolder, $errorMsg);
 			if ($errorMsg != '') {
-				$msg = JText::_('COM_PHOCAGALLERY_ERROR_FOLDER_CREATING'). ': ' . JText::_($errorMsg);
+				$msg = Text::_('COM_PHOCAGALLERY_ERROR_FOLDER_CREATING'). ': ' . Text::_($errorMsg);
 				$app->enqueueMessage($msg);
-				$this->setRedirect( JRoute::_('index.php?option=com_phocagallery&view=category&id='.$id.'&tab='.$tab.'&Itemid='. $Itemid . $limitStartUrl, false));
+				$this->setRedirect( Route::_('index.php?option=com_phocagallery&view=category&id='.$id.'&tab='.$tab.'&Itemid='. $Itemid . $limitStartUrl, false));
 				return false;
 			}
 		}
@@ -1120,17 +1130,18 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 
 			$id						= $model->store($post);
 			if ($id && $id > 0) {
-				$msg = JText::_( 'COM_PHOCAGALLERY_SUCCESS_CREATING_CATEGORY' );
+				$msg = Text::_( 'COM_PHOCAGALLERY_SUCCESS_CREATING_CATEGORY' );
 			} else {
-				$msg = JText::_( 'COM_PHOCAGALLERY_ERROR_CREATING_CATEGORY' );
+				$msg = Text::_( 'COM_PHOCAGALLERY_ERROR_CREATING_CATEGORY' );
 			}
 		} else {
-			$msg = JText::_( 'COM_PHOCAGALLERY_ERROR_TITLE' );
+			$msg = Text::_( 'COM_PHOCAGALLERY_ERROR_TITLE' );
 		}
 		$app->enqueueMessage($msg);
 
 
-		$this->setRedirect( JRoute::_('index.php?option=com_phocagallery&view=category&id='.$id.'&Itemid='. $Itemid . $limitStartUrl, false) );
+		$this->setRedirect( Route::_('index.php?option=com_phocagallery&view=category&id='.$id.'&Itemid='. $Itemid . $limitStartUrl, false) );
+		return;
 	}
 }
 ?>

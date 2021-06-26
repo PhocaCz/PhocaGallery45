@@ -7,16 +7,22 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('JPATH_BASE') or die();
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
 jimport('joomla.form.formfield');
 
 
-class JFormFieldPhocaSelectItem extends JFormField
+class JFormFieldPhocaSelectItem extends FormField
 {
 	public $type = 'PhocaSelectItem';
 
 	protected function getInput() {
 		$html 	= array();
-		$url 	= 'index.php?option=com_phocagallery&view=phocagalleryitema&format=json&tmpl=component&'. JSession::getFormToken().'=1';
+		$url 	= 'index.php?option=com_phocagallery&view=phocagalleryitema&format=json&tmpl=component&'. Session::getFormToken().'=1';
 
 		// Possible problem with modal
 		//$attr 	= $this->element['class'] ? ' class="'.(string) $this->element['class'].' typeahead"' : ' class="typeahead"';
@@ -47,22 +53,22 @@ class JFormFieldPhocaSelectItem extends JFormField
 
 
 
-		$document = JFactory::getDocument();
-		JHtml::stylesheet('media/com_phocagallery/js/administrator/select2/select2.css' );
-		$document->addScript(JURI::root(true).'/media/com_phocagallery/js/administrator/select2/select2.js');
-		Joomla\CMS\HTML\HTMLHelper::_('jquery.framework', false);
+		$document = Factory::getDocument();
+		HTMLHelper::stylesheet('media/com_phocagallery/js/administrator/select2/select2.css' );
+		$document->addScript(Uri::root(true).'/media/com_phocagallery/js/administrator/select2/select2.js');
+		HTMLHelper::_('jquery.framework', false);
 $s = array();
 $s[] = 'jQuery(document).ready(function() {';
 $s[] = ' ';
 $s[] = '(function (jQuery) {';
 $s[] = '  "use strict";';
 $s[] = '  jQuery.extend(jQuery.fn.select2.defaults, {';
-$s[] = '   formatNoMatches: function () { return "'.JText::_('COM_PHOCAGALLERY_NO_MATCHES_FOUND').'"; },';
-$s[] = '   formatInputTooShort: function (input, min) { var n = min - input.length; return "'.JText::_('COM_PHOCAGALLERY_PLEASE_ENTER').' " + n + " '.JText::_('COM_PHOCAGALLERY_S_MORE_CHARACTER').'" + (n == 1? "" : "s"); },';
-$s[] = '   formatInputTooLong: function (input, max) { var n = input.length - max; return "'.JText::_('COM_PHOCAGALLERY_PLEASE_DELETE').' " + n + " '.JText::_('COM_PHOCAGALLERY_S_CHARACTER').'" + (n == 1? "" : "s"); },';
-$s[] = '   formatSelectionTooBig: function (limit) { return "'.JText::_('COM_PHOCAGALLERY_YOU_CAN_ONLY_SELECT').' " + limit + " '.JText::_('COM_PHOCAGALLERY_S_IMAGE').'" + (limit == 1 ? "" : "s"); },';
-$s[] = '   formatLoadMore: function (pageNumber) { return "'.JText::_('COM_PHOCAGALLERY_LOADING_MORE_RESULTS').'..."; },';
-$s[] = '   formatSearching: function () { return "'.JText::_('COM_PHOCAGALLERY_SEARCHING').'..."; }';
+$s[] = '   formatNoMatches: function () { return "'.Text::_('COM_PHOCAGALLERY_NO_MATCHES_FOUND').'"; },';
+$s[] = '   formatInputTooShort: function (input, min) { var n = min - input.length; return "'.Text::_('COM_PHOCAGALLERY_PLEASE_ENTER').' " + n + " '.Text::_('COM_PHOCAGALLERY_S_MORE_CHARACTER').'" + (n == 1? "" : "s"); },';
+$s[] = '   formatInputTooLong: function (input, max) { var n = input.length - max; return "'.Text::_('COM_PHOCAGALLERY_PLEASE_DELETE').' " + n + " '.Text::_('COM_PHOCAGALLERY_S_CHARACTER').'" + (n == 1? "" : "s"); },';
+$s[] = '   formatSelectionTooBig: function (limit) { return "'.Text::_('COM_PHOCAGALLERY_YOU_CAN_ONLY_SELECT').' " + limit + " '.Text::_('COM_PHOCAGALLERY_S_IMAGE').'" + (limit == 1 ? "" : "s"); },';
+$s[] = '   formatLoadMore: function (pageNumber) { return "'.Text::_('COM_PHOCAGALLERY_LOADING_MORE_RESULTS').'..."; },';
+$s[] = '   formatSearching: function () { return "'.Text::_('COM_PHOCAGALLERY_SEARCHING').'..."; }';
 $s[] = '  });';
 $s[] = '})(jQuery);';
 $s[] = ' ';
@@ -100,10 +106,11 @@ $s[] = '       id: item[0],';
 $s[] = '       title: item[1]';
 $s[] = '      });';
 $s[] = '    });';
-$s[] = '    jQuery(element).val(\'\');';
+//$s[] = '    jQuery(element).val(\'\');';
 if ($multiple == 'false') {
 	$s[] = '    callback(data[0]);';// NOT MULTIPLE
 } else {
+	$s[] = '    jQuery(element).val(\'\')';// Cannot be set when single product because the input will be empty at start (now it includes string but when saving, string will be changed to int)
 	$s[] = '    callback(data);';// MULTIPLE
 }
 $s[] = '   }';
@@ -114,7 +121,7 @@ $s[] = ' function formatResult(item) {';
 $s[] = '  if (item.exts !== undefined) {';
 $s[] = '   return \'<div><img src="\'+ item.exts + \'" /> \' + item.title + \'</div>\';';
 $s[] = '  } else if (item.image !== undefined) {';
-$s[] = '   return \'<div><img src="'.JURI::root().'\' + item.image + \'" /> \' + item.title + \'</div>\';';
+$s[] = '   return \'<div><img src="'.Uri::root().'\' + item.image + \'" /> \' + item.title + \'</div>\';';
 $s[] = '  } else {';
 $s[] = '  	return \'<div>\' + item.title + \'</div>\';';
 $s[] = '  }';
@@ -140,8 +147,8 @@ $s[] = '});';
 
 
 		$html[] = '<div>';
-		$html[] = '<input type="hidden" style="width: 220px;" id="'.$this->id.'" name="'.$this->name.'" value="'. $value.'"' .' '.$attr.' />';
-		$html[] = '<input type="button" id="'.$clearId.'" name="'.$clearId.'" value="'.JText::_('COM_PHOCAGALLERY_CLEAR').'"' .' />';
+		$html[] = '<input type="hidden" style="width:100%" id="'.$this->id.'" name="'.$this->name.'" value="'. $value.'"' .' '.$attr.' />';
+		$html[] = '<input type="button" class="btn btn-primary" id="'.$clearId.'" name="'.$clearId.'" value="'.Text::_('COM_PHOCAGALLERY_CLEAR').'"' .' />';
 		$html[] = '</div>'. "\n";
 
 		return implode("\n", $html);

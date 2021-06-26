@@ -13,6 +13,9 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Layout\FileLayout;
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
 
 $layoutSVG 	= new FileLayout('svg_definitions', null, array('component' => 'com_phocagallery'));
 $layoutC 	= new FileLayout('comments', null, array('component' => 'com_phocagallery'));
@@ -26,8 +29,8 @@ echo '<div id="phocagallery" class="pg-detail-item-box'.$this->params->get( 'pag
 
 if ($this->t['detailwindow'] == 7) {
 	echo '<div class="pg-detail-top-box-back-title">';
-	echo '<a href="'.JRoute::_('index.php?option=com_phocagallery&view=category&id='. $this->item->catslug.'&Itemid='. $this->itemId).'"';
-	echo ' title="'.JText::_( 'COM_PHOCAGALLERY_BACK_TO_CATEGORY' ).'">';
+	echo '<a href="'.Route::_('index.php?option=com_phocagallery&view=category&id='. $this->item->catslug.'&Itemid='. $this->itemId).'"';
+	echo ' title="'.Text::_( 'COM_PHOCAGALLERY_BACK_TO_CATEGORY' ).'">';
 	echo '<svg class="ph-si ph-si-detail-top-back"><use xlink:href="#ph-si-back"></use></svg>';
 	echo '</a></div>';
 }
@@ -50,8 +53,6 @@ switch ($this->t['detailwindow']) {
 
 }
 
-
-//krumo($this->item);
 $classSuffix = ' popup';
 if ($this->t['detailwindow'] == 7) {
 	$classSuffix = ' no-popup';
@@ -109,14 +110,14 @@ if ((isset($this->itemnext[0]) && $this->itemnext[0])  || (isset($this->itemprev
 	echo '<div class="pg-detail-nav-box">';
 	if(isset($this->itemprev[0]) && $this->itemprev[0]) {
 		$p = $this->itemprev[0];
-		$linkPrev = JRoute::_(PhocaGalleryRoute::getImageRoute($p->id, $p->catid, $p->alias, $p->categoryalias, 'detail', $suffix));
-		echo '<div class="ph-left"><a href="'.$linkPrev.'" class="btn btn-primary ph-image-navigation" role="button"><svg class="ph-si ph-si-prev-btn"><use xlink:href="#ph-si-prev"></use></svg> '.JText::_('COM_PHOCAGALLERY_PREVIOUS').'</a></div>';
+		$linkPrev = Route::_(PhocaGalleryRoute::getImageRoute($p->id, $p->catid, $p->alias, $p->categoryalias, 'detail', $suffix));
+		echo '<div class="ph-left"><a href="'.$linkPrev.'" class="btn btn-primary ph-image-navigation" role="button"><svg class="ph-si ph-si-prev-btn"><use xlink:href="#ph-si-prev"></use></svg> '.Text::_('COM_PHOCAGALLERY_PREVIOUS').'</a></div>';
 	}
 
 	if(isset($this->itemnext[0]) && $this->itemnext[0]) {
 		$n = $this->itemnext[0];
-		$linkNext = JRoute::_(PhocaGalleryRoute::getImageRoute($n->id, $n->catid, $n->alias, $n->categoryalias, 'detail', $suffix));
-		echo '<div class="ph-right"><a href="'.$linkNext.'" class="btn btn-primary ph-image-navigation" role="button">'.JText::_('COM_PHOCAGALLERY_NEXT').' <svg class="ph-si ph-si-next-btn"><use xlink:href="#ph-si-next"></use></svg></a></div>';
+		$linkNext = Route::_(PhocaGalleryRoute::getImageRoute($n->id, $n->catid, $n->alias, $n->categoryalias, 'detail', $suffix));
+		echo '<div class="ph-right"><a href="'.$linkNext.'" class="btn btn-primary ph-image-navigation" role="button">'.Text::_('COM_PHOCAGALLERY_NEXT').' <svg class="ph-si ph-si-next-btn"><use xlink:href="#ph-si-next"></use></svg></a></div>';
 	}
 
 	echo '<div class="ph-cb"></div>';
@@ -148,9 +149,9 @@ if ($this->t['display_comment_img'] == 1 || $this->t['display_comment_img'] == 3
 
 
 	/*if ($this->t['externalcommentsystem'] == 1) {
-		if (JComponentHelper::isEnabled('com_jcomments', true)) {
+		if (ComponentHelper::isEnabled('com_jcomments', true)) {
 			include_once(JPATH_BASE.'/components/com_jcomments/jcomments.php');
-			echo JComments::showComments($this->item->id, 'com_phocagallery_images', JText::_('COM_PHOCAGALLERY_IMAGE') .' '. $this->item->title);
+			echo JComments::showComments($this->item->id, 'com_phocagallery_images', Text::_('COM_PHOCAGALLERY_IMAGE') .' '. $this->item->title);
 		}
 	} else if ($this->t['externalcommentsystem'] == 2) {
 		echo $this->loadTemplate('comments-fb');

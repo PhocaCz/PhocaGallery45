@@ -8,10 +8,13 @@
  */
 
 defined('_JEXEC') or die;
+use Joomla\CMS\Component\Router\Rules\RulesInterface;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 
 
 
-class PhocagalleryRouterRulesLegacy implements JComponentRouterRulesInterface
+class PhocagalleryRouterRulesLegacy implements RulesInterface
 {
 
 
@@ -30,7 +33,7 @@ class PhocagalleryRouterRulesLegacy implements JComponentRouterRulesInterface
 
 
 		// Get a menu item based on Itemid or currently active
-		$params = JComponentHelper::getParams('com_phocagallery');
+		$params = ComponentHelper::getParams('com_phocagallery');
 		$advanced = $params->get('sef_advanced_link', 0);
 
 		if (empty($query['Itemid']))
@@ -92,9 +95,9 @@ class PhocagalleryRouterRulesLegacy implements JComponentRouterRulesInterface
                 }
 				if (!empty($path)) {
 
-				   // krumo($path);
+
 				    $path = array_reverse($path, true);
-//krumo($path);
+
 					$array = array();
 
 					foreach ($path as $id)
@@ -115,14 +118,14 @@ class PhocagalleryRouterRulesLegacy implements JComponentRouterRulesInterface
 
 					$segments = array_merge($segments, $array);
                 }
-//krumo($segments);
-				//krumo($catid, $menuCatid);
+
+
 				/*$categories = JCategories::getInstance('Newsfeeds');
 				$category = $categories->get($catid);*/
 
 				//$path = PhocaGalleryCategory::getPath(array(), (int)$catid);
 
-				//bdump($path);
+
 
 				/*if ($category)
 				{
@@ -223,7 +226,7 @@ class PhocagalleryRouterRulesLegacy implements JComponentRouterRulesInterface
 
 		// Get the active menu item.
 		$item	= $this->router->menu->getActive();
-		$params = JComponentHelper::getParams('com_phocagallery');
+		$params = ComponentHelper::getParams('com_phocagallery');
 		$advanced = $params->get('sef_advanced_link', 0);
 
 		// Count route segments
@@ -287,10 +290,10 @@ krumo($segments);
 					$categories = $newCategories;
 					$found = 1;
 
-krumo($category->id);
+
 					break;
 				}
-				krumo($category->id);
+
 			}
 
 			if ($found == 0)
@@ -324,7 +327,7 @@ krumo($category->id);
 			{
 				if ($advanced)
 				{
-					$db = JFactory::getDbo();
+					$db = Factory::getDbo();
 					$query = $db->getQuery(true)
 						->select($db->quoteName('id'))
 						->from('#__newsfeeds')
@@ -347,7 +350,6 @@ krumo($category->id);
 
 		unset($segments[0]);
 		//unset($vars['catid']);
-		//krumo($segments, $vars);exit;
 
 	}
 }

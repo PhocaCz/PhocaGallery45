@@ -2,7 +2,7 @@
 <!-- last head 28 spacer 10-->
 <config>
 	<fields addfieldpath="/administrator/components/com_phocagallery/models/fields">
-		<fieldset name="categories" label="COM_PHOCAGALLERY_CONFIG_HEAD_CATEGORIES_VIEW_LABEL">
+		<fieldset class="options-form" name="categories" label="COM_PHOCAGALLERY_CONFIG_HEAD_CATEGORIES_VIEW_LABEL">
 
 <field name="phocahead1" type="phocahead" phocaimage="icon-param-csv.png" default="COM_PHOCAGALLERY_CONFIG_CATEGORIES_VIEW_SETTINGS_LABEL" label="" description=""/>
 
@@ -112,7 +112,7 @@
 
 -->
 	</fieldset>
-	<fieldset name="category" label="COM_PHOCAGALLERY_CONFIG_HEAD_CATEGORY_VIEW_LABEL">
+	<fieldset class="options-form" name="category" label="COM_PHOCAGALLERY_CONFIG_HEAD_CATEGORY_VIEW_LABEL">
 
 
 
@@ -255,7 +255,7 @@
 <field name="piclens_image" type="list" default="1" label="COM_PHOCAGALLERY_FIELD_COOLIRIS_IMAGE_LABEL" description="COM_PHOCAGALLERY_FIELD_COOLIRIS_IMAGE_DESC">
 	<option value="0">COM_PHOCAGALLERY_ORIGINAL_IMAGE</option>
 	<option value="1">COM_PHOCAGALLERY_THUMBNAIL_IMAGE</option>
-</field> 
+</field>
 
 <field name="phocahead13" type="phocahead" default="COM_PHOCAGALLERY_CONFIG_SWITCH_SETTINGS_LABEL" label="" description=""/>
 
@@ -329,7 +329,7 @@
 
 
 
-	<fieldset name="detail" label="COM_PHOCAGALLERY_CONFIG_HEAD_DETAIL_VIEW_LABEL">
+	<fieldset class="options-form" name="detail" label="COM_PHOCAGALLERY_CONFIG_HEAD_DETAIL_VIEW_LABEL">
 
 <field name="phocahead4" type="phocahead" phocaimage="icon-param-dv.png" default="COM_PHOCAGALLERY_CONFIG_DETAIL_VIEW_LABEL" label="" description="" />
 <field name="detail_window" type="list" default="14" label="COM_PHOCAGALLERY_FIELD_DETAIL_WINDOW_LABEL" description="COM_PHOCAGALLERY_FIELD_DETAIL_WINDOW_DESC_DESC">
@@ -340,7 +340,7 @@
 	<option value="14">COM_PHOCAGALLERY_PHOTOSWIPE</option>
 </field>
 
-
+<!--
 <field name="phocahead30" type="phocahead" default="COM_PHOCAGALLERY_FIELD_MODAL_BOX_LABEL" label="" description="" />
 
 <field name="modal_box_overlay_opacity" default="0.3"  type="list" label="COM_PHOCAGALLERY_FIELD_MODAL_BOX_OVERLAY_OPACITY_LABEL" description="COM_PHOCAGALLERY_FIELD_MODAL_BOX_OVERLAY_OPACITY_DESC">
@@ -508,7 +508,7 @@
 	<option value="1">COM_PHOCAGALLERY_SHOW</option>
 	<option value="0">COM_PHOCAGALLERY_HIDE</option>
 </field>
-<!--
+
 <field name="phocahead35" type="phocahead" default="COM_PHOCAGALLERY_CONFIG_MULTIBOX_SETTINGS_LABEL" label="" description=""/>
 
 <field name="enable_multibox" type="list" default="0" label="COM_PHOCAGALLERY_FIELD_ENABLE_MULTIBOX_LABEL" description="COM_PHOCAGALLERY_FIELD_ENABLE_MULTIBOX_DESC">
@@ -589,7 +589,7 @@
 		<option value="1">COM_PHOCAGALLERY_YES</option>
 	</field>
 
-
+<!--
 <field name="phocahead38" type="phocahead" default="COM_PHOCAGALLERY_CONFIG_SLIDESHOW_SETTINGS_LABEL" label="" description=""/>
 
 <field name="slideshow_delay" type="list" default="3000" label="COM_PHOCAGALLERY_FIELD_SLIDESHOW_DELAY_LABEL" description="COM_PHOCAGALLERY_FIELD_SLIDESHOW_DELAY_DESC">
@@ -622,16 +622,18 @@
 	<option value="1">COM_PHOCAGALLERY_YES</option>
 	<option value="0">COM_PHOCAGALLERY_NO</option>
 </field>
-
+    -->
 
 	</fieldset>
-	<fieldset name="general" label="COM_PHOCAGALLERY_CONFIG_GENERAL_SETTINGS_LABEL">
+	<fieldset class="options-form" name="general" label="COM_PHOCAGALLERY_CONFIG_GENERAL_SETTINGS_LABEL">
 
 	<field name="youtube_api_key" default=""  type="text" label="COM_PHOCAGALLERY_FIELD_YOUTUBE_API_KEY_LABEL" description="COM_PHOCAGALLERY_FIELD_YOUTUBE_API_KEY_DESC"/>
 	<field name="youtube_api_ssl" type="list" default="1" label="COM_PHOCAGALLERY_FIELD_YOUTUBE_API_SSL_ENABLED_LABEL" description="COM_PHOCAGALLERY_FIELD_YOUTUBE_API_SSL_ENABLED_DESC">
 	<option value="1">COM_PHOCAGALLERY_YES</option>
 	<option value="0">COM_PHOCAGALLERY_NO</option>
 </field>
+
+<!--
 
 <field name="phocagallery_width" default=""  type="text" label="COM_PHOCAGALLERY_FIELD_PHOCA_GALLERY_WIDTH_LABEL" description="COM_PHOCAGALLERY_FIELD_PHOCA_GALLERY_WIDTH_DESC_DESC"/>
 <field name="phocagallery_center" type="list" default="0" label="COM_PHOCAGALLERY_FIELD_PHOCA_GALLERY_CENTER_LABEL" description="COM_PHOCAGALLERY_FIELD_PHOCA_GALLERY_CENTER_DESC">
@@ -660,7 +662,7 @@
 	<option value="1">COM_PHOCAGALLERY_YES</option>
 	<option value="0">COM_PHOCAGALLERY_NO</option>
 </field>
-
+-->
 
 <field name="gallery_metadesc" type="textarea" label="COM_PHOCAGALLERY_FIELD_METADESC_LABEL" description="COM_PHOCAGALLERY_FIELD_METADESC_DESC" rows="2" cols="26" default=""/>
 <field name="gallery_metakey" type="textarea" label="COM_PHOCAGALLERY_FIELD_METAKEY_LABEL" description="COM_PHOCAGALLERY_FIELD_METAKEY_DESC" rows="2" cols="26" default=""/>
@@ -811,19 +813,19 @@
 </field>
 
 
-
+<!--
 <field name="phocahead27" type="phocahead" default="COM_PHOCAGALLERY_CONFIG_VIRTUEMART_SETTINGS_LABEL" label="" description=""/>
 
 <field name="display_icon_vm" type="list" default="0" label="COM_PHOCAGALLERY_FIELD_DISPLAY_VM_LINK_LABEL" description="COM_PHOCAGALLERY_FIELD_DISPLAY_VM_LINK_DESC">
 	<option value="1">COM_PHOCAGALLERY_YES</option>
 	<option value="0">COM_PHOCAGALLERY_NO</option>
 </field>
-
+-->
 
 	</fieldset>
-	<fieldset name="users" label="COM_PHOCAGALLERY_CONFIG_HEAD_USERS_LABEL">
+	<fieldset class="options-form" name="users" label="COM_PHOCAGALLERY_CONFIG_HEAD_USERS_LABEL">
 
-<field name="registered_access_level" type="phocaaccesslevel" label="COM_PHOCAGALLERY_FIELD_REGISTERED_ACCESS_LEVEL_LABEL" description="COM_PHOCAGALLERY_FIELD_REGISTERED_ACCESS_LEVEL_DESC" multiple="true" size="10" >
+<field name="registered_access_level" type="phocaaccesslevel" class="form-control" label="COM_PHOCAGALLERY_FIELD_REGISTERED_ACCESS_LEVEL_LABEL" description="COM_PHOCAGALLERY_FIELD_REGISTERED_ACCESS_LEVEL_DESC" multiple="true" size="10" >
 
 </field>
 
@@ -918,9 +920,9 @@
 </field>
 
 
-<field name="default_access" default="1" type="accesslevel" label="COM_PHOCAGALLERY_FIELD_DEFAULT_ACCESS_LABEL" description="COM_PHOCAGALLERY_FIELD_DEFAULT_ACCESS_DESC" class="inputbox" size="1" />
+<field name="default_access" default="1" type="accesslevel" label="COM_PHOCAGALLERY_FIELD_DEFAULT_ACCESS_LABEL" description="COM_PHOCAGALLERY_FIELD_DEFAULT_ACCESS_DESC" class="form-control" size="1" />
 
-<field name="default_accessuserid" default="" type="phocausers" multiple="1" label="COM_PHOCAGALLERY_FIELD_DEFAULT_ACCESS_RIGHTS_LABEL" description="COM_PHOCAGALLERY_FIELD_DEFAULT_ACCESS_RIGHTS_DESC" class="inputbox" size="1" />
+<field name="default_accessuserid" default="0" type="phocausers" multiple="1" label="COM_PHOCAGALLERY_FIELD_DEFAULT_ACCESS_RIGHTS_LABEL" description="COM_PHOCAGALLERY_FIELD_DEFAULT_ACCESS_RIGHTS_DESC" class="form-control" size="1" />
 
 <field name="phocahead10" type="phocahead" default="COM_PHOCAGALLERY_CONFIG_RATING_SETTINGS_LABEL" label="" description=""/>
 
@@ -968,7 +970,7 @@
 
 	</fieldset>
 
-	<fieldset name="thumbnails" label="COM_PHOCAGALLERY_CONFIG_HEAD_THUMBNAIL_SETTINGS_LABEL">
+	<fieldset class="options-form" name="thumbnails" label="COM_PHOCAGALLERY_CONFIG_HEAD_THUMBNAIL_SETTINGS_LABEL">
 
 
 <field name="phocahead20" type="phocahead" default="COM_PHOCAGALLERY_CONFIG_THUMBNAIL_GENERATION_SETTINGS_LABEL" label="" description=""/>
@@ -1070,7 +1072,7 @@
 
 
 
-	<fieldset
+	<fieldset class="options-form"
 		name="permissions"
 		label="JCONFIG_PERMISSIONS_LABEL"
 		description="JCONFIG_PERMISSIONS_DESC"

@@ -1037,7 +1037,7 @@ li.plupload_droptext:before {
 
 .ph-admin-additional-box {
 
-	position: absolute;
+	/*position: absolute;
 	top: 0.3em;
 	right: 0.3em;
 	padding: 1em;
@@ -1046,6 +1046,12 @@ li.plupload_droptext:before {
 }
 .ph-admin-additional-box-img-box {
 	text-align: center;
+	border: 1px solid #f0f0f0;
+	border-radius: 3px;
+	padding: 0.25rem;
+	background: #fff;
+	display:inline-block;
+	margin: 0 auto;
 }
 
 .ph-admin-additional-box img {
@@ -1234,3 +1240,10 @@ table.ph-multiple-table tr td {
 	font-size: small;
 }
 
+.ph-recommended-settings-table tr.alert.alert-error {
+    border: 0;
+}
+.ph-recommended-settings-table tr td [class^="icon-"].duotone:before, 
+.ph-recommended-settings-table tr td [class*=" icon-"].duotone:before{
+    position: relative;
+}

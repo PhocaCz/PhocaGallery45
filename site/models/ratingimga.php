@@ -9,10 +9,11 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 jimport('joomla.application.component.model');
 
 
-class PhocaGalleryModelRatingImgA extends JModelLegacy
+class PhocaGalleryModelRatingImgA extends BaseDatabaseModel
 {
 	
 	function rate($data) {

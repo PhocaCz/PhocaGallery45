@@ -9,12 +9,13 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\Form\FormField;
 if (! class_exists('PhocaGalleryLoader')) {
     require_once( JPATH_ADMINISTRATOR.'/components/com_phocagallery/libraries/loader.php');
 }
 phocagalleryimport('phocagallery.access.access');
 
-class JFormFieldPhocaUsers extends JFormField
+class JFormFieldPhocaUsers extends FormField
 {
 	protected $type 		= 'PhocaUsers';
 

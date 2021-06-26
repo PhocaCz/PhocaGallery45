@@ -119,7 +119,7 @@ class PhocaGalleryUtils
 
 	public static function isEnabledMultiboxFeature($feature) {
 
-		$app		= JFactory::getApplication();
+		$app		= Factory::getApplication();
 		$params		= $app->getParams();
 
 		$enable_multibox				= $params->get( 'enable_multibox', 0);
@@ -134,7 +134,7 @@ class PhocaGalleryUtils
 	public static function setVars( $task = '') {
 
 		$a			= array();
-		$app		= JFactory::getApplication();
+		$app		= Factory::getApplication();
 		$a['o'] 	= htmlspecialchars(strip_tags($app->input->get('option')));
 		$a['c'] 	= str_replace('com_', '', $a['o']);
 		$a['n'] 	= 'Phoca' . ucfirst(str_replace('com_phoca', '', $a['o']));

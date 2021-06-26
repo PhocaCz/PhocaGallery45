@@ -9,16 +9,20 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Component\ComponentHelper;
 jimport('joomla.application.component.model');
 phocagalleryimport('phocagallery.access.access');
 phocagalleryimport('phocagallery.ordering.ordering');
 
-class PhocaGalleryModelDetail extends JModelLegacy
+class PhocaGalleryModelDetail extends BaseDatabaseModel
 {
 
 	function __construct() {
 		parent::__construct();
-		$app				= JFactory::getApplication();
+		$app				= Factory::getApplication();
 		$id = $app->input->get('id', 0, 'int');
 
 		$this->setState('filter.language',$app->getLanguageFilter());
@@ -40,7 +44,7 @@ class PhocaGalleryModelDetail extends JModelLegacy
 	function _loadData() {
 
 		if (empty($this->_data)) {
-			$app				= JFactory::getApplication();
+			$app				= Factory::getApplication();
 			$params				= $app->getParams();
 			//$image_ordering		= $params->get( 'image_ordering', 1 );
 			//$imageOrdering 		= PhocaGalleryOrdering::getOrderingString($image_ordering);
@@ -86,7 +90,7 @@ class PhocaGalleryModelDetail extends JModelLegacy
 	}
 
 	function hit($id) {
-		$table = JTable::getInstance('phocagallery', 'Table');
+		$table = Table::getInstance('phocagallery', 'Table');
 		$table->hit($id);
 		return true;
 	}
@@ -129,7 +133,7 @@ class PhocaGalleryModelDetail extends JModelLegacy
 
 	public function getThumbnails($id, $catid, $order) {
 
-		$paramsC 				= JComponentHelper::getParams('com_phocagallery') ;
+		$paramsC 				= ComponentHelper::getParams('com_phocagallery') ;
 		$multibox_thubms_count	= $paramsC->get( 'multibox_thubms_count', 4 );
 
 		// 1) Display only next thumbnails of current image - use the $order variable - to know next order values
@@ -151,7 +155,7 @@ class PhocaGalleryModelDetail extends JModelLegacy
 	}
 
 	protected function getThumbnailsQuery($id, $catid, $order, $completion = 0, $currentThumbs = array()) {
-		$paramsC 				= JComponentHelper::getParams('com_phocagallery') ;
+		$paramsC 				= ComponentHelper::getParams('com_phocagallery') ;
 		$image_ordering			= $paramsC->get( 'image_ordering', 1 );
 
 		$wheres				= array();

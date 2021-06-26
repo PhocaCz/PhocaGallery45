@@ -10,10 +10,11 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
 if ($this->t['ytb_display'] == 1) {
 
-	$document	= JFactory::getDocument();
+	$document	= Factory::getDocument();
 	$document->addCustomTag( "<style type=\"text/css\"> \n"
 			." body {overflow:hidden;} \n"
 			." </style> \n");

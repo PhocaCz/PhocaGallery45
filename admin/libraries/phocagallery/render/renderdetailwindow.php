@@ -14,6 +14,8 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
 
 class PhocaGalleryRenderDetailWindow
 {
@@ -72,9 +74,9 @@ class PhocaGalleryRenderDetailWindow
 		$this->b3->options = '';
 		$this->b3->optionsrating = '';
 
-		$path = JURI::base(true);
+		$path = Uri::base(true);
 		if ($this->backend == 1) {
-			$path = JURI::root(true);
+			$path = Uri::root(true);
 		}*/
 
 
@@ -124,21 +126,21 @@ class PhocaGalleryRenderDetailWindow
 				HTMLHelper::_('jquery.framework', true);
 
 				$oLang   = array(
-                    'COM_PHOCAGALLERY_LOADING' => JText::_('COM_PHOCAGALLERY_LOADING'),
-                    'COM_PHOCAGALLERY_CLOSE' => JText::_('COM_PHOCAGALLERY_CLOSE'),
-                    'COM_PHOCAGALLERY_PREVIOUS' => JText::_('COM_PHOCAGALLERY_PREVIOUS'),
-                    'COM_PHOCAGALLERY_NEXT' => JText::_('COM_PHOCAGALLERY_NEXT'),
-                    'COM_PHOCAGALLERY_MAGNIFIC_CURR_OF_TOTAL' => JText::_('COM_PHOCAGALLERY_MAGNIFIC_CURR_OF_TOTAL'),
-                    'COM_PHOCAGALLERY_IMAGE_NOT_LOADED' => JText::_('COM_PHOCAGALLERY_IMAGE_NOT_LOADED')
+                    'COM_PHOCAGALLERY_LOADING' => Text::_('COM_PHOCAGALLERY_LOADING'),
+                    'COM_PHOCAGALLERY_CLOSE' => Text::_('COM_PHOCAGALLERY_CLOSE'),
+                    'COM_PHOCAGALLERY_PREVIOUS' => Text::_('COM_PHOCAGALLERY_PREVIOUS'),
+                    'COM_PHOCAGALLERY_NEXT' => Text::_('COM_PHOCAGALLERY_NEXT'),
+                    'COM_PHOCAGALLERY_MAGNIFIC_CURR_OF_TOTAL' => Text::_('COM_PHOCAGALLERY_MAGNIFIC_CURR_OF_TOTAL'),
+                    'COM_PHOCAGALLERY_IMAGE_NOT_LOADED' => Text::_('COM_PHOCAGALLERY_IMAGE_NOT_LOADED')
 
                 );
 
                 $document->addScriptOptions('phLangPG', $oLang);
 
 
-				$document->addScript(JURI::base(true).'/media/com_phocagallery/js/magnific/jquery.magnific-popup.min.js');
-				$document->addScript(JURI::base(true).'/media/com_phocagallery/js/magnific/magnific-initialize.js');
-				$document->addStyleSheet(JURI::base(true).'/media/com_phocagallery/js/magnific/magnific-popup.css');
+				$document->addScript(Uri::base(true).'/media/com_phocagallery/js/magnific/jquery.magnific-popup.min.js');
+				$document->addScript(Uri::base(true).'/media/com_phocagallery/js/magnific/magnific-initialize.js');
+				$document->addStyleSheet(Uri::base(true).'/media/com_phocagallery/js/magnific/magnific-popup.css');
 
 			break;
 
@@ -150,7 +152,7 @@ class PhocaGalleryRenderDetailWindow
 			/*$this->b1->methodname 	= 'pg-photoswipe-button';
 			$this->b1->options		= 'itemprop="contentUrl"';
 			$this->b2->methodname 	= 'pg-photoswipe-button-copy';
-			$this->b2->options		= $this->b1->options;// todo
+			$this->b2->options		= $this->b1->options;
 
 			$this->b3->methodname	= 'pg-ps-modal-button';
 			$this->b3->options		= '';
@@ -166,9 +168,9 @@ class PhocaGalleryRenderDetailWindow
 
 			if ( isset($libraries['pg-group-photoswipe']->value) && $libraries['pg-group-photoswipe']->value == 0 ) {
 
-				$document->addStyleSheet(JURI::base(true).'/media/com_phocagallery/js/photoswipe/css/photoswipe.css');
-				$document->addStyleSheet(JURI::base(true).'/media/com_phocagallery/js/photoswipe/css/default-skin/default-skin.css');
-				$document->addStyleSheet(JURI::base(true).'/media/com_phocagallery/js/photoswipe/css/photoswipe-style.css');
+				$document->addStyleSheet(Uri::base(true).'/media/com_phocagallery/js/photoswipe/css/photoswipe.css');
+				$document->addStyleSheet(Uri::base(true).'/media/com_phocagallery/js/photoswipe/css/default-skin/default-skin.css');
+				$document->addStyleSheet(Uri::base(true).'/media/com_phocagallery/js/photoswipe/css/photoswipe-style.css');
 			}
 
 			// LoadPhotoSwipeBottom must be loaded at the end of document
@@ -194,7 +196,7 @@ class PhocaGalleryRenderDetailWindow
 
 	public static function loadPhotoswipeBottom($forceSlideshow = 0, $forceSlideEffect = 0) {
 
-		$paramsC 				= JComponentHelper::getParams('com_phocagallery') ;
+		$paramsC 				= ComponentHelper::getParams('com_phocagallery') ;
 		$photoswipe_slideshow	= $paramsC->get( 'photoswipe_slideshow', 1 );
 		$photoswipe_slide_effect= $paramsC->get( 'photoswipe_slide_effect', 0 );
 
@@ -233,19 +235,19 @@ class PhocaGalleryRenderDetailWindow
 
                 <div class="pswp__counter"></div>
 
-                <button class="pswp__button pswp__button--close" title="'.JText::_('COM_PHOCAGALLERY_CLOSE').'"></button>
+                <button class="pswp__button pswp__button--close" title="'.Text::_('COM_PHOCAGALLERY_CLOSE').'"></button>
 
-                <button class="pswp__button pswp__button--share" title="'.JText::_('COM_PHOCAGALLERY_SHARE').'"></button>
+                <button class="pswp__button pswp__button--share" title="'.Text::_('COM_PHOCAGALLERY_SHARE').'"></button>
 
-                <button class="pswp__button pswp__button--fs" title="'.JText::_('COM_PHOCAGALERY_TOGGLE_FULLSCREEN').'"></button>
+                <button class="pswp__button pswp__button--fs" title="'.Text::_('COM_PHOCAGALERY_TOGGLE_FULLSCREEN').'"></button>
 
-                <button class="pswp__button pswp__button--zoom" title="'.JText::_('COM_PHOCAGALLERY_ZOOM_IN_OUT').'"></button>';
+                <button class="pswp__button pswp__button--zoom" title="'.Text::_('COM_PHOCAGALLERY_ZOOM_IN_OUT').'"></button>';
 
 				if ($photoswipe_slideshow == 1) {
 					$o .= '<!-- custom slideshow button: -->
-					<button class="pswp__button pswp__button--playpause" title="'.JText::_('COM_PHOCAGALLERY_PLAY_SLIDESHOW').'"></button>
-					<span id="phTxtPlaySlideshow" style="display:none">'.JText::_('COM_PHOCAGALLERY_PLAY_SLIDESHOW').'</span>
-					<span id="phTxtPauseSlideshow" style="display:none">'.JText::_('COM_PHOCAGALLERY_PAUSE_SLIDESHOW').'</span>';
+					<button class="pswp__button pswp__button--playpause" title="'.Text::_('COM_PHOCAGALLERY_PLAY_SLIDESHOW').'"></button>
+					<span id="phTxtPlaySlideshow" style="display:none">'.Text::_('COM_PHOCAGALLERY_PLAY_SLIDESHOW').'</span>
+					<span id="phTxtPauseSlideshow" style="display:none">'.Text::_('COM_PHOCAGALLERY_PAUSE_SLIDESHOW').'</span>';
 				}
 
                 $o .= '<!-- Preloader -->
@@ -263,10 +265,10 @@ class PhocaGalleryRenderDetailWindow
                 <div class="pswp__share-tooltip"></div> 
             </div>
 
-            <button class="pswp__button pswp__button--arrow--left" title="'.JText::_('COM_PHOCAGALLERY_PREVIOUS').'">
+            <button class="pswp__button pswp__button--arrow--left" title="'.Text::_('COM_PHOCAGALLERY_PREVIOUS').'">
             </button>
 
-            <button class="pswp__button pswp__button--arrow--right" title="'.JText::_('COM_PHOCAGALLERY_NEXT').'">
+            <button class="pswp__button pswp__button--arrow--right" title="'.Text::_('COM_PHOCAGALLERY_NEXT').'">
             </button>
 
             <div class="pswp__caption">
@@ -279,13 +281,13 @@ class PhocaGalleryRenderDetailWindow
 
 </div>';
 
-$o .=   '<script src="'.JURI::root(true).'/media/com_phocagallery/js/photoswipe/js/photoswipe.min.js"></script>'. "\n"
-		.'<script src="'.JURI::root(true).'/media/com_phocagallery/js/photoswipe/js/photoswipe-ui-default.min.js"></script>'. "\n";
+$o .=   '<script src="'.Uri::root(true).'/media/com_phocagallery/js/photoswipe/js/photoswipe.min.js"></script>'. "\n"
+		.'<script src="'.Uri::root(true).'/media/com_phocagallery/js/photoswipe/js/photoswipe-ui-default.min.js"></script>'. "\n";
 
 if ($photoswipe_slide_effect == 1) {
-	$o .= '<script src="'.JURI::root(true).'/media/com_phocagallery/js/photoswipe/js/photoswipe-initialize-ratio.js"></script>'. "\n";
+	$o .= '<script src="'.Uri::root(true).'/media/com_phocagallery/js/photoswipe/js/photoswipe-initialize-ratio.js"></script>'. "\n";
 } else {
-	$o .= '<script src="'.JURI::root(true).'/media/com_phocagallery/js/photoswipe/js/photoswipe-initialize.js"></script>'. "\n";
+	$o .= '<script src="'.Uri::root(true).'/media/com_phocagallery/js/photoswipe/js/photoswipe-initialize.js"></script>'. "\n";
 }
 
 		return $o;

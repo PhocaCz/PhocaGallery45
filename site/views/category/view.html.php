@@ -8,9 +8,20 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 
-use Joomla\CMS\Uri\Uri;
+
 
 defined( '_JEXEC' ) or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Object\CMSObject;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Client\ClientHelper;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Uri\Uri;
 jimport( 'joomla.html.pane' );
 jimport( 'joomla.client.helper' );
 jimport( 'joomla.application.component.view' );
@@ -26,14 +37,14 @@ phocagalleryimport('phocagallery.comment.commentimage');
 phocagalleryimport('phocagallery.picasa.picasa');
 phocagalleryimport( 'phocagallery.facebook.fbsystem');
 
-class PhocaGalleryViewCategory extends JViewLegacy
+class PhocaGalleryViewCategory extends HtmlView
 {
 	public 		$t;
 	protected 	$params;
 
 	function display($tpl = null) {
 
-		$app						= JFactory::getApplication();
+		$app						= Factory::getApplication();
 		// Don't load all the framework if nonsense
 		$id 						= $app->input->get('id', 0, 'int');
 		$this->tagId				= $app->input->get( 'tagid', 0, 'int' );
@@ -41,13 +52,13 @@ class PhocaGalleryViewCategory extends JViewLegacy
 
 		if ($id < 1 && $this->tagId < 1) {
 
-			throw new Exception(JText::_( "COM_PHOCAGALLERY_CATEGORY_IS_UNPUBLISHED" ) , 404);
+			throw new Exception(Text::_( "COM_PHOCAGALLERY_CATEGORY_IS_UNPUBLISHED" ) , 404);
 
 			exit;
 		}
 
-		$document					= JFactory::getDocument();
-		$uri 						= \Joomla\CMS\Uri\Uri::getInstance();
+		$document					= Factory::getDocument();
+		$uri 						= Uri::getInstance();
 		$menus						= $app->getMenu();
 		$menu						= $menus->getActive();
 		$this->params				= $app->getParams();
@@ -58,7 +69,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 		$this->t['display_feed']			= $this->params->get('display_feed', 1);
 
 
-		$this->t['user'] 		= JFactory::getUser();
+		$this->t['user'] 		= Factory::getUser();
 		$this->t['action']		= $uri->toString();
 		$this->t['path'] 		= PhocaGalleryPath::getPath();
 		$limitStart					= $app->input->get( 'limitstart', 0, 'int');
@@ -96,7 +107,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 		$this->t['phocagallery_width']		= $this->params->get( 'phocagallery_width', '');
 		$this->t['phocagallery_center']		= $this->params->get( 'phocagallery_center', 0);
 		$this->t['imagewidth']				= $this->params->get( 'medium_image_width', 256 );
-		$this->t['imageheight'] 				= $this->params->get( 'medium_image_height', 192 );// todo change to new default
+		$this->t['imageheight'] 				= $this->params->get( 'medium_image_height', 192 );
 		$this->t['medium_image_width']				= $this->params->get( 'medium_image_width', 256 );
 		$this->t['medium_image_height'] 				= $this->params->get( 'medium_image_height', 192 );
 		$this->t['picasa_correct_width_m']	= (int)$this->params->get( 'medium_image_width', 256 );
@@ -350,7 +361,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 		// MODAL - will be displayed in case e.g. highslide or shadowbox too, because in there are more links
 
 		//if ($this->t['disable_mootools_modal'] != 1) {
-		//	Joomla\CMS\HTML\HTMLHelper::_('behavior.modal', 'a.pg-modal-button');
+		//	JHtml::_('behavior.modal', 'a.pg-modal-button');
 		//}
 
 		$btn = new PhocaGalleryRenderDetailWindow();
@@ -395,7 +406,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 		}
 
 
-		$folderButton = new JObject();
+		$folderButton = new CMSObject();
 		$folderButton->set('name', 'image');
 		$folderButton->set('options', "");
 		// End open window parameters
@@ -461,14 +472,14 @@ class PhocaGalleryViewCategory extends JViewLegacy
 	/*	if (!empty ($this->category->image)) {
 			$attribs['align'] = '"'.$this->category->image_position.'"';
 			$attribs['hspace'] = '"6"';
-			$this->t['image'] = Joomla\CMS\HTML\HTMLHelper::_('image', 'images/stories/'.$this->category->image,'', $attribs);
+			$this->t['image'] = HTMLHelper::_('image', 'images/stories/'.$this->category->image,'', $attribs);
 		}*/
 
 
 		// Overlib
 		$enable_overlib = $this->params->get( 'enable_overlib', 0 );
 		if ((int)$enable_overlib > 0) {
-			$document->addScript(JURI::base(true).'/media/com_phocagallery/js/overlib/overlib_mini.js');
+			$document->addScript(Uri::base(true).'/media/com_phocagallery/js/overlib/overlib_mini.js');
 		}
 
 		// MODEL
@@ -523,8 +534,8 @@ class PhocaGalleryViewCategory extends JViewLegacy
 		}
 		if ($rightDisplay == 0) {
 
-			$app->enqueueMessage(JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'), 'error');
-			$app->redirect(JRoute::_($this->t['pl'], false));
+			$app->enqueueMessage(Text::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'), 'error');
+			$app->redirect(Route::_($this->t['pl'], false));
 			exit;
 		}
 		// - - - - - - - - - - - - - - - - - - - - -
@@ -630,7 +641,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 					$this->items[$iS]->extm						= false;
 					$this->items[$iS]->exts						= false;
 					$this->items[$iS]->numlinks 				= 0;// We are in category view
-					$this->items[$iS]->link 					= JRoute::_('index.php?option=com_phocagallery&view=category&id='. $this->items[$iS]->slug.'&Itemid='. $this->itemId  );
+					$this->items[$iS]->link 					= Route::_('index.php?option=com_phocagallery&view=category&id='. $this->items[$iS]->slug.'&Itemid='. $this->itemId  );
 					$this->items[$iS]->button 					= &$folderButton;
 					$this->items[$iS]->button->methodname 		= '';
 					$this->items[$iS]->display_icon_detail 		= 0;
@@ -651,7 +662,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 					$this->items[$iS]->display_icon_extlink1	= 0;
 					$this->items[$iS]->display_icon_extlink2	= 0;
 					$this->items[$iS]->description				= '';
-					$this->items[$iS]->altvalue					= JText::_('COM_PHOCAGALLERY_BACK');
+					$this->items[$iS]->altvalue					= Text::_('COM_PHOCAGALLERY_BACK');
 					$iS++;
 				} else {
 					// There is no right to see the data but the object exists (because it was loaded from database
@@ -660,11 +671,11 @@ class PhocaGalleryViewCategory extends JViewLegacy
 				}
 			} else { // Back button to categories list if it exists
 				if ($backLinkItemId != 0 && $display_categories_back_button == 1) {
-					$this->items[$iS] 							= new JObject();
+					$this->items[$iS] 							= new CMSObject();
 					$this->items[$iS]->cls						= 'pg-box-backbtn';
 					$this->items[$iS]->iconcls					= 'icon-up';
-					$this->items[$iS]->link 					= JRoute::_($backLink);
-					$this->items[$iS]->title					= JTEXT::_('COM_PHOCAGALLERY_CATEGORY_LIST');
+					$this->items[$iS]->link 					= Route::_($backLink);
+					$this->items[$iS]->title					= Text::_('COM_PHOCAGALLERY_CATEGORY_LIST');
 					$this->items[$iS]->item_type 				= "categorieslist";
 					$this->items[$iS]->linkthumbnailpath 		= false;
 					$this->items[$iS]->extm						= false;
@@ -690,7 +701,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 					$this->items[$iS]->display_icon_extlink1	= 0;
 					$this->items[$iS]->display_icon_extlink2	= 0;
 					$this->items[$iS]->description			= '';
-					$this->items[$iS]->altvalue				= JText::_('COM_PHOCAGALLERY_BACK');
+					$this->items[$iS]->altvalue				= Text::_('COM_PHOCAGALLERY_BACK');
 					$iS++;
 				}
 			}
@@ -729,9 +740,9 @@ class PhocaGalleryViewCategory extends JViewLegacy
 					$this->itemscv[$iCV]->extm				= false;
 					$this->itemscv[$iCV]->exts				= false;
 					$this->itemscv[$iCV]->numlinks 			= 0;// We are in category view
-					$this->itemscv[$iCV]->link 				= JRoute::_('index.php?option=com_phocagallery&view=category&id='. $this->itemscv[$iCV]->slug.'&Itemid='. $this->itemId  );
+					$this->itemscv[$iCV]->link 				= Route::_('index.php?option=com_phocagallery&view=category&id='. $this->itemscv[$iCV]->slug.'&Itemid='. $this->itemId  );
 					$this->itemscv[$iCV]->type				= 3;
-					$this->itemscv[$iCV]->altvalue			= JText::_('COM_PHOCAGALLERY_BACK');
+					$this->itemscv[$iCV]->altvalue			= Text::_('COM_PHOCAGALLERY_BACK');
 					$iCV++;
 				} else {
 					// There is no right to see the data but the object exists (because it was loaded from database
@@ -740,19 +751,19 @@ class PhocaGalleryViewCategory extends JViewLegacy
 				}
 			} else { // Back button to categories list if it exists
 				if ($backLinkItemId != 0 && $this->t['display_categories_back_button_cv'] == 1) {
-					$this->itemscv[$iCV] 						= new JObject();
+					$this->itemscv[$iCV] 						= new CMSObject();
 					$this->itemscv[$iCV]->cls					= 'pg-cvcsv-back';
 					$this->itemscv[$iCV]->iconcls				= 'icon-up';
 					$this->itemscv[$iCV]->link 				= $backLink;
-					$this->itemscv[$iCV]->title				= JTEXT::_('COM_PHOCAGALLERY_CATEGORY_LIST');
+					$this->itemscv[$iCV]->title				= Text::_('COM_PHOCAGALLERY_CATEGORY_LIST');
 					$this->itemscv[$iCV]->item_type 			= "categorieslistcv";
 					$this->itemscv[$iCV]->linkthumbnailpath	= false;
 					$this->itemscv[$iCV]->extm				= false;
 					$this->itemscv[$iCV]->exts				= false;
 					$this->itemscv[$iCV]->numlinks = 0;// We are in category view
-					$this->itemscv[$iCV]->link 				= JRoute::_( $this->itemscv[$iCV]->link );
+					$this->itemscv[$iCV]->link 				= Route::_( $this->itemscv[$iCV]->link );
 					$this->itemscv[$iCV]->type				= 3;
-					$this->itemscv[$iCV]->altvalue			= htmlspecialchars(JTEXT::_('COM_PHOCAGALLERY_CATEGORY_LIST'));
+					$this->itemscv[$iCV]->altvalue			= htmlspecialchars(Text::_('COM_PHOCAGALLERY_CATEGORY_LIST'));
 					$iCV++;
 				}
 			}
@@ -874,7 +885,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 						}
 
 
-						$this->items[$iS]->link 					= JRoute::_('index.php?option=com_phocagallery&view=category&id='. $this->items[$iS]->slug.'&Itemid='. $this->itemId  );
+						$this->items[$iS]->link 					= Route::_('index.php?option=com_phocagallery&view=category&id='. $this->items[$iS]->slug.'&Itemid='. $this->itemId  );
 						$this->items[$iS]->button 				= &$folderButton;
 						$this->items[$iS]->button->methodname 	= '';
 						$this->items[$iS]->display_icon_detail 		= 0;
@@ -942,7 +953,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 						$this->itemscv[$iCV]->iconcls				= 'category';
 						$this->itemscv[$iCV]->slug 				= $this->itemscv[$iCV]->id.':'.$this->itemscv[$iCV]->alias;
 						$this->itemscv[$iCV]->item_type 			= "subfoldercv";
-						$this->itemscv[$iCV]->link 				= JRoute::_('index.php?option=com_phocagallery&view=category&id='. $this->itemscv[$iCV]->slug.'&Itemid='. $this->itemId  );
+						$this->itemscv[$iCV]->link 				= Route::_('index.php?option=com_phocagallery&view=category&id='. $this->itemscv[$iCV]->slug.'&Itemid='. $this->itemId  );
 						$this->itemscv[$iCV]->type				= 4;
 
 
@@ -1126,9 +1137,9 @@ class PhocaGalleryViewCategory extends JViewLegacy
 					}
 
 					if (isset($this->items[$iS]->extpic) && $this->items[$iS]->extpic != '') {
-						$this->t['basic_image'] = Joomla\CMS\HTML\HTMLHelper::_('image', $this->items[$iS]->extl, '', $wHArray);
+						$this->t['basic_image'] = HTMLHelper::_('image', $this->items[$iS]->extl, '', $wHArray);
 					} else {
-						$this->t['basic_image'] = Joomla\CMS\HTML\HTMLHelper::_('image', str_replace('phoca_thumb_m_', 'phoca_thumb_l_', $this->items[$iS]->linkthumbnailpath), '', $wHString);
+						$this->t['basic_image'] = HTMLHelper::_('image', str_replace('phoca_thumb_m_', 'phoca_thumb_l_', $this->items[$iS]->linkthumbnailpath), '', $wHString);
 
 					}
 					$basic_imageSelected = 1;
@@ -1141,7 +1152,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 
 			// Photoswipe needs data-size parameter
 			if ($this->t['detail_window'] == 14) {
-				if (JFile::exists($thumbLink->abs)) {
+				if (File::exists($thumbLink->abs)) {
 					$thumbSize = @getimagesize($thumbLink->abs);
 					if (isset($thumbSize[0]) && isset($thumbSize[1])) {
 						$this->items[$iS]->datasize = 'data-size="' . (int)$thumbSize[0] . 'x' . (int)$thumbSize[1] . '"';
@@ -1237,7 +1248,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 						$this->items[$iS]->extlink1[2] = '_self';
 					}
 					if (!isset($this->items[$iS]->extlink1[3]) || $this->items[$iS]->extlink1[3] == 1) {
-						//$this->items[$iS]->extlink1[4] = Joomla\CMS\HTML\HTMLHelper::_('image', 'media/com_phocagallery/images/icon-extlink1.png', JText::_($this->items[$iS]->extlink1[1]));
+						//$this->items[$iS]->extlink1[4] = JHtml::_('image', 'media/com_phocagallery/images/icon-extlink1.png', JText::_($this->items[$iS]->extlink1[1]));
 						//$this->items[$iS]->extlink1[4] = PhocaGalleryRenderFront::renderIcon('extlink1', 'media/com_phocagallery/images/icon-extlink1.png', JText::_($this->items[$iS]->extlink1[1]));
 						$this->items[$iS]->extlink1[4] = '<svg class="ph-si ph-si-ext-link1"><use xlink:href="#ph-si-ext-link"></use></svg>';
 						$this->items[$iS]->extlink1[5] = '';
@@ -1260,7 +1271,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 						$this->items[$iS]->extlink2[2] = '_self';
 					}
 					if (!isset($this->items[$iS]->extlink2[3]) || $this->items[$iS]->extlink2[3] == 1) {
-						//$this->items[$iS]->extlink2[4] = Joomla\CMS\HTML\HTMLHelper::_('image', 'media/com_phocagallery/images/icon-extlink2.png', JText::_($this->items[$iS]->extlink2[1]));
+						//$this->items[$iS]->extlink2[4] = JHtml::_('image', 'media/com_phocagallery/images/icon-extlink2.png', JText::_($this->items[$iS]->extlink2[1]));
 						//$this->items[$iS]->extlink2[4] = PhocaGalleryRenderFront::renderIcon('extlink2', 'media/com_phocagallery/images/icon-extlink2.png', JText::_($this->items[$iS]->extlink2[1]));
 						$this->items[$iS]->extlink2[4] = '<svg class="ph-si ph-si-ext-link2"><use xlink:href="#ph-si-ext-link"></use></svg>';
 						$this->items[$iS]->extlink2[5] = '';
@@ -1289,7 +1300,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 					$wHOutput	= PhocaGalleryImage::getTransformImageArray($imgSize, $this->t['overlibimagerate']);
 				}
 
-				$oImg		= Joomla\CMS\HTML\HTMLHelper::_( 'image', $this->items[$iS]->extl, '' /*htmlspecialchars( addslashes($this->items[$iS]->title)) */, $wHOutput );
+				$oImg		= JHtml::_( 'image', $this->items[$iS]->extl, '' /*htmlspecialchars( addslashes($this->items[$iS]->title)) */, $wHOutput );
 			} else {
 
 				$thumbL 	= str_replace ('phoca_thumb_m1_','phoca_thumb_m_',$this->items[$iS]->linkthumbnailpath);
@@ -1304,7 +1315,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 				$thumbLI 	= str_replace ('phoca_thumb_m1_','phoca_thumb_m_',$this->items[$iS]->linkthumbnailpath);
 				$thumbLI 	= str_replace ('phoca_thumb_m2_','phoca_thumb_m_',$thumbLI);
 				$thumbLI 	= str_replace ('phoca_thumb_m3_','phoca_thumb_m_',$thumbLI);
-				$oImg		= Joomla\CMS\HTML\HTMLHelper::_( 'image', $thumbL, '' /*$this->items[$iS]->title*/, $wHOutput );
+				$oImg		= JHtml::_( 'image', $thumbL, '' /*$this->items[$iS]->title*/, $wHOutput );
 			}
 
 			/*switch ($enable_overlib) {
@@ -1313,7 +1324,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 				case 4:
 					$uBy = '';//Uploaded by ...
 					if ($enable_overlib == 4 && isset($this->items[$iS]->usernameno) && $this->items[$iS]->usernameno != '') {
-						$uBy = '<div>' . JText::_('COM_PHOCAGALLERY_UPLOADED_BY') . ' <strong>'.$this->items[$iS]->usernameno.'</strong></div>';
+						$uBy = '<div>' . Text::_('COM_PHOCAGALLERY_UPLOADED_BY') . ' <strong>'.$this->items[$iS]->usernameno.'</strong></div>';
 					}
 					$this->items[$iS]->overlib			= 1;
 					$this->items[$iS]->overlib_value 	= "\n\n" ."onmouseover=\"return overlib('".htmlspecialchars( addslashes('<div class="pg-overlib"><center>' . $oImg . "</center></div>" . $uBy ))."', CAPTION, '". htmlspecialchars( addslashes($this->items[$iS]->title))."' ,".htmlspecialchars($this->t['overlib_attributes']).");\""." onmouseout=\"return nd();\"" . "\n";
@@ -1323,7 +1334,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 				case 5:
 					$uBy = '';//Uploaded by ...
 					if ($enable_overlib == 5 && isset($this->items[$iS]->usernameno) && $this->items[$iS]->usernameno != '') {
-						$uBy = '<div>' . JText::_('COM_PHOCAGALLERY_UPLOADED_BY') . ' <strong>'.$this->items[$iS]->usernameno.'</strong></div>';
+						$uBy = '<div>' . Text::_('COM_PHOCAGALLERY_UPLOADED_BY') . ' <strong>'.$this->items[$iS]->usernameno.'</strong></div>';
 					}
 					$this->items[$iS]->overlib			= 2;
 
@@ -1347,7 +1358,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 				case 6:
 					$uBy = '';//Uploaded by ...
 					if ($enable_overlib == 6 && isset($this->items[$iS]->usernameno) && $this->items[$iS]->usernameno != '') {
-						$uBy = '<div>' . JText::_('COM_PHOCAGALLERY_UPLOADED_BY') . ' <strong>'.$this->items[$iS]->usernameno.'</strong></div>';
+						$uBy = '<div>' . Text::_('COM_PHOCAGALLERY_UPLOADED_BY') . ' <strong>'.$this->items[$iS]->usernameno.'</strong></div>';
 					}
 					$this->items[$iS]->overlib			= 3;
 
@@ -1473,13 +1484,13 @@ class PhocaGalleryViewCategory extends JViewLegacy
 
 		// Upload Form - - - - - - - - - - - - -
 		// Set FTP form
-		$ftp = !JClientHelper::hasCredentials('ftp');
+		$ftp = !ClientHelper::hasCredentials('ftp');
 
 		// PARAMS - Upload size
 		$this->t['uploadmaxsize'] = $this->params->get( 'upload_maxsize', 3000000 );
 
 
-		$this->session = JFactory::getSession();
+		$this->session = Factory::getSession();
 
 		//$this->assignRef('uploadmaxsize', $upload_maxsize);
 		// END Upload Form - - - - - - - - - - - -
@@ -1528,7 +1539,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 
 		// COMMENTS
 		if ((int)$this->t['display_comment'] == 1 && (int)$id > 0) {
-			//$document->addScript(JURI::base(true).'/media/com_phocagallery/js/comments.js');
+			//$document->addScript(JUri::base(true).'/media/com_phocagallery/js/comments.js');
 			//$document->addCustomTag(PhocaGalleryRenderFront::renderCommentJS((int)$this->t['max_comment_char']));
 
 			$this->t['already_commented'] 	= PhocaGalleryCommentCategory::checkUserComment( (int)$id, (int)$this->t['user']->id );
@@ -1640,7 +1651,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 							if ($itemMVI->extw != '' && $itemMVI->exth != '') {
 								$itemMVI->datasize 		= 'data-size="'.(int)$dataSizeW.'x'.(int)$dataSizeH. '"';
 							} else {
-								if (JFile::exists($thumbLink->abs)) {
+								if (File::exists($thumbLink->abs)) {
 									$thumbSize	= @getimagesize($thumbLink->abs);
 									if (isset($thumbSize[0]) && isset($thumbSize[1])) {
 										$itemMVI->datasize 		= 'data-size="'.(int)$thumbSize[0].'x'.(int)$thumbSize[1]. '"';
@@ -1658,7 +1669,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 					$lastAddedImages	= $model->getStatisticsImages($id, 'date', 'DESC', $this->t['countlastaddedcatstat']);
 					for($i = 0; $i <  count($lastAddedImages); $i++) {
 						$itemLAI 		=& $lastAddedImages[$i];
-						$itemLAI->link 	= JRoute::_('index.php?option=com_phocagallery&view=detail&catid='.$this->category->slug.'&id='. $itemLAI->slug.'&tmpl=component'.'&Itemid='. $this->itemId  );
+						$itemLAI->link 	= Route::_('index.php?option=com_phocagallery&view=detail&catid='.$this->category->slug.'&id='. $itemLAI->slug.'&tmpl=component'.'&Itemid='. $this->itemId  );
 						$itemLAI->button 				= &$this->button;
 						$itemLAI->button2 				= &$this->button2;
 						$itemLAI->buttonother 			= &$this->buttonother;
@@ -1670,8 +1681,8 @@ class PhocaGalleryViewCategory extends JViewLegacy
 					/*	$itemLAI->altvalue				= $altValue;
 
 						$thumbLink	= PhocaGalleryFileThumbnail::getThumbnailName($itemLAI->filename, 'large');
-						$siteLink 	= JRoute::_('index.php?option=com_phocagallery&view=detail&catid='.$this->category->slug.'&id='. $itemLAI->slug.'&tmpl=component'.'&Itemid='. $this->itemId  );
-						$imgLink	= JURI::base(true) . '/'.$thumbLink->rel;*/
+						$siteLink 	= Route::_('index.php?option=com_phocagallery&view=detail&catid='.$this->category->slug.'&id='. $itemLAI->slug.'&tmpl=component'.'&Itemid='. $this->itemId  );
+						$imgLink	= JUri::base(true) . '/'.$thumbLink->rel;*/
 
 						$dataSizeW = $this->t['large_image_width'];
 						$dataSizeH = $this->t['large_image_height'];
@@ -1710,7 +1721,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 							if ($itemLAI->extw != '' && $itemLAI->exth != '') {
 								$itemLAI->datasize 		= 'data-size="'.(int)$dataSizeW.'x'.(int)$dataSizeH. '"';
 							} else {
-								if (JFile::exists($thumbLink->abs)) {
+								if (File::exists($thumbLink->abs)) {
 									$thumbSize	= @getimagesize($thumbLink->abs);
 									if (isset($thumbSize[0]) && isset($thumbSize[1])) {
 										$itemLAI->datasize 		= 'data-size="'.(int)$thumbSize[0].'x'.(int)$thumbSize[1]. '"';
@@ -1753,7 +1764,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 			// = = = = = = = = = =
 			// U P L O A D
 			// = = = = = = = = = =
-			$this->t['ftp'] 		= !JClientHelper::hasCredentials('ftp');
+			$this->t['ftp'] 		= !ClientHelper::hasCredentials('ftp');
 
 
 			// SEF problem
@@ -1808,10 +1819,10 @@ class PhocaGalleryViewCategory extends JViewLegacy
 			// - - - - - - - - - - -
 			if ((int)$this->t['displayupload'] == 1) {
 				$sU							= new PhocaGalleryFileUploadSingle();
-				$sU->returnUrl				= htmlspecialchars($this->t['action'] . $amp .'task=upload&'. $this->session->getName().'='.$this->session->getId() .'&'. JSession::getFormToken().'=1&viewback=category&tab='.$this->t['currenttab']['upload']);
+				$sU->returnUrl				= htmlspecialchars($this->t['action'] . $amp .'task=upload&'. $this->session->getName().'='.$this->session->getId() .'&'. Session::getFormToken().'=1&viewback=category&tab='.$this->t['currenttab']['upload']);
 				$sU->tab					= $this->t['currenttab']['upload'];
 				$this->t['su_output']	= $sU->getSingleUploadHTML(1);
-				$this->t['su_url']		= htmlspecialchars($this->t['action'] . $amp .'task=upload&'. $this->session->getName().'='.$this->session->getId() .'&'. JSession::getFormToken().'=1&viewback=category&tab='.$this->t['currenttab']['upload']);
+				$this->t['su_url']		= htmlspecialchars($this->t['action'] . $amp .'task=upload&'. $this->session->getName().'='.$this->session->getId() .'&'. Session::getFormToken().'=1&viewback=category&tab='.$this->t['currenttab']['upload']);
 
 			}
 
@@ -1822,10 +1833,10 @@ class PhocaGalleryViewCategory extends JViewLegacy
 
 			if ((int)$this->t['ytbupload'] == 1 && $this->t['displayupload'] == 1 ) {
 				$sYU						= new PhocaGalleryFileUploadSingle();
-				$sYU->returnUrl				= htmlspecialchars($this->t['action'] . $amp .'task=ytbupload&'. $this->session->getName().'='.$this->session->getId().'&'. JSession::getFormToken().'=1&viewback=category&tab='.$this->t['currenttab']['ytbupload']);
+				$sYU->returnUrl				= htmlspecialchars($this->t['action'] . $amp .'task=ytbupload&'. $this->session->getName().'='.$this->session->getId().'&'. Session::getFormToken().'=1&viewback=category&tab='.$this->t['currenttab']['ytbupload']);
 				$sYU->tab					= $this->t['currenttab']['ytbupload'];
 				$this->t['syu_output']	= $sYU->getSingleUploadHTML(1);
-				$this->t['syu_url']		= htmlspecialchars($this->t['action'] . $amp .'task=ytbupload&'. $this->session->getName().'='.$this->session->getId().'&'. JSession::getFormToken().'=1&viewback=category&tab='.$this->t['currenttab']['ytbupload']);
+				$this->t['syu_url']		= htmlspecialchars($this->t['action'] . $amp .'task=ytbupload&'. $this->session->getName().'='.$this->session->getId().'&'. Session::getFormToken().'=1&viewback=category&tab='.$this->t['currenttab']['ytbupload']);
 			}
 
 
@@ -1838,21 +1849,21 @@ class PhocaGalleryViewCategory extends JViewLegacy
 			$this->t['mu_response_msg']	= $muUploadedMsg 	= '';
 
 			if ($muUploaded > 0) {
-				$muUploadedMsg = JText::_('COM_PHOCAGALLERY_COUNT_UPLOADED_IMG'). ': ' . $muUploaded;
+				$muUploadedMsg = Text::_('COM_PHOCAGALLERY_COUNT_UPLOADED_IMG'). ': ' . $muUploaded;
 			}
 			if ($muFailed > 0) {
-				$muFailedMsg = JText::_('COM_PHOCAGALLERY_COUNT_NOT_UPLOADED_IMG'). ': ' . $muFailed;
+				$muFailedMsg = Text::_('COM_PHOCAGALLERY_COUNT_NOT_UPLOADED_IMG'). ': ' . $muFailed;
 			}
 			if ($muFailed > 0 && $muUploaded > 0) {
 				$this->t['mu_response_msg'] = '<div class="alert alert-info">'
-				.JText::_('COM_PHOCAGALLERY_COUNT_UPLOADED_IMG'). ': ' . $muUploaded .'<br />'
-				.JText::_('COM_PHOCAGALLERY_COUNT_NOT_UPLOADED_IMG'). ': ' . $muFailed.'</div>';
+				.Text::_('COM_PHOCAGALLERY_COUNT_UPLOADED_IMG'). ': ' . $muUploaded .'<br />'
+				.Text::_('COM_PHOCAGALLERY_COUNT_NOT_UPLOADED_IMG'). ': ' . $muFailed.'</div>';
 			} else if ($muFailed > 0 && $muUploaded == 0) {
 				$this->t['mu_response_msg'] = '<div class="alert alert-error alert-danger">'
-				.JText::_('COM_PHOCAGALLERY_COUNT_NOT_UPLOADED_IMG'). ': ' . $muFailed.'</div>';
+				.Text::_('COM_PHOCAGALLERY_COUNT_NOT_UPLOADED_IMG'). ': ' . $muFailed.'</div>';
 			} else if ($muFailed == 0 && $muUploaded > 0){
 				$this->t['mu_response_msg'] = '<div class="alert alert-success">'
-				.JText::_('COM_PHOCAGALLERY_COUNT_UPLOADED_IMG'). ': ' . $muUploaded.'</div>';
+				.Text::_('COM_PHOCAGALLERY_COUNT_UPLOADED_IMG'). ': ' . $muUploaded.'</div>';
 			} else {
 				$this->t['mu_response_msg'] = '';
 			}
@@ -1865,7 +1876,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 				$mU->method				= $this->t['multipleuploadmethod'];
 				$mU->url				= $this->t['action'] . $amp .'controller=category&task=multipleupload&'
 										// . $this->session->getName().'='.$this->session->getId().'&'
-										 . JSession::getFormToken().'=1&tab='.$this->t['currenttab']['multipleupload'];
+										 . Session::getFormToken().'=1&tab='.$this->t['currenttab']['multipleupload'];
 
 
 				// Remove active tab from URL for reload URL - which needs to have current tab not active tab
@@ -1874,7 +1885,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 
 				$mU->reload				= $uriTab->toString() . $amp
 										//. $this->session->getName().'='.$this->session->getId().'&'
-										. JSession::getFormToken().'=1&tab='.$this->t['currenttab']['multipleupload'];
+										. Session::getFormToken().'=1&tab='.$this->t['currenttab']['multipleupload'];
 
 
 				$mU->maxFileSize		= PhocaGalleryFileUploadMultiple::getMultipleUploadSizeFormat($this->t['uploadmaxsize']);
@@ -1898,11 +1909,11 @@ class PhocaGalleryViewCategory extends JViewLegacy
 				$jU->uploadmaxsize			= $this->t['uploadmaxsize'];
 				$jU->returnUrl				= $this->t['action'] . $amp
 											. $this->session->getName().'='.$this->session->getId().'&'
-											. JSession::getFormToken().'=1&tab='.$this->t['currenttab']['javaupload'];
+											. Session::getFormToken().'=1&tab='.$this->t['currenttab']['javaupload'];
 				$jU->url					= $this->t['action'] . $amp .'controller=category&task=javaupload&amp;'
 											. $this->session->getName().'='.$this->session->getId().'&'
-											. JSession::getFormToken().'=1&amp;tab='.$this->t['currenttab']['javaupload'];
-				$jU->source 				= JURI::root(true).'/media/com_phocagallery/js/jupload/wjhk.jupload.jar';
+											. Session::getFormToken().'=1&amp;tab='.$this->t['currenttab']['javaupload'];
+				$jU->source 				= Uri::root(true).'/media/com_phocagallery/js/jupload/wjhk.jupload.jar';
 				$this->t['ju_output']	= $jU->getJavaUploadHTML();
 
 			}
@@ -1914,13 +1925,13 @@ class PhocaGalleryViewCategory extends JViewLegacy
 		}
 
 		// ADD JAK DATA CSS style
-		if ( $this->t['detail_window'] == 6 ) {
+		/*if ( $this->t['detail_window'] == 6 ) {
 			$document->addCustomTag('<script type="text/javascript">'
 			. 'var dataJakJs = ['
-			. implode($this->t['jakdatajs'], ',')
+			. implode(',', $this->t['jakdatajs'])
 			. ']'
 			. '</script>');
-		}
+		}*/
 
 		// Detail Window - will be popup or not
 		if ($this->t['detail_window'] == 7) {
@@ -1943,10 +1954,10 @@ class PhocaGalleryViewCategory extends JViewLegacy
 		$masBoxWidth = $this->t['boxsize']['width'] + 20;
 		// Masonry effect
 		/*if ($this->t['diff_thumb_height'] == 2) {
-			$document->addScript(JURI::base(true).'/media/com_phocagallery/js/masonry/masonry.min.js');
+			$document->addScript(Uri::base(true).'/media/com_phocagallery/js/masonry/masonry.min.js');
 
 			if ($this->t['masonry_center'] == 1) {
-				$document->addScript(JURI::base(true).'/media/com_phocagallery/js/masonry/masonry.initialize.center.js');
+				$document->addScript(Uri::base(true).'/media/com_phocagallery/js/masonry/masonry.initialize.center.js');
 			} else if ($this->t['masonry_center'] == 2) {
 				$document->addCustomTag('<script type="text/javascript">
 				window.onload = function() {
@@ -1957,7 +1968,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 				};
 				</script>');
 			} else {
-				$document->addScript(JURI::base(true).'/media/com_phocagallery/js/masonry/masonry.initialize.js');
+				$document->addScript(Uri::base(true).'/media/com_phocagallery/js/masonry/masonry.initialize.js');
 			}
 
 
@@ -1985,8 +1996,8 @@ class PhocaGalleryViewCategory extends JViewLegacy
 		}
 
 	/*	if ($this->t['equal_heights'] == 1) {
-			Joomla\CMS\HTML\HTMLHelper::_('jquery.framework', false);
-			$document->addScript(JURI::root(true).'/media/com_phocagallery/js/jquery.equalheights.min.js');
+			HTMLHelper::_('jquery.framework', false);
+			$document->addScript(Uri::root(true).'/media/com_phocagallery/js/jquery.equalheights.min.js');
 			$document->addScriptDeclaration(
 			'jQuery(window).load(function(){
 				jQuery(\'.pg-cv-box\').equalHeights();
@@ -2039,7 +2050,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 
 	protected function _prepareDocument() {
 
-		$app		= JFactory::getApplication();
+		$app		= Factory::getApplication();
 		$menus		= $app->getMenu();
 		$pathway 	= $app->getPathway();
 		//$this->params		= $app->getParams();
@@ -2053,7 +2064,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 		/*if ($menu) {
 			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
 		} else {
-			$this->params->def('page_heading', JText::_('JGLOBAL_ARTICLES'));
+			$this->params->def('page_heading', Text::_('JGLOBAL_ARTICLES'));
 		}*/
 		if ($menu && $this->params->get('display_menu_link_title', 1) == 1) {
 			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
@@ -2065,7 +2076,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 		if (empty($title)) {
 			$title = htmlspecialchars_decode($app->get('sitename'));
 		} else if ($app->get('sitename_pagetitles', 0) == 1) {
-			$title = JText::sprintf('JPAGETITLE', htmlspecialchars_decode($app->get('sitename')), $title);
+			$title = Text::sprintf('JPAGETITLE', htmlspecialchars_decode($app->get('sitename')), $title);
 
 			if ($this->t['display_cat_name_title'] == 1 && isset($this->category->title) && $this->category->title != '') {
 				$title = $title .' - ' .  $this->category->title;
@@ -2077,7 +2088,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 				$title = $title .' - ' .  $this->category->title;
 			}
 
-			$title = JText::sprintf('JPAGETITLE', $title, htmlspecialchars_decode($app->get('sitename')));
+			$title = Text::sprintf('JPAGETITLE', $title, htmlspecialchars_decode($app->get('sitename')));
 		}
 
 	/*	if (isset($this->category->title) && $this->category->title != '') {
@@ -2113,20 +2124,20 @@ class PhocaGalleryViewCategory extends JViewLegacy
 		// load external plugins
 		/*$user       = JFactory::getUser();
 		$catid      = $this->category->id;
-		$db	   = JFactory::getDBO();
+		$db	   = Factory::getDBO();
 		$query = "SELECT owner_id FROM #__phocagallery_categories WHERE `id`='$catid'";
 		$db->setQuery( $query );
 		$ownerid = $db->loadResult();
 		$dispatcher = JDispatcher::getInstance();
-		JPluginHelper::importPlugin('phocagallery');
-		$results = \JFactory::getApplication()->triggerEvent('onViewCategory', array($catid, $ownerid, $user->id) );
+		PluginHelper::importPlugin('phocagallery');
+		$results = Factory::getApplication()->triggerEvent('onViewCategory', array($catid, $ownerid, $user->id) );
 		*/
 
 		if (isset($this->category->id) && isset($this->category->owner_id)) {
-			$user       = JFactory::getUser();
+			$user       = Factory::getUser();
 			//$dispatcher = JDispatcher::getInstance();
-			JPluginHelper::importPlugin('phocagallery');
-			$results = \JFactory::getApplication()->triggerEvent('onViewCategory', array((int)$this->category->id, (int)$this->category->owner_id, (int)$user->id) );
+			PluginHelper::importPlugin('phocagallery');
+			$results = Factory::getApplication()->triggerEvent('onViewCategory', array((int)$this->category->id, (int)$this->category->owner_id, (int)$user->id) );
 		}
 
 		/*if ($app->get('MetaAuthor') == '1') {
@@ -2151,7 +2162,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 	 */
 	function _addBreadCrumbs($rootId, $displayStyle)
 	{
-	    $app = JFactory::getApplication();
+	    $app = Factory::getApplication();
 		$i = 0;
 		$category = $this->category;
 	    while (isset($category->id))
@@ -2162,7 +2173,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 				break;
 			}
 
-	        $db = JFactory::getDBO();
+	        $db = Factory::getDBO();
 	        $query = 'SELECT *' .
 	            ' FROM #__phocagallery_categories AS c' .
 	            ' WHERE c.id = '.(int) $category->parent_id.
@@ -2206,7 +2217,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 			}
 			else
 			{
-				$pathway->addItem($crumbList[$i]->title, JRoute::_('index.php?option=com_phocagallery&view=category&id='. $crumbList[$i]->id.':'.$crumbList[$i]->alias.'&Itemid='. $this->itemId ));
+				$pathway->addItem($crumbList[$i]->title, Route::_('index.php?option=com_phocagallery&view=category&id='. $crumbList[$i]->id.':'.$crumbList[$i]->alias.'&Itemid='. $this->itemId ));
 			}
 	    }
 	}

@@ -8,6 +8,14 @@
  */
 
 defined('_JEXEC') or die;
+use Joomla\CMS\Component\Router\RouterView;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Component\Router\RouterViewConfiguration;
+use Joomla\CMS\Component\Router\Rules\MenuRules;
+use Joomla\CMS\Component\Router\Rules\StandardRules;
+use Joomla\CMS\Component\Router\Rules\NomenuRules;
+use Joomla\CMS\Factory;
+
 
 /**
  * Routing class of com_phocagallery
@@ -19,7 +27,7 @@ if (! class_exists('PhocaGalleryLoader')) {
     require_once( JPATH_ADMINISTRATOR.'/components/com_phocagallery/libraries/loader.php');
 }
 
-class PhocagalleryRouter extends JComponentRouterView
+class PhocagalleryRouter extends RouterView
 {
 	protected $noIDs = false;
 
@@ -33,15 +41,15 @@ class PhocagalleryRouter extends JComponentRouterView
 	{
 
 
-		$params = JComponentHelper::getParams('com_phcagallery');
+		$params = ComponentHelper::getParams('com_phcagallery');
 		$this->noIDs = (bool) $params->get('sef_ids');
 
-		$categories = new JComponentRouterViewconfiguration('categories');
+		$categories = new RouterViewConfiguration('categories');
 		$categories->setKey('id');
 		$this->registerView($categories);
 
 
-		$category = new JComponentRouterViewconfiguration('category');
+		$category = new RouterViewConfiguration('category');
 
 
 		$category->setKey('id')->setParent($categories, 'parent_id')->setNestable();
@@ -51,13 +59,13 @@ class PhocagalleryRouter extends JComponentRouterView
 
 
 
-		$detail = new JComponentRouterViewconfiguration('detail');
+		$detail = new RouterViewConfiguration('detail');
 		$detail->setKey('id')->setParent($category, 'catid');//->setNestable();
 		$this->registerView($detail);
 
 		$views = array('info', 'comment', 'user');
         foreach ($views as $k => $v) {
-            $item = new JComponentRouterViewconfiguration($v);
+            $item = new RouterViewConfiguration($v);
 		    $item->setName($v)->setParent($detail, 'id')->setParent($category, 'catid');
 		    $this->registerView($item);
         }
@@ -68,11 +76,11 @@ class PhocagalleryRouter extends JComponentRouterView
 
 		phocagalleryimport('phocagallery.path.routerrules');
 		phocagalleryimport('phocagallery.category.category');
-		$this->attachRule(new JComponentRouterRulesMenu($this));
+		$this->attachRule(new MenuRules($this));
 		$this->attachRule(new PhocaGalleryRouterrules($this));
 
-		$this->attachRule(new JComponentRouterRulesStandard($this));
-		$this->attachRule(new JComponentRouterRulesNomenu($this));
+		$this->attachRule(new StandardRules($this));
+		$this->attachRule(new NomenuRules($this));
 
 
 
@@ -146,7 +154,7 @@ class PhocagalleryRouter extends JComponentRouterView
 
 		if (!strpos($id, ':'))
 		{
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 			$dbquery = $db->getQuery(true);
 			$dbquery->select($dbquery->qn('alias'))
 				->from($dbquery->qn('#__phocagallery'))
@@ -173,7 +181,7 @@ class PhocagalleryRouter extends JComponentRouterView
 
 		if (!strpos($id, ':'))
 		{
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 			$dbquery = $db->getQuery(true);
 			$dbquery->select($dbquery->qn('alias'))
 				->from($dbquery->qn('#__phocagallery'))
@@ -291,7 +299,7 @@ class PhocagalleryRouter extends JComponentRouterView
 
 		if ($this->noIDs)
 		{
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 			$dbquery = $db->getQuery(true);
 			$dbquery->select($dbquery->qn('id'))
 				->from($dbquery->qn('#__phocagallery_image'))
@@ -310,7 +318,7 @@ class PhocagalleryRouter extends JComponentRouterView
 function PhocaGalleryBuildRoute(&$query)
 {
 
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
 	$router = new PhocagalleryRouter($app, $app->getMenu());
 
 	return $router->build($query);
@@ -321,7 +329,7 @@ function PhocaGalleryParseRoute($segments)
 {
 
 
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
 	$router = new PhocagalleryRouter($app, $app->getMenu());
 
 	return $router->parse($segments);

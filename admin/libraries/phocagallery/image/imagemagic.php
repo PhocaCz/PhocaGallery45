@@ -9,6 +9,9 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Filesystem\File;
 jimport( 'joomla.filesystem.folder' ); 
 jimport( 'joomla.filesystem.file' );
 phocagalleryimport('phocagallery.render.renderprocess');
@@ -20,7 +23,7 @@ register_shutdown_function(function(){
 	
 	if(null !== $error) {
 		if (isset($error['type']) && $error['type'] == 1) {
-			$app		= JFactory::getApplication();
+			$app		= Factory::getApplication();
 			$app->redirect('index.php?option=com_phocagallery&view=phocagalleryfe&error=1');
 			return;
 		}
@@ -49,7 +52,7 @@ class PhocaGalleryImageMagic
 	*/
 	public static function imageMagic($fileIn, $fileOut = null, $width = null, $height = null, $crop = null, $typeOut = null, $watermarkParams = array(), $frontUpload = 0, &$errorMsg = '') {
 
-		$params 		= JComponentHelper::getParams('com_phocagallery') ;
+		$params 		= ComponentHelper::getParams('com_phocagallery') ;
 		$jfile_thumbs	=	$params->get( 'jfile_thumbs', 1 );
 		$jpeg_quality	= $params->get( 'jpeg_quality', 85 );
 		$exif_rotate	= $params->get( 'exif_rotate', 0 );
@@ -72,7 +75,7 @@ class PhocaGalleryImageMagic
 		}
 		// - - - - - - - - - - -
 
-		if ($fileIn !== '' && JFile::exists($fileIn)) {
+		if ($fileIn !== '' && File::exists($fileIn)) {
 			
 			// array of width, height, IMAGETYPE, "height=x width=x" (string)
 	        list($w, $h, $type) = GetImageSize($fileIn);
@@ -162,7 +165,7 @@ class PhocaGalleryImageMagic
 
 					// Which Watermark will be used
 					if ($thumbnailMedium) {
-						if (JFile::exists($fileWatermarkMedium)) {
+						if (File::exists($fileWatermarkMedium)) {
 								$fileWatermark  = $fileWatermarkMedium;
 						} else {
 							if ($watermarkParams['create'] == 2) {
@@ -172,7 +175,7 @@ class PhocaGalleryImageMagic
 							}
 						}
 					} else if ($thumbnailLarge) {
-						if (JFile::exists($fileWatermarkLarge)) {
+						if (File::exists($fileWatermarkLarge)) {
 								$fileWatermark  = $fileWatermarkLarge;
 						} else {
 							if ($watermarkParams['create'] == 2) {
@@ -186,7 +189,7 @@ class PhocaGalleryImageMagic
 					}
 					
 					
-					if (!JFile::exists($fileWatermark)) {
+					if (!File::exists($fileWatermark)) {
 						$fileWatermark = '';
 					}
 					
@@ -399,7 +402,7 @@ class PhocaGalleryImageMagic
 							$imgJPEGToWrite = ob_get_contents();
 							ob_end_clean();
 							
-							if(!JFile::write( $fileOut, $imgJPEGToWrite)) {
+							if(!File::write( $fileOut, $imgJPEGToWrite)) {
 								$errorMsg = 'ErrorWriteFile';
 								return false;
 							}
@@ -427,7 +430,7 @@ class PhocaGalleryImageMagic
 							$imgPNGToWrite = ob_get_contents();
 							ob_end_clean();
 							
-							if(!JFile::write( $fileOut, $imgPNGToWrite)) {
+							if(!File::write( $fileOut, $imgPNGToWrite)) {
 								$errorMsg = 'ErrorWriteFile';
 								return false;
 							}
@@ -455,7 +458,7 @@ class PhocaGalleryImageMagic
 							$imgGIFToWrite = ob_get_contents();
 							ob_end_clean();
 							
-							if(!JFile::write( $fileOut, $imgGIFToWrite)) {
+							if(!File::write( $fileOut, $imgGIFToWrite)) {
 								$errorMsg = 'ErrorWriteFile';
 								return false;
 							}
@@ -483,7 +486,7 @@ class PhocaGalleryImageMagic
 							$imgWEBPToWrite = ob_get_contents();
 							ob_end_clean();
 							
-							if(!JFile::write( $fileOut, $imgWEBPToWrite)) {
+							if(!File::write( $fileOut, $imgWEBPToWrite)) {
 								$errorMsg = 'ErrorWriteFile';
 								return false;
 							}

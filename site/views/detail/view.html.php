@@ -11,6 +11,13 @@
 use Joomla\CMS\Factory;
 
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Plugin\PluginHelper;
 jimport( 'joomla.application.component.view');
 phocagalleryimport( 'phocagallery.image.image');
 phocagalleryimport( 'phocagallery.image.imagefront');
@@ -23,7 +30,7 @@ phocagalleryimport( 'phocagallery.user.user');
 phocagalleryimport('phocagallery.comment.comment');
 phocagalleryimport('phocagallery.comment.commentimage');
 
-class PhocaGalleryViewDetail extends JViewLegacy
+class PhocaGalleryViewDetail extends HtmlView
 {
 
 	public $t;
@@ -35,6 +42,7 @@ class PhocaGalleryViewDetail extends JViewLegacy
 
 
 		$app		= Factory::getApplication();
+		$uri        = Uri::getInstance();
         $id			= $app->input->get('id', 0, 'int');
 
 
@@ -45,8 +53,7 @@ class PhocaGalleryViewDetail extends JViewLegacy
 		$user					= Factory::getUser();
 		$var['slideshow']		= $app->input->get('phocaslideshow', 0, 'int');
 		$var['download'] 		= $app->input->get('phocadownload', 0, 'int');
-		$uri 					= \Joomla\CMS\Uri\Uri::getInstance();
-		$this->t['action']	= $uri->toString();
+		$this->t['action']	    = $uri->toString();
 		$path					= PhocaGalleryPath::getPath();
 		$this->itemId			= $app->input->get('Itemid', 0, 'int');
 
@@ -154,7 +161,7 @@ class PhocaGalleryViewDetail extends JViewLegacy
 		// CSS
 		/*JHtml::stylesheet('media/com_phocagallery/css/phocagallery.css' );
 		if ($this->t['enablecustomcss'] == 1) {
-			JHtml::stylesheet('media/com_phocagallery/css/phocagallerycustom.css' );
+			HTMLHelper::stylesheet('media/com_phocagallery/css/phocagallerycustom.css' );
 			if ($this->t['customcss'] != ''){
 				$document->addCustomTag( "\n <style type=\"text/css\"> \n"
 				.$this->escape(strip_tags($this->t['customcss']))
@@ -233,7 +240,7 @@ class PhocaGalleryViewDetail extends JViewLegacy
 		if ($userAvatar) {
 			$pathAvatarAbs	= $path->avatar_abs  .'thumbs/phoca_thumb_s_'. $userAvatar->avatar;
 			$pathAvatarRel	= $path->avatar_rel . 'thumbs/phoca_thumb_s_'. $userAvatar->avatar;
-			if (JFile::exists($pathAvatarAbs)){
+			if (File::exists($pathAvatarAbs)){
 				$sIH	= $this->params->get( 'small_image_height', 96 );
 				$sIHR	= @getImageSize($pathAvatarAbs);
 				if (isset($sIHR[1])) {
@@ -242,7 +249,7 @@ class PhocaGalleryViewDetail extends JViewLegacy
 				if ((int)$sIH > 0) {
 					$this->t['useravatarmiddle'] = ((int)$sIH / 2) - 10;
 				}
-				$this->t['useravatarimg']	= '<img src="'.JURI::base(true) . '/' . $pathAvatarRel.'?imagesid='.md5(uniqid(time())).'" alt="" />';
+				$this->t['useravatarimg']	= '<img src="'.Uri::base(true) . '/' . $pathAvatarRel.'?imagesid='.md5(uniqid(time())).'" alt="" />';
 			}
 		}
 
@@ -309,14 +316,14 @@ class PhocaGalleryViewDetail extends JViewLegacy
 				$item->exth	= $exth[0];
 			}
 			$correctImageRes 		= PhocaGalleryPicasa::correctSizeWithRate($item->extw, $item->exth, $this->t['picasa_correct_width_l'], $this->t['picasa_correct_height_l']);
-			$item->linkimage		= Joomla\CMS\HTML\HTMLHelper::_( 'image', $item->extl, $item->altvalue, array('width' => $correctImageRes['width'], 'height' => $correctImageRes['height'], 'class' => 'pg-detail-image img img-responsive'));
+			$item->linkimage		= HTMLHelper::_( 'image', $item->extl, $item->altvalue, array('width' => $correctImageRes['width'], 'height' => $correctImageRes['height'], 'class' => 'pg-detail-image img img-responsive'));
 			$item->realimagewidth 	= $correctImageRes['width'];
 			$item->realimageheight	= $correctImageRes['height'];
 
 
 		} else {
 			$item->linkthumbnailpath	= PhocaGalleryImageFront::displayCategoryImageOrNoImage($item->filenameno, 'large');
-			$item->linkimage			= Joomla\CMS\HTML\HTMLHelper::_( 'image', $item->linkthumbnailpath, $item->altvalue, array( 'class' => 'pg-detail-image img img-responsive'));
+			$item->linkimage			= HTMLHelper::_( 'image', $item->linkthumbnailpath, $item->altvalue, array( 'class' => 'pg-detail-image img img-responsive'));
 			$realImageSize 				= PhocaGalleryImage::getRealImageSize ($item->filenameno);
 			$item->imagesize			= PhocaGalleryImage::getImageSize($item->filenameno, 1);
 			if (isset($realImageSize['w']) && isset($realImageSize['h'])) {
@@ -492,14 +499,14 @@ class PhocaGalleryViewDetail extends JViewLegacy
 		if ($menu) {
 			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
 		} else {
-			$this->params->def('page_heading', JText::_('JGLOBAL_ARTICLES'));
+			$this->params->def('page_heading', Text::_('JGLOBAL_ARTICLES'));
 		}
 
 		$title = $this->params->get('page_title', '');
 		if (empty($title)) {
 			$title = htmlspecialchars_decode($app->get('sitename'));
 		} else if ($app->get('sitename_pagetitles', 0) == 1) {
-			$title = JText::sprintf('JPAGETITLE', htmlspecialchars_decode($app->get('sitename')), $title);
+			$title = Text::sprintf('JPAGETITLE', htmlspecialchars_decode($app->get('sitename')), $title);
 
 			if (isset($item->title) && $item->title != '') {
 				$title = $title .' - ' .  $item->title;
@@ -511,7 +518,7 @@ class PhocaGalleryViewDetail extends JViewLegacy
 				$title = $title .' - ' .  $item->title;
 			}
 
-			$title = JText::sprintf('JPAGETITLE', $title, htmlspecialchars_decode($app->get('sitename')));
+			$title = Text::sprintf('JPAGETITLE', $title, htmlspecialchars_decode($app->get('sitename')));
 		}
 		$this->document->setTitle($title);
 
@@ -550,7 +557,7 @@ class PhocaGalleryViewDetail extends JViewLegacy
 		/*if (isset($this->category[0]->parentid)) {
 			if ($this->category[0]->parentid == 1) {
 			} else if ($this->category[0]->parentid > 0) {
-				$pathway->addItem($this->category[0]->parenttitle, JRoute::_(PhocaDocumentationHelperRoute::getCategoryRoute($this->category[0]->parentid, $this->category[0]->parentalias)));
+				$pathway->addItem($this->category[0]->parenttitle, Route::_(PhocaDocumentationHelperRoute::getCategoryRoute($this->category[0]->parentid, $this->category[0]->parentalias)));
 			}
 		}
 
@@ -569,12 +576,12 @@ class PhocaGalleryViewDetail extends JViewLegacy
 		$db->setQuery( $query );
 		$ownerid 	= $db->loadResult();
 		$dispatcher = JDispatcher::getInstance();
-		JPluginHelper::importPlugin('phocagallery');
+		PluginHelper::importPlugin('phocagallery');
 		$results 	= Factory::getApplication()->triggerEvent('onViewImage', array($imgid, $catid, $ownerid, $user->id ) );*/
 
 		$user       = Factory::getUser();
 		//$dispatcher = J Dispatcher::getInstance();
-		JPluginHelper::importPlugin('phocagallery');
+		PluginHelper::importPlugin('phocagallery');
 		$results 	= Factory::getApplication()->triggerEvent('onViewImage', array((int)$item->id, (int)$item->catid, (int)$item->owner_id, (int)$user->id ) );
 
 

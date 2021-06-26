@@ -9,9 +9,13 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('JPATH_BASE') or die;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 jimport('joomla.form.formfield');
 
-class JFormFieldPhocaSelectYtb extends JFormField
+class JFormFieldPhocaSelectYtb extends FormField
 {
 	public $type = 'PhocaSelectYtb';
 
@@ -42,7 +46,7 @@ class JFormFieldPhocaSelectYtb extends JFormField
 		$onchange = (string) $this->element['onchange'];
 
 
-		Joomla\CMS\HTML\HTMLHelper::_('jquery.framework');
+		HTMLHelper::_('jquery.framework');
 		$idA		= 'pgselectytb';
 
 		// Build the script.
@@ -59,7 +63,7 @@ class JFormFieldPhocaSelectYtb extends JFormField
 		$script[] = '	}';
 
 		// Add the script to the document head.
-		JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
+		Factory::getDocument()->addScriptDeclaration(implode("\n", $script));
 
 /*
 		$html[] = '<div class="fltlft">';
@@ -72,10 +76,10 @@ class JFormFieldPhocaSelectYtb extends JFormField
 		// Create the user select button.
 		$html[] = '<div class="button2-left">';
 		$html[] = '  <div class="blank">';
-		$html[] = '		<a id="pgselectytb" class="modal_'.$this->id.'" title="'.JText::_('COM_PHOCAGALLERY_FORM_SELECT_YTB').'"' .
+		$html[] = '		<a id="pgselectytb" class="modal_'.$this->id.'" title="'.Text::_('COM_PHOCAGALLERY_FORM_SELECT_YTB').'"' .
 							' href="'.($this->element['readonly'] ? '' : $link).'"' .
 							' rel="{handler: \'iframe\', size: {x: 650, y: 375}}">';
-		$html[] = '			'.JText::_('COM_PHOCAGALLERY_FORM_SELECT_YTB').'</a>';
+		$html[] = '			'.Text::_('COM_PHOCAGALLERY_FORM_SELECT_YTB').'</a>';
 		$html[] = '  </div>';
 		$html[] = '</div>';*/
 
@@ -93,42 +97,42 @@ class JFormFieldPhocaSelectYtb extends JFormField
 		//	. ' value="' . $this->value . '"' . $size . $class . ' />';
 		/*$html[] = '<a href="#'.$idA.'" role="button" class="btn " data-toggle="modal" title="' . JText::_('COM_PHOCAGALLERY_FORM_SELECT_YTB') . '">'
 			. '<span class="icon-list icon-white"></span> '
-			. JText::_('COM_PHOCAGALLERY_FORM_SELECT_YTB') . '</a></span>';
+			. Text::_('COM_PHOCAGALLERY_FORM_SELECT_YTB') . '</a></span>';
 
 		$html[] = '</div>'. "\n";
 
-		$html[] = Joomla\CMS\HTML\HTMLHelper::_(
+		$html[] = HTMLHelper::_(
 			'bootstrap.renderModal',
 			$idA,
 			array(
 				'url'    => $link,
-				'title'  => JText::_('COM_PHOCAGALLERY_FORM_SELECT_YTB'),
+				'title'  => Text::_('COM_PHOCAGALLERY_FORM_SELECT_YTB'),
 				'width'  => '700px',
 				'height' => '400px',
 				'modalWidth' => '80',
 				'bodyHeight' => '70',
 				'footer' => '<button type="button" class="btn" data-dismiss="modal" aria-hidden="true">'
-					. JText::_('COM_PHOCAGALLERY_CLOSE') . '</button>'
+					. Text::_('COM_PHOCAGALLERY_CLOSE') . '</button>'
 			)
 		);		*/
 
-        $html[] = '<a href="'.$link.'" role="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#'.$idA.'" title="' . JText::_('COM_PHOCAGALLERY_FORM_SELECT_YTB') . '">'
+        $html[] = '<a href="'.$link.'" role="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#'.$idA.'" title="' . Text::_('COM_PHOCAGALLERY_FORM_SELECT_YTB') . '">'
             . '<span class="icon-list icon-white"></span> '
-            . JText::_('COM_PHOCAGALLERY_FORM_SELECT_YTB') . '</a></span>';
+            . Text::_('COM_PHOCAGALLERY_FORM_SELECT_YTB') . '</a></span>';
         $html[] = '</div>'. "\n";
 
-        $html[] = Joomla\CMS\HTML\HTMLHelper::_(
+        $html[] = HTMLHelper::_(
             'bootstrap.renderModal',
             $idA,
             array(
                 'url'    => $link,
-                'title'  => JText::_('COM_PHOCAGALLERY_FORM_SELECT_YTB'),
+                'title'  => Text::_('COM_PHOCAGALLERY_FORM_SELECT_YTB'),
                 'width'  => '560px',
                 'height' => '470px',
                 'modalWidth' => '50',
                 'bodyHeight' => '70',
                 'footer' => '<div  class="ph-info-modal"></div><button type="button" class="btn" data-bs-dismiss="modal" aria-hidden="true">'
-                    . JText::_('COM_PHOCAGALLERY_CLOSE') . '</button>'
+                    . Text::_('COM_PHOCAGALLERY_CLOSE') . '</button>'
             )
         );
 

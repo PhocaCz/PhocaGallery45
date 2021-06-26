@@ -7,6 +7,19 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Object\CMSObject;
+use Joomla\CMS\Session\Session;
+use Joomla\Registry\Registry;
+use Joomla\CMS\Client\ClientHelper;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Filesystem\Folder;
 phocagalleryimport('phocagallery.access.access');
 jimport( 'joomla.filesystem.folder' );
 jimport( 'joomla.filesystem.file' );
@@ -34,14 +47,14 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 	function __construct() {
 		parent::__construct();
 
-		$app	= JFactory::getApplication();
-		$paramsC = JComponentHelper::getParams('com_phocagallery') ;
+		$app	= Factory::getApplication();
+		$paramsC = ComponentHelper::getParams('com_phocagallery') ;
 		// UCP is disabled (security reasons)
 
 		$enable_user_cp	= $paramsC->get( 'enable_user_cp', 0 );
 		if ($enable_user_cp == 0) {
-			$app->enqueueMessage(JText::_('COM_PHOCAGALLERY_UCP_DISABLED'), 'error');
-			$app->redirect( JURI::base(true) );
+			$app->enqueueMessage(Text::_('COM_PHOCAGALLERY_UCP_DISABLED'), 'error');
+			$app->redirect( Uri::base(true) );
 			exit;
 		}
 
@@ -74,22 +87,22 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 		$this->registerTask( 'removeimage', 'removeimage' );//
 
 		// Get variables
-		$this->_user 				= JFactory::getUser();
+		$this->_user 				= Factory::getUser();
 		$this->_view 				= $this->input->get( 'view', '', 'string' );
 		$this->_tab 				= $this->input->get( 'tab', 0, 'int' );
 		$this->_limitstartsubcat 	= $this->input->get( 'limitstartsubcat', 0, 'int' );
 		$this->_limitstartimage 	= $this->input->get( 'limitstartimage', 0, 'int' );
 		$this->_itemid				= $this->input->get( 'Itemid', 0, 'int' );
 
-		$this->_loginurl			= JRoute::_('index.php?option=com_users&view=login', false);
-		$this->_loginstr			= JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION');
+		$this->_loginurl			= Route::_('index.php?option=com_users&view=login', false);
+		$this->_loginstr			= Text::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION');
 		$this->_url					= 'index.php?option=com_phocagallery&view=user&tab='.$this->_tab.'&Itemid='. $this->_itemid;
 
 	}
 
 	function display($cachable = false, $urlparams = Array()) {
-		if ( ! JFactory::getApplication()->input->get('view') ) {
-			JFactory::getApplication()->input->set('view', 'user' );
+		if ( ! Factory::getApplication()->input->get('view') ) {
+			Factory::getApplication()->input->set('view', 'user' );
 		}
 		parent::display($cachable, $urlparams);
     }
@@ -100,7 +113,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 	function getLimitStartUrl($id = 0, $type = 'subcat', $catid = 0) {
 
 		$model 					= $this->getModel('user');
-		$limitStartUrl			= new JObject();
+		$limitStartUrl			= new CMSObject();
 		$limitStartUrl->subcat	= '&limitstartsubcat='.$this->_limitstartsubcat;
 		$limitStartUrl->image	= '&limitstartsubcat='.$this->_limitstartimage;
 
@@ -144,12 +157,12 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 	 */
 	function createcategory() {
 
-		$app	= JFactory::getApplication();
-		JSession::checkToken() or jexit( 'Invalid Token' );
+		$app	= Factory::getApplication();
+		Session::checkToken() or jexit( 'Invalid Token' );
 		$task 						= $this->input->get( 'task', '', 'string' );
 		$post['title']				= $this->input->get( 'categoryname', '', 'string'  );
 		$post['description']		= $this->input->get( 'phocagallerycreatecatdescription', '', 'string'  );
-		$paramsC 					= JComponentHelper::getParams('com_phocagallery') ;
+		$paramsC 					= ComponentHelper::getParams('com_phocagallery') ;
 		$maxCreateCatChar			= $paramsC->get( 'max_create_cat_char', 1000 );
 		$enableUserCatApprove 		= (int)$paramsC->get( 'enable_usercat_approve', 0 );
 		$default_access 			= $paramsC->get( 'default_access', 1 );
@@ -172,14 +185,14 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 		switch ($this->t['userucplang']){
 
 			case 2:
-				$registry = new JRegistry;
+				$registry = new Registry;
 				$registry->loadString($user->params);
 				$lang = $registry->get('language','*');
 				$this->t['userucplangvalue'] = '<input type="hidden" name="language" value="'.$lang.'" />';
 			break;
 
 			case 3:
-				$lang = JFactory::getLanguage()->getTag();
+				$lang = Factory::getLanguage()->getTag();
 				$this->t['userucplangvalue'] = '<input type="hidden" name="language" value="*" />';
 			break;
 
@@ -189,7 +202,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 			break;
 		}*/
 
-		$limitStartUrl			= new JObject();
+		$limitStartUrl			= new CMSObject();
 		$limitStartUrl->subcat	= '&limitstartsubcat='.$this->_limitstartsubcat;
 		$limitStartUrl->image	= '&limitstartsubcat='.$this->_limitstartimage;
 
@@ -213,7 +226,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 					$errorMsg	= '';
 					$createdFolder = PhocaGalleryFileFolder::createFolder($this->_userFolder, $errorMsg);
 					if ($errorMsg != '') {
-						$msg = JText::_('COM_PHOCAGALLERY_ERROR_FOLDER_CREATING'). ': ' . JText::_($errorMsg);
+						$msg = Text::_('COM_PHOCAGALLERY_ERROR_FOLDER_CREATING'). ': ' . Text::_($errorMsg);
 					}
 					// -----------------------------------
 
@@ -239,7 +252,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 						// Create new category
 						$id	= $model->store($post);
 						if ($id && $id > 0) {
-							$msg = JText::_( 'COM_PHOCAGALLERY_SUCCESS_SAVING_CATEGORY' );
+							$msg = Text::_( 'COM_PHOCAGALLERY_SUCCESS_SAVING_CATEGORY' );
 
 							$errUploadMsg = '';
 							$succeeded = '';
@@ -247,7 +260,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 							//$msg .= '<br />' . $errUploadMsg;
 
 						} else {
-							$msg = JText::_( 'COM_PHOCAGALLERY_ERROR_SAVING_CATEGORY' );
+							$msg = Text::_( 'COM_PHOCAGALLERY_ERROR_SAVING_CATEGORY' );
 						}
 					}
 				} else {
@@ -258,19 +271,19 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 						$post['id']	= $ownerMainCategory->id;
 						$id			= $model->store($post);
 						if ($id && $id > 0) {
-							$msg = JText::_( 'COM_PHOCAGALLERY_SUCCESS_SAVING_CATEGORY' );
+							$msg = Text::_( 'COM_PHOCAGALLERY_SUCCESS_SAVING_CATEGORY' );
 						} else {
-							$msg = JText::_( 'COM_PHOCAGALLERY_ERROR_SAVING_CATEGORY' );
+							$msg = Text::_( 'COM_PHOCAGALLERY_ERROR_SAVING_CATEGORY' );
 						}
 					}
 				}
 			} else {
-				$msg = JText::_( 'COM_PHOCAGALLERY_ERROR_TITLE' );
+				$msg = Text::_( 'COM_PHOCAGALLERY_ERROR_TITLE' );
 			}
 			$app->enqueueMessage($msg );
-			$this->setRedirect( JRoute::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false));
+			$this->setRedirect( Route::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false));
 		} else {
-			$app	= JFactory::getApplication();
+			$app	= Factory::getApplication();
 			$app->enqueueMessage($this->_loginstr );
 			$app->redirect($this->_loginurl);
 			exit;
@@ -290,21 +303,21 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 		$id			 		= (int)$id;
 		if ($isOwnerCategory) {
 			if(!$model->publishsubcat((int)$id, 1)) {
-			$msg = JText::_('COM_PHOCAGALLERY_ERROR_PUBLISHING_CATEGORY');
+			$msg = Text::_('COM_PHOCAGALLERY_ERROR_PUBLISHING_CATEGORY');
 			} else {
-			$msg = JText::_('COM_PHOCAGALLERY_SUCCESS_PUBLISHING_CATEGORY');
+			$msg = Text::_('COM_PHOCAGALLERY_SUCCESS_PUBLISHING_CATEGORY');
 			}
 		} else {
-			$app	= JFactory::getApplication();
+			$app	= Factory::getApplication();
 			$app->enqueueMessage($this->_loginstr);
 			$app->redirect($this->_loginurl);
 			exit;
 		}
 
 		$limitStartUrl = $this->getLimitStartUrl((int)$id, 'subcat');
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$app->enqueueMessage($msg);
-		$this->setRedirect( JRoute::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false) );
+		$this->setRedirect( Route::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false) );
 	}
 
 	function unpublishsubcat() {
@@ -312,12 +325,12 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 		$model 				= $this->getModel('user');
 		$isOwnerCategory 	= $model->isOwnerCategory((int)$this->_user->id, (int)$id);
 		$id			 		= (int)$id;
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		if ($isOwnerCategory) {
 			if(!$model->publishsubcat((int)$id, 0)) {
-			$msg = JText::_('COM_PHOCAGALLERY_ERROR_UNPUBLISHING_CATEGORY');
+			$msg = Text::_('COM_PHOCAGALLERY_ERROR_UNPUBLISHING_CATEGORY');
 			} else {
-			$msg = JText::_('COM_PHOCAGALLERY_SUCCESS_UNPUBLISHING_CATEGORY');
+			$msg = Text::_('COM_PHOCAGALLERY_SUCCESS_UNPUBLISHING_CATEGORY');
 			}
 		} else {
 
@@ -329,7 +342,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 
 		$limitStartUrl = $this->getLimitStartUrl((int)$id, 'subcat');
 		$app->enqueueMessage($msg );
-		$this->setRedirect( JRoute::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false) );
+		$this->setRedirect( Route::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false) );
 	}
 
 	function ordersubcat() {
@@ -345,29 +358,29 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 				$model->movesubcat(1, (int)$id);
 			}
 		} else {
-			$app	= JFactory::getApplication();
+			$app	= Factory::getApplication();
 			$app->enqueueMessage($this->_loginstr);
 			$app->redirect($this->_loginurl);
 			exit;
 		}
 		$limitStartUrl = $this->getLimitStartUrl((int)$id, 'subcat');
-		$this->setRedirect( JRoute::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false) );
+		$this->setRedirect( Route::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false) );
 	}
 
 	function saveordersubcat() {
 		$cid 			= $this->input->get( 'cid', array(), 'array' );
 		$order 			= $this->input->get( 'order', array(), 'array' );
 		$model 			= $this->getModel( 'user' );
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		\Joomla\Utilities\ArrayHelper::toInteger($cid);
 		\Joomla\Utilities\ArrayHelper::toInteger($order);
 
 		$model->saveordersubcat($cid, $order);
-		$msg = JText::_( 'COM_PHOCAGALLERY_NEW_ORDERING_SAVED' );
+		$msg = Text::_( 'COM_PHOCAGALLERY_NEW_ORDERING_SAVED' );
 
 		$limitStartUrl = $this->getLimitStartUrl(0, 'subcat');
 		$app->enqueueMessage($msg );
-		$this->setRedirect( JRoute::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false));
+		$this->setRedirect( Route::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false));
 	}
 
 	function removesubcat() {
@@ -377,12 +390,12 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 		$isOwnerAndParentCategory 	= $model->isOwnerCategorySubCat((int)$this->_user->id, (int)$id);
 		$errorMsg = '';
 		$id 				= (int)$id;
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		if ($isOwnerCategory) {
 			if(!$model->delete((int)$id, $errorMsg)) {
-			$msg = JText::_('COM_PHOCAGALLERY_ERROR_DELETING_CATEGORY');
+			$msg = Text::_('COM_PHOCAGALLERY_ERROR_DELETING_CATEGORY');
 			} else {
-			$msg = JText::_('COM_PHOCAGALLERY_SUCCESS_DELETING_CATEGORY');
+			$msg = Text::_('COM_PHOCAGALLERY_SUCCESS_DELETING_CATEGORY');
 			}
 		} else {
 
@@ -399,17 +412,17 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 		$limitStartUrl = $this->getLimitStartUrl(0, 'subcat', (int)$isOwnerAndParentCategory );
 		$app->enqueueMessage($msg );
 
-		$this->setRedirect( JRoute::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false));
+		$this->setRedirect( Route::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false));
 	}
 
 	function createsubcategory() {
 
-		JSession::checkToken() or jexit( 'Invalid Token' );
+		Session::checkToken() or jexit( 'Invalid Token' );
 		$task 						= $this->input->get( 'task', '', 'string' );
 		$post['title']				= $this->input->get( 'subcategoryname', '', 'string'  );
 		$post['description']		= $this->input->get( 'phocagallerycreatesubcatdescription', '', 'string'  );
 		$post['parent_id']			= $this->input->get( 'parentcategoryid', 0, 'int' );
-		$paramsC 					= JComponentHelper::getParams('com_phocagallery') ;
+		$paramsC 					= ComponentHelper::getParams('com_phocagallery') ;
 		$maxCreateCatChar			= $paramsC->get( 'max_create_cat_char', 1000 );
 		$enableUserSubCatApprove	= $paramsC->get( 'enable_usersubcat_approve', 0 );
 		$default_access 			= $paramsC->get( 'default_access', 1 );
@@ -433,7 +446,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 		$neededAccessLevels	= PhocaGalleryAccess::getNeededAccessLevels();
 		$access				= PhocaGalleryAccess::isAccess($this->_user->getAuthorisedViewLevels(), $neededAccessLevels);
 
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		// USER IS NOT LOGGED
 		if (!$access) {
 			$app->enqueueMessage($this->_loginstr);
@@ -444,35 +457,35 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 
 
 		if ((int)$post['parent_id'] < 1) {
-			$msg = JText::_( 'COM_PHOCAGALLERY_PARENT_CATEGORY_NOT_SELECTED' );
+			$msg = Text::_( 'COM_PHOCAGALLERY_PARENT_CATEGORY_NOT_SELECTED' );
 			$app->enqueueMessage($msg );
-			$app->redirect(JRoute::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false));
+			$app->redirect(Route::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false));
 			exit;
 		}
 
 		$isOwnerCategory 			= $model->isOwnerCategory($this->_user->id, (int)$post['parent_id']);
 		$limitStartUrl 				= $this->getLimitStartUrl(0, 'subcat', (int)$isOwnerCategory );
 		if(!$isOwnerCategory) {
-			$msg = JText::_( 'COM_PHOCAGALLERY_PARENT_CATEGORY_NOT_ASSIGNED_TO_USER' );
+			$msg = Text::_( 'COM_PHOCAGALLERY_PARENT_CATEGORY_NOT_ASSIGNED_TO_USER' );
 			$app->enqueueMessage($msg );
-			$app->redirect(JRoute::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false));
+			$app->redirect(Route::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false));
 			exit;
 		}
 
 		$subCatCount = $model->getCountUserSubCat($this->_user->id);
 		$subCatCount = (int)$subCatCount + 1;
 		if ((int)$subCatCount > (int)$userSubCatCount) {
-			$msg = JText::_( 'COM_PHOCAGALLERY_MAX_SUBCAT_COUNT_REACHED' );
+			$msg = Text::_( 'COM_PHOCAGALLERY_MAX_SUBCAT_COUNT_REACHED' );
 			$app->enqueueMessage($msg );
-			$app->redirect(JRoute::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false));
+			$app->redirect(Route::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false));
 			exit;
 		}
 
 		$ownerMainCategory	= $model->getOwnerMainCategory($this->_user->id);
 		if (!$ownerMainCategory) {
-			$msg = JText::_('COM_PHOCAGALLERY_MAIN_CATEGORY_NOT_CREATED');
+			$msg = Text::_('COM_PHOCAGALLERY_MAIN_CATEGORY_NOT_CREATED');
 			$app->enqueueMessage($msg );
-			$app->redirect(JRoute::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false));
+			$app->redirect(Route::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false));
 		}
 
 		if ($post['title'] != '') {
@@ -487,26 +500,26 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 			$post['owner_id']		= $this->_user->id;
 			$id						= $model->store($post);
 			if ($id && $id > 0) {
-				$msg = JText::_( 'COM_PHOCAGALLERY_SUCCESS_CREATING_CATEGORY' );
+				$msg = Text::_( 'COM_PHOCAGALLERY_SUCCESS_CREATING_CATEGORY' );
 			} else {
-				$msg = JText::_( 'COM_PHOCAGALLERY_ERROR_CREATING_CATEGORY' );
+				$msg = Text::_( 'COM_PHOCAGALLERY_ERROR_CREATING_CATEGORY' );
 			}
 		} else {
-			$msg = JText::_( 'COM_PHOCAGALLERY_ERROR_TITLE' );
+			$msg = Text::_( 'COM_PHOCAGALLERY_ERROR_TITLE' );
 		}
 		$app->enqueueMessage($msg );
-		$this->setRedirect( JRoute::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false) );
+		$this->setRedirect( Route::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false) );
 	}
 
 	function editsubcategory() {
 
-		JSession::checkToken() or jexit( 'Invalid Token' );
+		Session::checkToken() or jexit( 'Invalid Token' );
 		$task 						= $this->input->get( 'task', '', 'string' );
 		$post['title']				= $this->input->get( 'subcategoryname', '', 'string'  );
 		$post['description']		= $this->input->get( 'phocagallerycreatesubcatdescription', '', 'string'  );
 		//$post['parent_id']			= $this->input->get( 'parentcategoryid', 0, 'int' );
 		$post['id']					= $this->input->get( 'id', 0, 'int' );
-		$paramsC 					= JComponentHelper::getParams('com_phocagallery') ;
+		$paramsC 					= ComponentHelper::getParams('com_phocagallery') ;
 		$maxCreateCatChar			= $paramsC->get( 'max_create_cat_char', 1000 );
 		$post['description']		= substr($post['description'], 0, (int)$maxCreateCatChar);
 		$post['alias'] 				= $post['title'];//PhocaGalleryText::getAliasName($post['title']);
@@ -517,7 +530,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 		$post['language']	= $userLang['lang'];
 
 
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 
 		$neededAccessLevels	= PhocaGalleryAccess::getNeededAccessLevels();
 		$access				= PhocaGalleryAccess::isAccess($this->_user->getAuthorisedViewLevels(), $neededAccessLevels);
@@ -532,39 +545,39 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 
 		$isOwnerCategory = $model->isOwnerCategory($this->_user->id, (int)$post['id']);
 		if(!$isOwnerCategory) {
-			$msg = JText::_( 'COM_PHOCAGALLERY_PARENT_CATEGORY_NOT_ASSIGNED_TO_USER' );
+			$msg = Text::_( 'COM_PHOCAGALLERY_PARENT_CATEGORY_NOT_ASSIGNED_TO_USER' );
 			$app->enqueueMessage($msg );
-			$app->redirect(JRoute::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false));
+			$app->redirect(Route::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false));
 			exit;
 		}
 
 		if ((int)$post['id'] < 1) {
-			$msg = JText::_( 'COM_PHOCAGALLERY_PARENT_CATEGORY_NOT_SELECTED' );
+			$msg = Text::_( 'COM_PHOCAGALLERY_PARENT_CATEGORY_NOT_SELECTED' );
 			$app->enqueueMessage($msg );
-			$app->redirect(JRoute::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false));
+			$app->redirect(Route::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false));
 			exit;
 		}
 
 		$ownerMainCategory	= $model->getOwnerMainCategory($this->_user->id);
 		if (!$ownerMainCategory) {
-			$msg = JText::_('COM_PHOCAGALLERY_MAIN_CATEGORY_NOT_CREATED');
+			$msg = Text::_('COM_PHOCAGALLERY_MAIN_CATEGORY_NOT_CREATED');
 			$app->enqueueMessage($msg );
-			$app->redirect(JRoute::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false));
+			$app->redirect(Route::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false));
 		}
 
 		if ($post['title'] != '') {
 
 			$id	= $model->store($post);
 			if ($id && $id > 0) {
-				$msg = JText::_( 'COM_PHOCAGALLERY_SUCCESS_SAVING_CATEGORY' );
+				$msg = Text::_( 'COM_PHOCAGALLERY_SUCCESS_SAVING_CATEGORY' );
 			} else {
-				$msg = JText::_( 'COM_PHOCAGALLERY_ERROR_SAVING_CATEGORY' );
+				$msg = Text::_( 'COM_PHOCAGALLERY_ERROR_SAVING_CATEGORY' );
 			}
 		} else {
-			$msg = JText::_( 'COM_PHOCAGALLERY_ERROR_TITLE' );
+			$msg = Text::_( 'COM_PHOCAGALLERY_ERROR_TITLE' );
 		}
 		$app->enqueueMessage($msg );
-		$this->setRedirect( JRoute::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false) );
+		$this->setRedirect( Route::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false) );
 	}
 
 	// = = = = = = = = = =
@@ -574,7 +587,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 	// = = = = = = = = = =
 
 	function uploadavatar() {
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$errUploadMsg	= '';
 	    $redirectUrl 	= '';
 		$fileArray 		= $app->input->files->get('Filedata', null);
@@ -585,47 +598,47 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 	}
 
 	function _singleFileUploadAvatar(&$errUploadMsg, $file, &$redirectUrl) {
-		$app	= JFactory::getApplication();
-		JSession::checkToken( 'request' ) or jexit( 'Invalid Token' );
+		$app	= Factory::getApplication();
+		Session::checkToken( 'request' ) or jexit( 'Invalid Token' );
 		jimport('joomla.client.helper');
-		$ftp 		= JClientHelper::setCredentialsFromRequest('ftp');
+		$ftp 		= ClientHelper::setCredentialsFromRequest('ftp');
 		$path		= PhocaGalleryPath::getPath();
 		$format		= $this->input->get( 'format', 'html', 'cmd');
 		$return		= $this->input->get( 'return-url', null, 'base64' );
 		$viewBack	= $this->input->get( 'viewback', '', 'string' );
 		$view 		= $this->input->get( 'view', '', 'string' );
-		$paramsC 	= JComponentHelper::getParams('com_phocagallery') ;
+		$paramsC 	= ComponentHelper::getParams('com_phocagallery') ;
 
 		$limitStartUrl 	= $this->getLimitStartUrl(0, 'subcat');
-		$return			= JRoute::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false);
+		$return			= Route::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false);
 
 		$enableUploadAvatar = (int)$paramsC->get( 'enable_upload_avatar', 1 );
 		if ($enableUploadAvatar != 1) {
-			$errUploadMsg = JText::_('COM_PHOCAGALLERY_NOT_ABLE_UPLOAD_AVATAR');
+			$errUploadMsg = Text::_('COM_PHOCAGALLERY_NOT_ABLE_UPLOAD_AVATAR');
 			$redirectUrl = $return;
 			return false;
 		}
 
 
 		if (isset($file['name'])) {
-			$fileAvatar = md5(uniqid(time())) . '.' . JFile::getExt($file['name']);
-			$filepath 	= JPath::clean($path->avatar_abs . '/'. $fileAvatar);
+			$fileAvatar = md5(uniqid(time())) . '.' . File::getExt($file['name']);
+			$filepath 	= Path::clean($path->avatar_abs . '/'. $fileAvatar);
 
 			if (!PhocaGalleryFileUpload::canUpload( $file, $errUploadMsg )) {
 				if ($errUploadMsg == 'COM_PHOCAGALLERY_WARNING_FILE_TOOLARGE') {
-						$errUploadMsg 	= JText::_($errUploadMsg) . ' ('.PhocaGalleryFile::getFileSizeReadable($file['size']).')';
+						$errUploadMsg 	= Text::_($errUploadMsg) . ' ('.PhocaGalleryFile::getFileSizeReadable($file['size']).')';
 					} else if ($errUploadMsg == 'COM_PHOCAGALLERY_WARNING_FILE_TOOLARGERESOLUTION') {
 						$imgSize		= PhocaGalleryImage::getImageSize($file['tmp_name']);
-						$errUploadMsg 	= JText::_($errUploadMsg) . ' ('.(int)$imgSize[0].' x '.(int)$imgSize[1].' px)';
+						$errUploadMsg 	= Text::_($errUploadMsg) . ' ('.(int)$imgSize[0].' x '.(int)$imgSize[1].' px)';
 					} else {
-						$errUploadMsg 	= JText::_($errUploadMsg);
+						$errUploadMsg 	= Text::_($errUploadMsg);
 					}
 					$redirectUrl 	= $return;
 					return false;
 			}
 
-			if (!JFile::upload($file['tmp_name'], $filepath, false, true)) {
-				$errUploadMsg = JText::_('COM_PHOCAGALLERY_FILE_UNABLE_UPLOAD');
+			if (!File::upload($file['tmp_name'], $filepath, false, true)) {
+				$errUploadMsg = Text::_('COM_PHOCAGALLERY_FILE_UNABLE_UPLOAD');
 				$redirectUrl = $return;
 				return false;
 			} else {
@@ -634,7 +647,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 				PhocaGalleryFileThumbnail::deleteFileThumbnail ('avatars/'.$fileAvatar, 1,1,1);
 				$returnFrontMessage = PhocaGalleryFileThumbnail::getOrCreateThumbnail('avatars/'.$fileAvatar, $return, 1, 1, 1, 1);
 				if ($returnFrontMessage != 'Success') {
-					$errUploadMsg = JText::_('COM_PHOCAGALLERY_THUMBNAIL_AVATAR_NOT_CREATED');
+					$errUploadMsg = Text::_('COM_PHOCAGALLERY_THUMBNAIL_AVATAR_NOT_CREATED');
 					return false;
 				}
 
@@ -645,7 +658,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 				return $succeeded;
 			}
 		} else {
-			$errUploadMsg = JText::_('COM_PHOCAGALLERY_WARNING_FILETYPE');
+			$errUploadMsg = Text::_('COM_PHOCAGALLERY_WARNING_FILETYPE');
 			$redirectUrl = $return;
 			return false;
 		}
@@ -654,7 +667,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 
 	function saveUser($fileAvatar, &$succeeded, &$errSaveMsg) {
 
-		$paramsC 	= JComponentHelper::getParams('com_phocagallery') ;
+		$paramsC 	= ComponentHelper::getParams('com_phocagallery') ;
 
 		$post['avatar']			= $fileAvatar;
 		$post['userid']			= (int)$this->_user->id;
@@ -688,17 +701,17 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 
 		if ($model->storeuser($post)) {
 			$succeeded = true;
-			$errSaveMsg = JText::_( 'COM_PHOCAGALLERY_SUCCESS_SAVING_AVATAR' );
+			$errSaveMsg = Text::_( 'COM_PHOCAGALLERY_SUCCESS_SAVING_AVATAR' );
 			// Features added by Bernard Gilly - alphaplug.com
 			// load external plugins
 			if ( isset($new) && $new ){
 				//$dispatcher = JDispatcher::getInstance();
-				JPluginHelper::importPlugin('phocagallery');
-				$results = \JFactory::getApplication()->triggerEvent('onUploadAvatar', array() );
+				PluginHelper::importPlugin('phocagallery');
+				$results = Factory::getApplication()->triggerEvent('onUploadAvatar', array() );
 			}
 		} else {
 			$succeeded = false;
-			$errSaveMsg = JText::_( 'COM_PHOCAGALLERY_ERROR_SAVING_AVATAR' );
+			$errSaveMsg = Text::_( 'COM_PHOCAGALLERY_ERROR_SAVING_AVATAR' );
 		}
 
 		return $succeeded;
@@ -708,12 +721,12 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 
 	function javaupload() {
 
-		JSession::checkToken( 'request' ) or exit( 'ERROR: '. JTEXT::_('COM_PHOCAGALLERY_INVALID_TOKEN'));
+		Session::checkToken( 'request' ) or exit( 'ERROR: '. Text::_('COM_PHOCAGALLERY_INVALID_TOKEN'));
 
 		jimport('joomla.client.helper');
-		$app		= JFactory::getApplication();
-		$ftp 		= JClientHelper::setCredentialsFromRequest('ftp');
-		$user 		= JFactory::getUser();
+		$app		= Factory::getApplication();
+		$ftp 		= ClientHelper::setCredentialsFromRequest('ftp');
+		$user 		= Factory::getUser();
 		$path		= PhocaGalleryPath::getPath();
 		//$folder		= $this->input->get( 'folder', '', '', 'path' );
 		$tab		= $this->input->get( 'tab', 0, 'int' );
@@ -722,13 +735,13 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 		$viewBack	= $this->input->get( 'viewback', '', 'string' );
 		$catid 		= $this->input->get( 'catid', 0, 'string'  );
 		$Itemid		= $this->input->get( 'Itemid', 0, 'int');
-		$paramsC 	= JComponentHelper::getParams('com_phocagallery') ;
+		$paramsC 	= ComponentHelper::getParams('com_phocagallery') ;
 		$limitStartUrl 	= $this->getLimitStartUrl(0, 'subcat');
-		$return			= JRoute::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false);
+		$return			= Route::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false);
 		$redirectUrl	= $return;
 		$catid			= (int)$catid;
 		if ((int)$catid < 1) {
-			exit( 'ERROR: '.JText::_('COM_PHOCAGALLERY_PLEASE_SELECT_CATEGORY'));
+			exit( 'ERROR: '.Text::_('COM_PHOCAGALLERY_PLEASE_SELECT_CATEGORY'));
 		}
 
 		// Get user catid, we are not in the category, so we must find the catid
@@ -737,7 +750,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 
 
 		if (!$isOwnerCategory) {
-			exit( 'ERROR: '.JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'));
+			exit( 'ERROR: '.Text::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'));
 		}
 
 		// USER RIGHT - UPLOAD - - - - - - - - - - -
@@ -759,11 +772,11 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 		if ($rightDisplayUpload == 1) {
 
 			if ($rightFolder == '') {
-				exit( 'ERROR: '.JText::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_DEFINED'));
+				exit( 'ERROR: '.Text::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_DEFINED'));
 				return false;
 			}
-			if (!JFolder::exists($path->image_abs . $rightFolder . '/')) {
-				exit( 'ERROR: '.JText::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_EXISTS'));
+			if (!Folder::exists($path->image_abs . $rightFolder . '/')) {
+				exit( 'ERROR: '.Text::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_EXISTS'));
 				return false;
 			}
 
@@ -780,12 +793,12 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 					exit( 'SUCCESS');
 					return true;
 				} else {
-					exit( 'ERROR: '.JText::_('COM_PHOCAGALLERY_ERROR_UNABLE_TO_UPLOAD_FILE'));
+					exit( 'ERROR: '.Text::_('COM_PHOCAGALLERY_ERROR_UNABLE_TO_UPLOAD_FILE'));
 					return false;
 				}
 			}
 		} else {
-			exit( 'ERROR: '.JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'));
+			exit( 'ERROR: '.Text::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'));
 			return false;
 		}
 	}
@@ -793,9 +806,9 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 	function upload() {
 
 		jimport('joomla.client.helper');
-		$app		= JFactory::getApplication();
-		$ftp 		= JClientHelper::setCredentialsFromRequest('ftp');
-		$user 		= JFactory::getUser();
+		$app		= Factory::getApplication();
+		$ftp 		= ClientHelper::setCredentialsFromRequest('ftp');
+		$user 		= Factory::getUser();
 		$path		= PhocaGalleryPath::getPath();
 		//$folder		= $this->input->get( 'folder', '', '', 'path' );
 		$tab		= $this->input->get( 'tab', 0, 'int' );
@@ -804,13 +817,13 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 		$viewBack	= $this->input->get( 'viewback', '', '' );
 		$catid 		= $this->input->get( 'catid', 0, 'string'  );
 		$Itemid		= $this->input->get( 'Itemid', 0, 'int');
-		$paramsC 	= JComponentHelper::getParams('com_phocagallery') ;
+		$paramsC 	= ComponentHelper::getParams('com_phocagallery') ;
 		$limitStartUrl 	= $this->getLimitStartUrl(0, 'subcat');
-		$return			= JRoute::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false);
+		$return			= Route::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false);
 		$redirectUrl	= $return;
 		$catid			= (int)$catid;
 		if ((int)$catid < 1) {
-			$app->enqueueMessage(JText::_('COM_PHOCAGALLERY_PLEASE_SELECT_CATEGORY'), 'error');
+			$app->enqueueMessage(Text::_('COM_PHOCAGALLERY_PLEASE_SELECT_CATEGORY'), 'error');
 			$app->redirect($redirectUrl);
 			return false;
 		}
@@ -821,7 +834,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 
 
 		if (!$isOwnerCategory) {
-			$app->enqueueMessage(JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'), 'error');
+			$app->enqueueMessage(Text::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'), 'error');
 			$app->redirect($this->_loginurl);
 			return false;
 		}
@@ -846,14 +859,14 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 		if ($rightDisplayUpload == 1) {
 
 			if ($rightFolder == '') {
-				$errUploadMsg = JText::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_DEFINED');
+				$errUploadMsg = Text::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_DEFINED');
 
 				$app->enqueueMessage($errUploadMsg);
 				$app->redirect($redirectUrl);
 				return false;
 			}
-			if (!JFolder::exists($path->image_abs . $rightFolder . '/')) {
-				$errUploadMsg = JText::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_EXISTS');
+			if (!Folder::exists($path->image_abs . $rightFolder . '/')) {
+				$errUploadMsg = Text::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_EXISTS');
 				$app->enqueueMessage($errUploadMsg);
 				$app->redirect($redirectUrl);
 				return false;
@@ -879,7 +892,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 				}
 			}
 		} else {
-			$errUploadMsg = JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION');
+			$errUploadMsg = Text::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION');
 			$app->enqueueMessage($errUploadMsg);
 			$app->redirect($this->_loginurl);
 			return false;
@@ -890,9 +903,9 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 	function ytbupload() {
 
 		jimport('joomla.client.helper');
-		$app		= JFactory::getApplication();
-		$ftp 		= JClientHelper::setCredentialsFromRequest('ftp');
-		$user 		= JFactory::getUser();
+		$app		= Factory::getApplication();
+		$ftp 		= ClientHelper::setCredentialsFromRequest('ftp');
+		$user 		= Factory::getUser();
 		$path		= PhocaGalleryPath::getPath();
 		//$folder		= $this->input->get( 'folder', '', '', 'path' );
 		$tab		= $this->input->get( 'tab', 0, 'int' );
@@ -901,13 +914,13 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 		$viewBack	= $this->input->get( 'viewback', '', '' );
 		$catid 		= $this->input->get( 'catid', 0, 'string'  );
 		$Itemid		= $this->input->get( 'Itemid', 0, 'int');
-		$paramsC 	= JComponentHelper::getParams('com_phocagallery') ;
+		$paramsC 	= ComponentHelper::getParams('com_phocagallery') ;
 		$limitStartUrl 	= $this->getLimitStartUrl(0, 'subcat');
-		$return			= JRoute::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false);
+		$return			= Route::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false);
 		$redirectUrl	= $return;
 		$catid			= (int)$catid;
 		if ((int)$catid < 1) {
-			$app->enqueueMessage( JText::_('COM_PHOCAGALLERY_PLEASE_SELECT_CATEGORY') );
+			$app->enqueueMessage( Text::_('COM_PHOCAGALLERY_PLEASE_SELECT_CATEGORY') );
 			$app->redirect($redirectUrl);
 			return false;
 		}
@@ -918,7 +931,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 
 
 		if (!$isOwnerCategory) {
-			$app->enqueueMessage(JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION') );
+			$app->enqueueMessage(Text::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION') );
 			$app->redirect($this->_loginurl);
 			return false;
 		}
@@ -943,13 +956,13 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 		if ($rightDisplayUpload == 1) {
 
 			if ($rightFolder == '') {
-				$errUploadMsg = JText::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_DEFINED');
+				$errUploadMsg = Text::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_DEFINED');
 				$app->enqueueMessage($errUploadMsg );
 				$app->redirect($redirectUrl);
 				return false;
 			}
-			if (!JFolder::exists($path->image_abs . $rightFolder . '/')) {
-				$errUploadMsg = JText::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_EXISTS');
+			if (!Folder::exists($path->image_abs . $rightFolder . '/')) {
+				$errUploadMsg = Text::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_EXISTS');
 				$app->enqueueMessage($errUploadMsg );
 				$app->redirect($redirectUrl);
 				return false;
@@ -997,8 +1010,8 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 				}
 			}
 		} else {
-			$errUploadMsg = JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION');
-			$app->enqueueMessage($msg, JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'));
+			$errUploadMsg = Text::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION');
+			$app->enqueueMessage($msg, Text::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'));
 			$app->redirect($this->_loginurl);
 			return false;
 		}
@@ -1006,7 +1019,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 
 	function multipleupload() {
 
-		$app 	= JFactory::getApplication();
+		$app 	= Factory::getApplication();
 		$app->allowCache(false);
 
 		// Chunk Files
@@ -1018,14 +1031,14 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 		header("Pragma: no-cache");
 
 		// Invalid Token
-		JSession::checkToken( 'request' ) or jexit(json_encode(array( 'jsonrpc' => '2.0', 'result' => 'error', 'code' => 100,
-		'message' => JText::_('COM_PHOCAGALLERY_ERROR').': ',
-		'details' => JTEXT::_('COM_PHOCAGALLERY_INVALID_TOKEN'))));
+		Session::checkToken( 'request' ) or jexit(json_encode(array( 'jsonrpc' => '2.0', 'result' => 'error', 'code' => 100,
+		'message' => Text::_('COM_PHOCAGALLERY_ERROR').': ',
+		'details' => Text::_('COM_PHOCAGALLERY_INVALID_TOKEN'))));
 
 		jimport('joomla.client.helper');
-		$app		= JFactory::getApplication();
-		$ftp 		= JClientHelper::setCredentialsFromRequest('ftp');
-		$user 		= JFactory::getUser();
+		$app		= Factory::getApplication();
+		$ftp 		= ClientHelper::setCredentialsFromRequest('ftp');
+		$user 		= Factory::getUser();
 		$path		= PhocaGalleryPath::getPath();
 		//$folder		= $this->input->get( 'folder', '', '', 'path' );
 		$tab		= $this->input->get( 'tab', 0, 'int' );
@@ -1034,15 +1047,15 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 		$viewBack	= $this->input->get( 'viewback', '', '' );
 		$catid 		= $this->input->get( 'catid', 0, 'string'  );
 		$Itemid		= $this->input->get( 'Itemid', 0, 'int');
-		$paramsC 	= JComponentHelper::getParams('com_phocagallery') ;
+		$paramsC 	= ComponentHelper::getParams('com_phocagallery') ;
 		$limitStartUrl 	= $this->getLimitStartUrl(0, 'subcat');
-		$return			= JRoute::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false);
+		$return			= Route::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false);
 		$redirectUrl	= $return;
 		$catid			= (int)$catid;
 		if ((int)$catid < 1) {
 			jexit(json_encode(array( 'jsonrpc' => '2.0', 'result' => 'error', 'code' => 104,
-			'message' => JText::_('COM_PHOCAGALLERY_ERROR').': ',
-			'details' => JTEXT::_('COM_PHOCAGALLERY_PLEASE_SELECT_CATEGORY'))));
+			'message' => Text::_('COM_PHOCAGALLERY_ERROR').': ',
+			'details' => Text::_('COM_PHOCAGALLERY_PLEASE_SELECT_CATEGORY'))));
 			return false;
 		}
 
@@ -1053,8 +1066,8 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 
 		if (!$isOwnerCategory) {
 			jexit(json_encode(array( 'jsonrpc' => '2.0', 'result' => 'error', 'code' => 104,
-			'message' => JText::_('COM_PHOCAGALLERY_ERROR').': ',
-			'details' => JTEXT::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'))));
+			'message' => Text::_('COM_PHOCAGALLERY_ERROR').': ',
+			'details' => Text::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'))));
 			return false;
 		}
 
@@ -1078,14 +1091,14 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 
 			if ($rightFolder == '') {
 				jexit(json_encode(array( 'jsonrpc' => '2.0', 'result' => 'error', 'code' => 104,
-				'message' => JText::_('COM_PHOCAGALLERY_ERROR').': ',
-				'details' => JTEXT::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_DEFINED'))));
+				'message' => Text::_('COM_PHOCAGALLERY_ERROR').': ',
+				'details' => Text::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_DEFINED'))));
 				return false;
 			}
-			if (!JFolder::exists($path->image_abs . $rightFolder . '/')) {
+			if (!Folder::exists($path->image_abs . $rightFolder . '/')) {
 				jexit(json_encode(array( 'jsonrpc' => '2.0', 'result' => 'error', 'code' => 104,
-				'message' => JText::_('COM_PHOCAGALLERY_ERROR').': ',
-				'details' => JTEXT::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_EXISTS'))));
+				'message' => Text::_('COM_PHOCAGALLERY_ERROR').': ',
+				'details' => Text::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_EXISTS'))));
 				return false;
 			}
 
@@ -1099,20 +1112,20 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 				$fileName		= $rightFolder . '/' . strtolower($fileName);
 				if(PhocaGalleryControllerUser::save((int)$catid, $fileName, false, $succeeded, $errUploadMsg, false)) {
 					jexit(json_encode(array( 'jsonrpc' => '2.0', 'result' => 'OK', 'code' => 200,
-					'message' => JText::_('COM_PHOCAGALERY_SUCCESS').': ',
-					'details' => JTEXT::_('COM_PHOCAGALLERY_IMAGES_UPLOADED'))));
+					'message' => Text::_('COM_PHOCAGALERY_SUCCESS').': ',
+					'details' => Text::_('COM_PHOCAGALLERY_IMAGES_UPLOADED'))));
 					return true;
 				} else {
 					jexit(json_encode(array( 'jsonrpc' => '2.0', 'result' => 'error', 'code' => 104,
-					'message' => JText::_('COM_PHOCAGALLERY_ERROR').': ',
-					'details' => JTEXT::_('COM_PHOCAGALLERY_ERROR_UNABLE_TO_UPLOAD_FILE'))));
+					'message' => Text::_('COM_PHOCAGALLERY_ERROR').': ',
+					'details' => Text::_('COM_PHOCAGALLERY_ERROR_UNABLE_TO_UPLOAD_FILE'))));
 					return false;
 				}
 			}
 		} else {
 			jexit(json_encode(array( 'jsonrpc' => '2.0', 'result' => 'error', 'code' => 104,
-			'message' => JText::_('COM_PHOCAGALLERY_ERROR').': ',
-			'details' => JTEXT::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'))));
+			'message' => Text::_('COM_PHOCAGALLERY_ERROR').': ',
+			'details' => Text::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'))));
 			return false;
 		}
 	}
@@ -1120,8 +1133,8 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 
 	function save($catid, $filename, $return, &$succeeded, &$errSaveMsg, $redirect=true, $ytbData = array()) {
 
-		$app	= JFactory::getApplication();
-		$user 	= JFactory::getUser();
+		$app	= Factory::getApplication();
+		$user 	= Factory::getUser();
 
 		$post['filename']		= $filename;
 		if (isset($ytbData['link'])) {
@@ -1146,7 +1159,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 
 		$post['userid']		= $user->id;
 
-		$paramsC 				= JComponentHelper::getParams('com_phocagallery') ;
+		$paramsC 				= ComponentHelper::getParams('com_phocagallery') ;
 		$maxUploadChar			= $paramsC->get( 'max_upload_char', 1000 );
 		if (isset($ytbData['desc'])) {
 		} else {
@@ -1163,10 +1176,10 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 
 		if ($model->storeimage($post, $return)) {
 			$succeeded = true;
-			$errSaveMsg = JText::_( 'COM_PHOCAGALLERY_SUCCESS_SAVING_ITEM' );
+			$errSaveMsg = Text::_( 'COM_PHOCAGALLERY_SUCCESS_SAVING_ITEM' );
 		} else {
 			$succeeded = false;
-			$errSaveMsg = JText::_( 'COM_PHOCAGALLERY_ERROR_SAVING_ITEM' );
+			$errSaveMsg = Text::_( 'COM_PHOCAGALLERY_ERROR_SAVING_ITEM' );
 		}
 
 		if ($redirect) {
@@ -1187,12 +1200,12 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 		$model 				= $this->getModel('user');
 		$isOwnerCategory 	= $model->isOwnerCategoryImage((int)$this->_user->id, (int)$id);
 		$id					= (int)$id;
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		if ($isOwnerCategory) {
 			if(!$model->publishimage((int)$id, 1)) {
-			$msg = JText::_('COM_PHOCAGALLERY_ERROR_PUBLISHING_ITEM');
+			$msg = Text::_('COM_PHOCAGALLERY_ERROR_PUBLISHING_ITEM');
 			} else {
-			$msg = JText::_('COM_PHOCAGALLERY_SUCCESS_PUBLISHING_ITEM');
+			$msg = Text::_('COM_PHOCAGALLERY_SUCCESS_PUBLISHING_ITEM');
 			}
 		} else {
 
@@ -1203,7 +1216,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 
 		$limitStartUrl = $this->getLimitStartUrl((int)$id, 'image');
 		$app->enqueueMessage($msg );
-		$this->setRedirect( JRoute::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false) );
+		$this->setRedirect( Route::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false) );
 	}
 
 	function unpublishimage() {
@@ -1211,12 +1224,12 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 		$model 				= $this->getModel('user');
 		$isOwnerCategory 	= $model->isOwnerCategoryImage((int)$this->_user->id, (int)$id);
 		$id					= (int)$id;
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		if ($isOwnerCategory) {
 			if(!$model->publishimage((int)$id, 0)) {
-			$msg = JText::_('COM_PHOCAGALLERY_ERROR_UNPUBLISHING_ITEM');
+			$msg = Text::_('COM_PHOCAGALLERY_ERROR_UNPUBLISHING_ITEM');
 			} else {
-			$msg = JText::_('COM_PHOCAGALLERY_SUCCESS_UNPUBLISHING_ITEM');
+			$msg = Text::_('COM_PHOCAGALLERY_SUCCESS_UNPUBLISHING_ITEM');
 			}
 		} else {
 
@@ -1227,7 +1240,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 
 		$limitStartUrl = $this->getLimitStartUrl((int)$id, 'image');
 		$app->enqueueMessage($msg );
-		$this->setRedirect( JRoute::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false), $msg );
+		$this->setRedirect( Route::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false), $msg );
 	}
 
 	function orderimage() {
@@ -1236,7 +1249,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 		$model 				= $this->getModel( 'user' );
 		$isOwnerCategory 	= $model->isOwnerCategoryImage((int)$this->_user->id, (int)$id);
 		$id					= (int)$id;
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		if ($isOwnerCategory) {
 			if ($task == 'orderupimage') {
 				$model->moveimage(-1, (int)$id);
@@ -1253,7 +1266,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 
 		$limitStartUrl = $this->getLimitStartUrl(0, 'image');
 
-		$this->setRedirect( JRoute::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false) );
+		$this->setRedirect( Route::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false) );
 	}
 
 	function saveorderimage() {
@@ -1262,14 +1275,14 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 		$model 			= $this->getModel( 'user' );
 		\Joomla\Utilities\ArrayHelper::toInteger($cid);
 		\Joomla\Utilities\ArrayHelper::toInteger($order);
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 
 		$model->saveorderimage($cid, $order);
-		$msg = JText::_( 'COM_PHOCAGALLERY_NEW_ORDERING_SAVED' );
+		$msg = Text::_( 'COM_PHOCAGALLERY_NEW_ORDERING_SAVED' );
 
 		$limitStartUrl = $this->getLimitStartUrl(0, 'image');
 		$app->enqueueMessage($msg);
-		$this->setRedirect( JRoute::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false), $msg);
+		$this->setRedirect( Route::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false), $msg);
 	}
 
 	function removeimage() {
@@ -1278,7 +1291,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 		$isOwnerCategory 	= $model->isOwnerCategoryImage((int)$this->_user->id, (int)$id);
 		$errorMsg = '';
 		$id 				= (int)$id;
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		if ($isOwnerCategory) {
 
 			// USER RIGHT - DELETE - - - - - - - - -
@@ -1293,12 +1306,12 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 			// - - - - - - - - - - - - - - - - - - -
 			if($rightDisplayDelete) {
 				if(!$model->deleteimage((int)$id, $errorMsg)) {
-					$msg = JText::_('COM_PHOCAGALLERY_ERROR_DELETING_ITEM');
+					$msg = Text::_('COM_PHOCAGALLERY_ERROR_DELETING_ITEM');
 				} else {
-					$msg = JText::_('COM_PHOCAGALLERY_SUCCESS_DELETING_ITEM');
+					$msg = Text::_('COM_PHOCAGALLERY_SUCCESS_DELETING_ITEM');
 				}
 			} else {
-				$msg = JText::_('COM_PHOCAGALLERY_ERROR_NO_RIGHTS_TO_DO_THIS_ACTION');
+				$msg = Text::_('COM_PHOCAGALLERY_ERROR_NO_RIGHTS_TO_DO_THIS_ACTION');
 			}
 		} else {
 
@@ -1309,19 +1322,19 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 
 		$limitStartUrl = $this->getLimitStartUrl(0, 'image', (int)$isOwnerCategory);
 		$app->enqueueMessage($msg );
-		$this->setRedirect( JRoute::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false), $msg );
+		$this->setRedirect( Route::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false), $msg );
 	}
 
 
 
 	function editimage() {
 
-		JSession::checkToken() or jexit( 'Invalid Token' );
+		Session::checkToken() or jexit( 'Invalid Token' );
 		$task 						= $this->input->get( 'task', '', 'string' );
 		$post['title']				= $this->input->get( 'imagename', '', 'string'  );
 		$post['description']		= $this->input->get( 'phocagalleryuploaddescription', '', 'string'  );
 		$post['id']					= $this->input->get( 'id', 0, 'int' );
-		$paramsC 					= JComponentHelper::getParams('com_phocagallery') ;
+		$paramsC 					= ComponentHelper::getParams('com_phocagallery') ;
 		$maxCreateCatChar			= $paramsC->get( 'max_create_cat_char', 1000 );
 		$post['description']		= substr($post['description'], 0, (int)$maxCreateCatChar);
 		$post['alias'] 				= $post['title'];//PhocaGalleryText::getAliasName($post['title']);
@@ -1332,7 +1345,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 		$post['language']	= $userLang['lang'];
 
 
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		// USER IS NOT LOGGED
 		if ($this->_user->aid < 1 && $this->_user->id < 1) {
 			$app->enqueueMessage($this->_loginstr );
@@ -1342,38 +1355,38 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 
 		$isOwnerCategory = $model->isOwnerCategoryImage($this->_user->id, (int)$post['id']);
 		if(!$isOwnerCategory) {
-			$msg = JText::_( 'COM_PHOCAGALLERY_PARENT_CATEGORY_NOT_ASSIGNED_TO_USER' );
+			$msg = Text::_( 'COM_PHOCAGALLERY_PARENT_CATEGORY_NOT_ASSIGNED_TO_USER' );
 			$app->enqueueMessage($msg );
-			$app->redirect(JRoute::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false));
+			$app->redirect(Route::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false));
 			exit;
 		}
 
 		if ((int)$post['id'] < 1) {
-			$msg = JText::_( 'COM_PHOCAGALLERY_PARENT_CATEGORY_NOT_SELECTED' );
+			$msg = Text::_( 'COM_PHOCAGALLERY_PARENT_CATEGORY_NOT_SELECTED' );
 			$app->enqueueMessage($msg );
-			$app->redirect(JRoute::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false));
+			$app->redirect(Route::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false));
 			exit;
 		}
 
 		$ownerMainCategory	= $model->getOwnerMainCategory($this->_user->id);
 		if (!$ownerMainCategory) {
-			$msg = JText::_('COM_PHOCAGALLERY_MAIN_CATEGORY_NOT_CREATED');
+			$msg = Text::_('COM_PHOCAGALLERY_MAIN_CATEGORY_NOT_CREATED');
 			$app->enqueueMessage($msg );
-			$app->redirect(JRoute::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false));
+			$app->redirect(Route::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false));
 		}
 
 		if ($post['title'] != '') {
 			$id	= $model->storeimage($post, '', 1);
 			if ($id && $id > 0) {
-				$msg = JText::_( 'COM_PHOCAGALLERY_SUCCESS_SAVING_ITEM' );
+				$msg = Text::_( 'COM_PHOCAGALLERY_SUCCESS_SAVING_ITEM' );
 			} else {
-				$msg = JText::_( 'COM_PHOCAGALLERY_ERROR_SAVING_ITEM' );
+				$msg = Text::_( 'COM_PHOCAGALLERY_ERROR_SAVING_ITEM' );
 			}
 		} else {
-			$msg = JText::_( 'COM_PHOCAGALLERY_ERROR_TITLE' );
+			$msg = Text::_( 'COM_PHOCAGALLERY_ERROR_TITLE' );
 		}
 		$app->enqueueMessage($msg );
-		$this->setRedirect( JRoute::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false) );
+		$this->setRedirect( Route::_($this->_url. $limitStartUrl->subcat . $limitStartUrl->image, false) );
 	}
 }
 ?>

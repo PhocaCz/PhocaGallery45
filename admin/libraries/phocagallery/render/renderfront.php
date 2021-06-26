@@ -13,21 +13,25 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Router\Route;
 
 class PhocaGalleryRenderFront
 {
     public static function renderMainJs() {
 
-        $app    = JFactory::getApplication();
+        $app    = Factory::getApplication();
         $doc    = $app->getDocument();
 
         $oVars   = array();
         $oLang   = array();
         $oParams = array();
         $oLang   = array(
-            'COM_PHOCAGALLERY_MAX_LIMIT_CHARS_REACHED' => JText::_('COM_PHOCAGALLERY_MAX_LIMIT_CHARS_REACHED'),
-            'COM_PHOCAGALLERY_ENTER_TITLE' => JText::_('COM_PHOCAGALLERY_ENTER_TITLE'),
-            'COM_PHOCAGALLERY_ENTER_COMMENT' => JText::_('COM_PHOCAGALLERY_ENTER_COMMENT')
+            'COM_PHOCAGALLERY_MAX_LIMIT_CHARS_REACHED' => Text::_('COM_PHOCAGALLERY_MAX_LIMIT_CHARS_REACHED'),
+            'COM_PHOCAGALLERY_ENTER_TITLE' => Text::_('COM_PHOCAGALLERY_ENTER_TITLE'),
+            'COM_PHOCAGALLERY_ENTER_COMMENT' => Text::_('COM_PHOCAGALLERY_ENTER_COMMENT')
 
         );
 
@@ -47,7 +51,7 @@ class PhocaGalleryRenderFront
     // hotnew
     /*
     public static function getOverImageIcons($date, $hits) {
-        $app    = JFactory::getApplication();
+        $app    = Factory::getApplication();
         $params = $app->getParams();
         $new    = $params->get('display_new', 0);
         $hot    = $params->get('display_hot', 0);
@@ -89,7 +93,7 @@ class PhocaGalleryRenderFront
             . "var charLeft	= maxCount - charIn;" . "\n"
             . "" . "\n"
             . "if (charLeft < 0) {" . "\n"
-            . "   alert('" . JText::_('COM_PHOCAGALLERY_MAX_LIMIT_CHARS_REACHED', true) . "');" . "\n"
+            . "   alert('" . Text::_('COM_PHOCAGALLERY_MAX_LIMIT_CHARS_REACHED', true) . "');" . "\n"
             . "   pfc.phocagallerycommentseditor.value = pfc.phocagallerycommentseditor.value.substring(0, maxCount);" . "\n"
             . "	charIn	 = maxCount;" . "\n"
             . "  charLeft = 0;" . "\n"
@@ -101,10 +105,10 @@ class PhocaGalleryRenderFront
             . "function checkCommentsForm() {" . "\n"
             . "   var pfc = document.getElementById('phocagallery-comments-form');" . "\n"
             . "   if ( pfc.phocagallerycommentstitle.value == '' ) {" . "\n"
-            . "	   alert('" . JText::_('COM_PHOCAGALLERY_ENTER_TITLE', true) . "');" . "\n"
+            . "	   alert('" . Text::_('COM_PHOCAGALLERY_ENTER_TITLE', true) . "');" . "\n"
             . "     return false;" . "\n"
             . "   } else if ( pfc.phocagallerycommentseditor.value == '' ) {" . "\n"
-            . "	   alert('" . JText::_('COM_PHOCAGALLERY_ENTER_COMMENT', true) . "');" . "\n"
+            . "	   alert('" . Text::_('COM_PHOCAGALLERY_ENTER_COMMENT', true) . "');" . "\n"
             . "     return false;" . "\n"
             . "   } else {" . "\n"
             . "     return true;" . "\n"
@@ -179,7 +183,7 @@ class PhocaGalleryRenderFront
 
     public static function renderPicLens($categoryId) {
         $tag = "<link id=\"phocagallerypiclens\" rel=\"alternate\" href=\""
-            . JURI::base(true) . "/images/phocagallery/"
+            . Uri::base(true) . "/images/phocagallery/"
             . $categoryId . ".rss\" type=\"application/rss+xml\" title=\"\" />"
             . "<script type=\"text/javascript\" src=\"http://lite.piclens.com/current/piclens.js\"></script>"
 
@@ -200,7 +204,7 @@ class PhocaGalleryRenderFront
             . "} \n"
             . "function OnUploadSubmitPG(idLoad) { \n"
             . "  if ( document.getElementById('filter_catid_image').value < 1 ) {" . "\n"
-            . "	   alert('" . JText::_('COM_PHOCAGALLERY_PLEASE_SELECT_CATEGORY', true) . "');" . "\n"
+            . "	   alert('" . Text::_('COM_PHOCAGALLERY_PLEASE_SELECT_CATEGORY', true) . "');" . "\n"
             . "     return false;" . "\n"
             . "} \n"
             . "document.getElementById(idLoad).style.display='block'; \n"
@@ -235,7 +239,7 @@ class PhocaGalleryRenderFront
             . "var charLeft	= maxCount - charIn;" . "\n"
             . "" . "\n"
             . "if (charLeft < 0) {" . "\n"
-            . "   alert('" . JText::_('COM_PHOCAGALLERY_MAX_LIMIT_CHARS_REACHED',true) . "');" . "\n"
+            . "   alert('" . Text::_('COM_PHOCAGALLERY_MAX_LIMIT_CHARS_REACHED',true) . "');" . "\n"
             . "   pfu.phocagalleryuploaddescription.value = pfu.phocagalleryuploaddescription.value.substring(0, maxCount);" . "\n"
             . "	charIn	 = maxCount;" . "\n"
             . "  charLeft = 0;" . "\n"
@@ -258,7 +262,7 @@ class PhocaGalleryRenderFront
             . "var charLeft	= maxCount - charIn;" . "\n"
             . "" . "\n"
             . "if (charLeft < 0) {" . "\n"
-            . "   alert('" . JText::_('COM_PHOCAGALLERY_MAX_LIMIT_CHARS_REACHED', true) . "');" . "\n"
+            . "   alert('" . Text::_('COM_PHOCAGALLERY_MAX_LIMIT_CHARS_REACHED', true) . "');" . "\n"
             . "   pfcc.phocagallerycreatecatdescription.value = pfcc.phocagallerycreatecatdescription.value.substring(0, maxCount);" . "\n"
             . "	charIn	 = maxCount;" . "\n"
             . "  charLeft = 0;" . "\n"
@@ -270,7 +274,7 @@ class PhocaGalleryRenderFront
             . "function checkCreateCatForm() {" . "\n"
             . "   var pfcc = document.getElementById('phocagallery-create-cat-form');" . "\n"
             . "   if ( pfcc.categoryname.value == '' ) {" . "\n"
-            . "	   alert('" . JText::_('COM_PHOCAGALLERY_ENTER_TITLE', true) . "');" . "\n"
+            . "	   alert('" . Text::_('COM_PHOCAGALLERY_ENTER_TITLE', true) . "');" . "\n"
             . "     return false;" . "\n"
             //."   } else if ( pfcc.phocagallerycreatecatdescription.value == '' ) {". "\n"
             //."	   alert('". JText::_( 'COM_PHOCAGALLERY_ENTER_DESCRIPTION' )."');". "\n"
@@ -294,7 +298,7 @@ class PhocaGalleryRenderFront
             . "var charLeft	= maxCount - charIn;" . "\n"
             . "" . "\n"
             . "if (charLeft < 0) {" . "\n"
-            . "   alert('" . JText::_('COM_PHOCAGALLERY_MAX_LIMIT_CHARS_REACHED', true) . "');" . "\n"
+            . "   alert('" . Text::_('COM_PHOCAGALLERY_MAX_LIMIT_CHARS_REACHED', true) . "');" . "\n"
             . "   pfcc.phocagallerycreatesubcatdescription.value = pfcc.phocagallerycreatesubcatdescription.value.substring(0, maxCount);" . "\n"
             . "	charIn	 = maxCount;" . "\n"
             . "  charLeft = 0;" . "\n"
@@ -306,13 +310,13 @@ class PhocaGalleryRenderFront
             . "function checkCreateSubCatForm() {" . "\n"
             . "   var pfcc = document.getElementById('phocagallery-create-subcat-form');" . "\n"
             . "   if ( pfcc.subcategoryname.value == '' ) {" . "\n"
-            . "	   alert('" . JText::_('COM_PHOCAGALLERY_ENTER_TITLE', true) . "');" . "\n"
+            . "	   alert('" . Text::_('COM_PHOCAGALLERY_ENTER_TITLE', true) . "');" . "\n"
             . "     return false;" . "\n"
             //."   } else if ( pfcc.phocagallerycreatecatdescription.value == '' ) {". "\n"
             //."	   alert('". JText::_( 'COM_PHOCAGALLERY_ENTER_DESCRIPTION' )."');". "\n"
             //."     return false;" . "\n"
             . "   } else if ( document.getElementById('filter_catid_subcat').value < 1 ) {" . "\n"
-            . "	   alert('" . JText::_('COM_PHOCAGALLERY_PLEASE_SELECT_CATEGORY', true) . "');" . "\n"
+            . "	   alert('" . Text::_('COM_PHOCAGALLERY_PLEASE_SELECT_CATEGORY', true) . "');" . "\n"
             . "     return false;" . "\n"
 
 
@@ -329,7 +333,7 @@ class PhocaGalleryRenderFront
 
         $tag = '<script type="text/javascript">'
             . '//<![CDATA[' . "\n"
-            . ' hs.graphicsDir = \'' . JURI::base(true) . '/media/com_phocagallery/js/highslide/graphics/\';'
+            . ' hs.graphicsDir = \'' . Uri::base(true) . '/media/com_phocagallery/js/highslide/graphics/\';'
             . '//]]>' . "\n"
             . '</script>' . "\n";
 
@@ -489,34 +493,34 @@ class PhocaGalleryRenderFront
         if ($detailWindow == 1) {
             $output['detailwindowclose']  = 'window.close();';
             $output['detailwindowreload'] = 'window.location.reload(true);';
-            $closeLink                    = '<div><a href="javascript:void(0);" onclick="' . $output['detailwindowclose'] . '" >' . JText::_('COM_PHOCAGALLERY_CLOSE_WINDOW') . '</a></div>';
+            $closeLink                    = '<div><a href="javascript:void(0);" onclick="' . $output['detailwindowclose'] . '" >' . Text::_('COM_PHOCAGALLERY_CLOSE_WINDOW') . '</a></div>';
             // Highslide
         } else if ($detailWindow == 4 || $detailWindow == 5) {
             $output['detailwindowclose']  = 'return false;';
             $output['detailwindowreload'] = 'window.location.reload(true);';
-            $closeLink                    = '<div><a href="javascript:void(0);" onclick="' . $output['detailwindowclose'] . '" >' . JText::_('COM_PHOCAGALLERY_CLOSE_WINDOW') . '</a></div>';
+            $closeLink                    = '<div><a href="javascript:void(0);" onclick="' . $output['detailwindowclose'] . '" >' . Text::_('COM_PHOCAGALLERY_CLOSE_WINDOW') . '</a></div>';
             // No Popup
         } else if ($detailWindow == 7) {
             $output['detailwindowclose']  = '';
             $output['detailwindowreload'] = '';
             // Should not happen as it should be reloaded to login page
-            $closeLink = '<div><a href="' . JURI::base(true) . '" >' . JText::_('COM_PHOCAGALLERY_MAIN_SITE') . '</a></div>';
+            $closeLink = '<div><a href="' . Uri::base(true) . '" >' . Text::_('COM_PHOCAGALLERY_MAIN_SITE') . '</a></div>';
             // Magnific iframe
         } else if ($detailWindow == 11) {
             $output['detailwindowclose']  = '';
             $output['detailwindowreload'] = '';
-            $closeLink                    = '<div><a href="javascript:void(0);" class="mfp-close" >' . JText::_('COM_PHOCAGALLERY_CLOSE_WINDOW') . '</a></div>';
+            $closeLink                    = '<div><a href="javascript:void(0);" class="mfp-close" >' . Text::_('COM_PHOCAGALLERY_CLOSE_WINDOW') . '</a></div>';
             // Modal Box
         } else {
             //$this->t['detailwindowclose']	= 'window.parent.document.getElementById(\'sbox-window\').close();';
             $output['detailwindowclose']  = 'window.parent.SqueezeBox.close();';
             $output['detailwindowreload'] = 'window.location.reload(true);';
-            $closeLink                    = '<div><a href="javascript:void(0);" onclick="' . $output['detailwindowclose'] . '" >' . JText::_('COM_PHOCAGALLERY_CLOSE_WINDOW') . '</a></div>';
+            $closeLink                    = '<div><a href="javascript:void(0);" onclick="' . $output['detailwindowclose'] . '" >' . Text::_('COM_PHOCAGALLERY_CLOSE_WINDOW') . '</a></div>';
         }
 
         $o[] = '<div style="font-family:sans-serif">';
         if ($type == 0) {
-            $o[] = '<div>' . JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION') . ' ' . JText::_('COM_PHOCAGALLERY_PLEASE_LOGIN') . '.</div>';
+            $o[] = '<div>' . Text::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION') . ' ' . Text::_('COM_PHOCAGALLERY_PLEASE_LOGIN') . '.</div>';
             $o[] = '<div>&nbsp;</div>';
         }
         $o[] = $closeLink;
@@ -540,7 +544,7 @@ class PhocaGalleryRenderFront
 
     public static function renderFeedIcon($type = 'categories', $paramsIcons = true, $catid = 0, $catidAlias = '') {
 
-        $paramsC = JComponentHelper::getParams('com_phocagallery');
+        $paramsC = ComponentHelper::getParams('com_phocagallery');
         $df      = $paramsC->get('display_feed', 1);
 
         if ($type == 'categories' && $df != 1 && $df != 2) {
@@ -554,12 +558,12 @@ class PhocaGalleryRenderFront
         if ($paramsIcons) {
             //$text = HTMLHelper::_('image', 'media/com_phocagallery/images/icon-feed.png', JText::_('COM_PHOCAGALLERY_RSS'));
 
-            $text = PhocaGalleryRenderFront::renderIcon('feed', 'media/com_phocagallery/images/icon-feed.png', JText::_('COM_PHOCAGALLERY_RSS'));
+            $text = PhocaGalleryRenderFront::renderIcon('feed', 'media/com_phocagallery/images/icon-feed.png', Text::_('COM_PHOCAGALLERY_RSS'));
         } else {
-            $text = JText::_('COM_PHOCAGALLERY_RSS');
+            $text = Text::_('COM_PHOCAGALLERY_RSS');
         }
 
-        $output = '<a href="' . JRoute::_($url) . '" title="' . JText::_('COM_PHOCAGALLERY_RSS') . '">' . $text . '</a>';
+        $output = '<a href="' . Route::_($url) . '" title="' . Text::_('COM_PHOCAGALLERY_RSS') . '">' . $text . '</a>';
 
 
         return $output;
@@ -569,7 +573,7 @@ class PhocaGalleryRenderFront
     function correctRender() {
         if (class_exists('plgSystemRedact')) {
             echo "Phoca Gallery doesn't work in case Redact plugin is enabled. Please disable this plugin to run Phoca Gallery";exit;
-            $db =JFactory::getDBO();
+            $db =Factory::getDBO();
             $query = 'SELECT a.params AS params'
                     .' FROM #__plugins AS a'
                     .' WHERE a.element = \'redact\''
@@ -723,7 +727,7 @@ class PhocaGalleryRenderFront
                 // onmouseout="PhocaGallerySwitchImage(\'PhocaGalleryobjectPicture\', \''.$extL.'\');"
             }
         } else {
-            $switchImg = str_replace('phoca_thumb_m_', 'phoca_thumb_l_', JURI::base(true) . '/' . $linkThumbPath);
+            $switchImg = str_replace('phoca_thumb_m_', 'phoca_thumb_l_', Uri::base(true) . '/' . $linkThumbPath);
             if ((int)$switchW > 0 && (int)$switchH > 0 && $switchFixedSize == 1) {
                 return ' onmouseover="PhocaGallerySwitchImage(\'PhocaGalleryobjectPicture\', \'' . $switchImg . '\', ' . $switchW . ', ' . $switchH . ');" ';
             } else {
@@ -750,8 +754,8 @@ class PhocaGalleryRenderFront
 
     public static function displayCustomCSS($customCss) {
         if ($customCss != '') {
-            $customCss = str_replace('background: url(images/', 'background: url(' . JURI::base(true) . '/media/com_phocagallery/images/', $customCss);
-            $document  = JFactory::getDocument();
+            $customCss = str_replace('background: url(images/', 'background: url(' . Uri::base(true) . '/media/com_phocagallery/images/', $customCss);
+            $document  = Factory::getDocument();
             $document->addCustomTag("\n <style type=\"text/css\"> \n"
                 . strip_tags($customCss)
                 . "\n </style> \n");
@@ -759,9 +763,9 @@ class PhocaGalleryRenderFront
     }
 
     public static function renderAllCSS($noBootStrap = 0) {
-        $app    = JFactory::getApplication();
+        $app    = Factory::getApplication();
         $itemid = $app->input->get('Itemid', 0, 'int');
-        $db     = JFactory::getDBO();
+        $db     = Factory::getDBO();
         $query  = 'SELECT a.filename as filename, a.type as type, a.menulink as menulink'
             . ' FROM #__phocagallery_styles AS a'
             . ' WHERE a.published = 1'
@@ -784,10 +788,10 @@ class PhocaGalleryRenderFront
                     $menuLinks  = explode(',', $fv->menulink);
                     $isIncluded = in_array((int)$itemid, $menuLinks);
                     if ($isIncluded) {
-                        JHtml::stylesheet($path . $fv->filename);
+                        HTMLHelper::stylesheet($path . $fv->filename);
                     }
                 } else {
-                    JHtml::stylesheet($path . $fv->filename);
+                    HTMLHelper::stylesheet($path . $fv->filename);
                 }
             }
         }
@@ -797,7 +801,7 @@ class PhocaGalleryRenderFront
 
         //return HTMLHelper::_('image', $img, $alt);
 
-        $paramsC         = JComponentHelper::getParams('com_phocagallery');
+        $paramsC         = ComponentHelper::getParams('com_phocagallery');
         $bootstrap_icons = $paramsC->get('bootstrap_icons', 0);
 
         if ($bootstrap_icons == 0) {

@@ -8,15 +8,19 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 $task		= 'phocagalleryuser';
 
 $r 			= $this->r;
-$app		= JFactory::getApplication();
+$app		= Factory::getApplication();
 $option 	= $app->input->get('option');
 $tasks		= $task . 's';
 $OPT		= strtoupper($option);
-$user		= JFactory::getUser();
+$user		= Factory::getUser();
 $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
@@ -50,7 +54,7 @@ echo $r->selectFilterPublished('JOPTION_SELECT_PUBLISHED', $this->state->get('fi
 echo $r->endFilterBar();
 
 echo $r->endFilterBar();*/
-echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
+echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
 
 echo $r->startTable('categoryList');
 
@@ -60,13 +64,13 @@ echo $r->firstColumnHeader($listDirn, $listOrder);
 echo $r->secondColumnHeader($listDirn, $listOrder);
 
 
-echo '<th class="ph-image">'.JText::_('COM_PHOCAGALLERY_AVATAR').'</th>'."\n";
-echo '<th class="ph-user">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  	$OPT.'_USER', 'ua.username', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-user">'.JText::_('COM_PHOCAGALLERY_CATEGORY_COUNT').'</th>'."\n";
-echo '<th class="ph-user">'.JText::_('COM_PHOCAGALLERY_IMAGE_COUNT').'</th>'."\n";
-echo '<th class="ph-published">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  $OPT.'_PUBLISHED_AVATAR', 'a.published', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-approved">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  $OPT.'_APPROVED_AVATAR', 'a.approved', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-id">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  		$OPT.'_ID', 'a.id', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-image">'.Text::_('COM_PHOCAGALLERY_AVATAR').'</th>'."\n";
+echo '<th class="ph-user">'.HTMLHelper::_('searchtools.sort',  	$OPT.'_USER', 'ua.username', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-user">'.Text::_('COM_PHOCAGALLERY_CATEGORY_COUNT').'</th>'."\n";
+echo '<th class="ph-user">'.Text::_('COM_PHOCAGALLERY_IMAGE_COUNT').'</th>'."\n";
+echo '<th class="ph-published">'.HTMLHelper::_('searchtools.sort',  $OPT.'_PUBLISHED_AVATAR', 'a.published', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-approved">'.HTMLHelper::_('searchtools.sort',  $OPT.'_APPROVED_AVATAR', 'a.approved', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-id">'.HTMLHelper::_('searchtools.sort',  		$OPT.'_ID', 'a.id', $listDirn, $listOrder ).'</th>'."\n";
 
 echo $r->endTblHeader();
 echo $r->startTblBody($saveOrder, $saveOrderingUrl, $listDirn);
@@ -99,7 +103,7 @@ echo $r->td($countCid, "small");
 if ($item->countiid) {$countIid = $item->countiid;} else {$countIid = '0';}
 echo $r->td($countIid, "small");
 
-echo $r->td(Joomla\CMS\HTML\HTMLHelper::_('jgrid.published', $item->published, $i, $tasks.'.', $canChange), "small");
+echo $r->td(HTMLHelper::_('jgrid.published', $item->published, $i, $tasks.'.', $canChange), "small");
 echo $r->td(PhocaGalleryJGrid::approved( $item->approved, $i, $tasks.'.', $canChange), "small");
 
 echo $r->td($item->id, "small");

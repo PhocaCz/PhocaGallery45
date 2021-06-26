@@ -9,6 +9,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
 jimport('joomla.application.component.helper');
 
 class PhocaGalleryRoute
@@ -16,7 +17,7 @@ class PhocaGalleryRoute
 	public static function getCategoriesRoute() {
 
 		// TEST SOLUTION
-		$app 		= JFactory::getApplication();
+		$app 		= Factory::getApplication();
 		$menu 		= $app->getMenu();
 		$active 	= $menu->getActive();
 
@@ -84,7 +85,7 @@ class PhocaGalleryRoute
 	public static function getCategoryRoute($catid, $catidAlias = '') {
 
 		// TEST SOLUTION
-		$app 		= JFactory::getApplication();
+		$app 		= Factory::getApplication();
 		$menu 		= $app->getMenu();
 		$active 	= $menu->getActive();
 		$option		= $app->input->get( 'option', '', 'string' );
@@ -191,7 +192,7 @@ class PhocaGalleryRoute
 			'categories' => ''
 		);
 
-		$db =JFactory::getDBO();
+		$db =Factory::getDBO();
 
 		$query = 'SELECT a.id, a.title, a.link_ext, a.link_cat'
 		.' FROM #__phocagallery_tags AS a'
@@ -228,7 +229,7 @@ class PhocaGalleryRoute
 	public static function getImageRoute($id, $catid = 0, $idAlias = '', $catidAlias = '', $type = 'detail', $suffix = '')
 	{
 		// TEST SOLUTION
-		$app 		= JFactory::getApplication();
+		$app 		= Factory::getApplication();
 		$menu 		= $app->getMenu();
 		$active 	= $menu->getActive();
 		$option		= $app->input->get( 'option', '', 'string' );
@@ -297,14 +298,14 @@ class PhocaGalleryRoute
 		// Don't check ID for specific views
 		$notCheckIdArray =  array('categories');
 
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$menus	= $app->getMenu('site', array());
 		$items	= $menus->getItems('component', 'com_phocagallery');
 
 
 
 		if(!$items) {
-			return JFactory::getApplication()->input->get('Itemid', 0, '', 'int');
+			return Factory::getApplication()->input->get('Itemid', 0, '', 'int');
 			//return null;
 		}
 

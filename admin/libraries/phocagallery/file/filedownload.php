@@ -9,6 +9,9 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filesystem\File;
 jimport( 'joomla.filesystem.folder' );
 jimport( 'joomla.filesystem.file' );
 
@@ -21,10 +24,10 @@ class PhocaGalleryFileDownload
 		// but it can happen that such will be stored on your server in root (the example is picasa images)
 		$extLink = 0;
 
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 
 		if (empty($item)) {
-			$msg = JText::_('COM_PHOCAGALLERY_ERROR_DOWNLOADING_FILE');
+			$msg = Text::_('COM_PHOCAGALLERY_ERROR_DOWNLOADING_FILE');
 			$app->enqueueMessage($msg, 'error');
 			$app->redirect($backLink);
 			return false;
@@ -33,8 +36,8 @@ class PhocaGalleryFileDownload
 				phocagalleryimport('phocagallery.file.file');
 				$fileOriginal = PhocaGalleryFile::getFileOriginal($item->filenameno);
 
-				if (!JFile::exists($fileOriginal)) {
-					$msg = JText::_('COM_PHOCAGALLERY_ERROR_DOWNLOADING_FILE');
+				if (!File::exists($fileOriginal)) {
+					$msg = Text::_('COM_PHOCAGALLERY_ERROR_DOWNLOADING_FILE');
 					$app->enqueueMessage($msg, 'error');
 					$app->redirect($backLink);
 					return false;

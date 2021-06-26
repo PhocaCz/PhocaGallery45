@@ -12,9 +12,9 @@
 namespace Phoca\Render;
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\HTML\HTMLHelper;
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Version;
@@ -123,8 +123,13 @@ class Adminview
 			$tmpl = '&tmpl='.$tmpl;
 		}
 
+		$containerClass = 'container';
+		if ($this->compatible) {
+			$containerClass = '';
+		}
+
 		return '<div id="'.$view.'"><form action="'.Route::_('index.php?option='.$option . $viewP . $layout . '&id='.(int) $itemId . $tmpl).'" method="post" name="'.$name.'" id="'.$id.'" class="form-validate '.$class.'" role="form">'."\n"
-		.'<div id="phAdminEdit" class="container"><div class="row">'."\n";
+		.'<div id="phAdminEdit" class="'.$containerClass.'"><div class="row">'."\n";
 	}
 
 	public function endForm() {
@@ -154,6 +159,63 @@ class Adminview
 		}
 		$o .= HTMLHelper::_('form.token'). "\n";
 		return $o;
+	}
+
+	public function groupHeader($form, $formArray , $image = '') {
+
+		$md 	= 6;
+		$columns = 12;
+		$count = count($formArray);
+
+		if ($image != '') {
+			$mdImage = 2;
+			$columns    = 10;
+		}
+
+		$md = round(($columns/(int)$count), 0);
+		$md = $md == 0 ? 1 : $md;
+
+
+		$o = '';
+
+		$o .= '<div class="row title-alias form-vertical mb-3">';
+
+		if (!empty($formArray)) {
+
+			foreach ($formArray as $value) {
+
+				$o .= '<div class="col-12 col-md-'.(int)$md.'">';
+
+				$o .= '<div class="control-group">'."\n"
+				. '<div class="control-label">'. $form->getLabel($value) . '</div>'."\n"
+				. '<div class="clearfix"></div>'. "\n"
+				. '<div>' . $form->getInput($value). '</div>'."\n"
+				. '<div class="clearfix"></div>' . "\n"
+				. '</div>'. "\n";
+
+				$o .= '</div>';
+			}
+		}
+
+		if ($image != '') {
+
+			$o .= '<div class="col-12 col-md-'.(int)$mdImage.'">';
+			$o .= '<div class="ph-admin-additional-box-img-box">'.$image.'</div>';
+			$o .= '</div>';
+
+		}
+
+
+		$o .= '</div>';
+
+
+
+		return $o;
+
+
+		$formArray = array ('title', 'alias', 'catid', 'ordering', 'filename', 'videocode', 'pcproductid', 'vmproductid');
+echo $r->group($this->form, $formArray);
+
 	}
 
 	public function group($form, $formArray, $clear = 0) {

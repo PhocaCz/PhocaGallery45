@@ -13,6 +13,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Layout\FileLayout;
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 $layoutSVG 	= new FileLayout('svg_definitions', null, array('component' => 'com_phocagallery'));
 
 // SVG Definitions
@@ -29,7 +31,7 @@ if ( $this->params->get( 'show_page_heading' ) ) {
 if ($this->t['display_feed'] == 1 || $this->t['display_feed'] == 2 ) {
 
     echo '<div class="pg-top-icons">';
-    echo '<a href="' . JRoute::_(PhocaGalleryRoute::getFeedRoute('categories')) . '" title="' . JText::_('COM_PHOCAGALLERY_RSS') . '"><svg class="ph-si ph-si-feed"><use xlink:href="#ph-si-feed"></use></svg></a>';
+    echo '<a href="' . Route::_(PhocaGalleryRoute::getFeedRoute('categories')) . '" title="' . Text::_('COM_PHOCAGALLERY_RSS') . '"><svg class="ph-si ph-si-feed"><use xlink:href="#ph-si-feed"></use></svg></a>';
     echo '</div>';
     echo '<div class="ph-cb"></div>';
 }

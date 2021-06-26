@@ -9,21 +9,24 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined('_JEXEC') or die;
+use Joomla\CMS\Object\CMSObject;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 class PhocaGalleryCategoryhtml
 {
 	public static function options($type = 0, $ignorePublished = 0)
 	{
 		if ($type == 1) {
-			$tree[0] 			= new JObject();
-			$tree[0]->text 		= JText::_('COM_PHOCAGALLERY_MAIN_CSS');
+			$tree[0] 			= new CMSObject();
+			$tree[0]->text 		= Text::_('COM_PHOCAGALLERY_MAIN_CSS');
 			$tree[0]->value 	= 1;
-			$tree[1] 			= new JObject();
-			$tree[1]->text 		= JText::_('COM_PHOCAGALLERY_CUSTOM_CSS');
+			$tree[1] 			= new CMSObject();
+			$tree[1]->text 		= Text::_('COM_PHOCAGALLERY_CUSTOM_CSS');
 			$tree[1]->value 	= 2;
 			return $tree;
 		}
 
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 
        //build the list of categories
 		$query = 'SELECT a.title AS text, a.id AS value, a.parent_id as parentid'
@@ -37,7 +40,7 @@ class PhocaGalleryCategoryhtml
 
 		$catId	= -1;
 
-		$javascript 	= 'class="inputbox" size="1" onchange="Joomla.submitform( );"';
+		$javascript 	= 'class="form-control" size="1" onchange="Joomla.submitform( );"';
 
 		$tree = array();
 		$text = '';
@@ -53,7 +56,7 @@ class PhocaGalleryCategoryhtml
 			$show_text =  $text . $key->text;
 
 			if ($key->parentid == $id && $currentId != $id && $currentId != $key->value) {
-				$tree[$key->value] 			= new JObject();
+				$tree[$key->value] 			= new CMSObject();
 				$tree[$key->value]->text 	= $show_text;
 				$tree[$key->value]->value 	= $key->value;
 				$tree = self::CategoryTreeOption($data, $tree, $key->value, $show_text . " - ", $currentId );

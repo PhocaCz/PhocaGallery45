@@ -11,15 +11,17 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.model');
 
-class PhocaGalleryModelInfo extends JModelLegacy
+class PhocaGalleryModelInfo extends BaseDatabaseModel
 {
 
 	function __construct() {
 		parent::__construct();
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$id 	= $app->input->get('id', 0, 'int');
 		$this->setId((int)$id);
 		//$post	= $app->input->get('get');
@@ -39,8 +41,8 @@ class PhocaGalleryModelInfo extends JModelLegacy
 	}
 
 	function _loadData() {
-		$app	= JFactory::getApplication();
-		$user 		= JFactory::getUser();
+		$app	= Factory::getApplication();
+		$user 		= Factory::getUser();
 		// Lets load the content if it doesn't already exist
 		if (empty($this->_data)) {
 			// First try to get image data

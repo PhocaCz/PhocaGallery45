@@ -9,6 +9,11 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\Object\CMSObject;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Router\Route;
 jimport('joomla.application.component.model');
 
 
@@ -34,7 +39,7 @@ final class PhocaGalleryCategory
 			$show_text =  $text . $key->text;
 
 			if ($key->parentid == $id && $currentId != $id && $currentId != $key->value) {
-				$tree[$key->value] 			= new JObject();
+				$tree[$key->value] 			= new CMSObject();
 				$tree[$key->value]->text 	= $show_text;
 				$tree[$key->value]->value 	= $key->value;
 				$tree = self::CategoryTreeOption($data, $tree, $key->value, $show_text . " - ", $currentId );
@@ -45,7 +50,7 @@ final class PhocaGalleryCategory
 
 	public static function filterCategory($query, $active = NULL, $frontend = NULL, $onChange = TRUE, $fullTree = NULL ) {
 
-		$db	= JFactory::getDBO();
+		$db	= Factory::getDBO();
 
 		$form = 'adminForm';
 		if ($frontend == 1) {
@@ -53,12 +58,12 @@ final class PhocaGalleryCategory
 		}
 
 		if ($onChange) {
-			$onChO = 'class="inputbox" size="1" onchange="document.'.$form.'.submit( );"';
+			$onChO = 'class="form-control" size="1" onchange="document.'.$form.'.submit( );"';
 		} else {
-			$onChO = 'class="inputbox" size="1"';
+			$onChO = 'class="form-control" size="1"';
 		}
 
-		$categories[] = Joomla\CMS\HTML\HTMLHelper::_('select.option', '0', '- '.JText::_('COM_phocagallery_SELECT_CATEGORY').' -');
+		$categories[] = HTMLHelper::_('select.option', '0', '- '.Text::_('COM_phocagallery_SELECT_CATEGORY').' -');
 		$db->setQuery($query);
 		$catData = $db->loadObjectList();
 
@@ -116,7 +121,7 @@ final class PhocaGalleryCategory
 
 		$categories = array_merge($categories, $catDataTree );
 
-		$category = Joomla\CMS\HTML\HTMLHelper::_('select.genericlist',  $categories, 'catid', $onChO, 'value', 'text', $active);
+		$category = HTMLHelper::_('select.genericlist',  $categories, 'catid', $onChO, 'value', 'text', $active);
 
 		return $category;
 	}
@@ -125,7 +130,7 @@ final class PhocaGalleryCategory
 	{
 
 
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 
        //build the list of categories
 		$query = 'SELECT a.title AS text, a.id AS value, a.parent_id as parentid'
@@ -137,7 +142,7 @@ final class PhocaGalleryCategory
 
 		$catId	= -1;
 
-		$javascript 	= 'class="inputbox" size="1" onchange="submitform( );"';
+		$javascript 	= 'class="form-control" size="1" onchange="submitform( );"';
 
 		$tree = array();
 		$text = '';
@@ -152,7 +157,7 @@ final class PhocaGalleryCategory
 		$id = (int)$id;
 		if( empty(self::$categoryI[$id])) {
 
-			$db = JFactory::getDBO();
+			$db = Factory::getDBO();
 			$query = 'SELECT a.title, a.alias, a.id, a.parent_id'
 			. ' FROM #__phocagallery_categories AS a'
 			. ' WHERE a.id = '.(int)$id
@@ -181,7 +186,7 @@ final class PhocaGalleryCategory
 	}
 /*
 	public static function getChildren($id) {
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 		$query = 'SELECT a.title, a.alias, a.id'
 		. ' FROM #__phocagallery_categories AS a'
 		. ' WHERE a.parent_id = '.(int)$id
@@ -213,7 +218,7 @@ final class PhocaGalleryCategory
 		}
 
 		if ((int)$parent_id > 0) {
-			$db = JFactory::getDBO();
+			$db = Factory::getDBO();
 			$query = 'SELECT a.title, a.alias, a.id, a.parent_id'
 			. ' FROM #__phocagallery_categories AS a'
 			. ' WHERE a.id = '.(int)$parent_id
@@ -265,7 +270,7 @@ final class PhocaGalleryCategory
 		if (!empty($data) && count($data) > 0) {
 			$result[] = '<ul>';
 			foreach ($data as $k => $v) {
-				$link 		= JRoute::_(PhocacartRoute::getCategoryRoute($v['id'], $v['alias']));
+				$link 		= Route::_(PhocacartRoute::getCategoryRoute($v['id'], $v['alias']));
 
 				// Current Category is selected
 				if ($currentCatid == $v['id']) {
@@ -358,7 +363,7 @@ final class PhocaGalleryCategory
 		if( empty(self::$categoryF[$cis])) {
 
 			$itemOrdering 	= PhocacartOrdering::getOrderingText($ordering,1);
-			$db 			= JFactory::getDBO();
+			$db 			= Factory::getDBO();
 			$wheres			= array();
 			$user 			= PhocacartUser::getUser();
 			$userLevels		= implode (',', $user->getAuthorisedViewLevels());
@@ -410,7 +415,7 @@ final class PhocaGalleryCategory
 		if( empty(self::$categoryA[$cis])) {
 
 			$itemOrdering 	= PhocacartOrdering::getOrderingText($ordering,1);
-			$db 			= JFactory::getDBO();
+			$db 			= Factory::getDBO();
 			$wheres			= array();
 			$user 			= PhocacartUser::getUser();
 			$userLevels		= implode (',', $user->getAuthorisedViewLevels());
@@ -452,7 +457,7 @@ final class PhocaGalleryCategory
 
 	public static function getActiveCategoryId() {
 
-		$app			= JFactory::getApplication();
+		$app			= Factory::getApplication();
 		$option			= $app->input->get( 'option', '', 'string' );
 		$view			= $app->input->get( 'view', '', 'string' );
 		$catid			= $app->input->get( 'catid', '', 'int' ); // ID in items view is category id
@@ -475,7 +480,7 @@ final class PhocaGalleryCategory
 
     public static function getActiveCategories($items, $ordering) {
 
-		$db     = JFactory::getDbo();
+		$db     = Factory::getDbo();
 	    $o      = array();
         $wheres = array();
         $ordering = PhocacartOrdering::getOrderingText($ordering, 1);//c

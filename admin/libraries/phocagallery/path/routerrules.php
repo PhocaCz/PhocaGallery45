@@ -3,11 +3,12 @@
 
 
 defined('_JEXEC') or die();
+use Joomla\CMS\Component\Router\Rules\MenuRules;
 
 
 use Joomla\Registry\Registry;
 
-class PhocaGalleryRouterrules extends \JComponentRouterRulesMenu
+class PhocaGalleryRouterrules extends MenuRules
 {
 	public function preprocess(&$query)
 	{

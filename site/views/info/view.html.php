@@ -12,8 +12,12 @@
 use Joomla\CMS\Factory;
 
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Date\Date;
 jimport( 'joomla.application.component.view');
-class PhocaGalleryViewInfo extends JViewLegacy
+class PhocaGalleryViewInfo extends HtmlView
 {
 	public 		$t;
 	protected 	$params;
@@ -98,9 +102,9 @@ class PhocaGalleryViewInfo extends JViewLegacy
 		/*$this->t['backbutton'] = '';
 		if ($this->t['detailwindow'] == 7) {
 			phocagalleryimport('phocagallery.image.image');
-			$this->t['backbutton'] = '<div><a href="'.JRoute::_('index.php?option=com_phocagallery&view=category&id='. $this->info->catslug.'&Itemid='. $app->input->get('Itemid', 0, 'int')).'"'
-				.' title="'.JText::_( 'COM_PHOCAGALLERY_BACK_TO_CATEGORY' ).'">'
-				. PhocaGalleryRenderFront::renderIcon('icon-up-images', 'media/com_phocagallery/images/icon-up-images.png', JText::_('COM_PHOCAGALLERY_BACK_TO_CATEGORY'), 'ph-icon-up-images ph-icon-button').'</a></div>';
+			$this->t['backbutton'] = '<div><a href="'.Route::_('index.php?option=com_phocagallery&view=category&id='. $this->info->catslug.'&Itemid='. $app->input->get('Itemid', 0, 'int')).'"'
+				.' title="'.Text::_( 'COM_PHOCAGALLERY_BACK_TO_CATEGORY' ).'">'
+				. PhocaGalleryRenderFront::renderIcon('icon-up-images', 'media/com_phocagallery/images/icon-up-images.png', Text::_('COM_PHOCAGALLERY_BACK_TO_CATEGORY'), 'ph-icon-up-images ph-icon-button').'</a></div>';
 		}*/
 
 		// EXIF DATA
@@ -122,7 +126,7 @@ class PhocaGalleryViewInfo extends JViewLegacy
 
 
 			if ($exif === false) {
-				$outputExif .= JText::_('COM_PHOCAGALLERY_NO_HEADER_DATA_FOUND');
+				$outputExif .= Text::_('COM_PHOCAGALLERY_NO_HEADER_DATA_FOUND');
 			}
 
 			$setExif 		= $this->t['exifinformation'];
@@ -169,7 +173,7 @@ class PhocaGalleryViewInfo extends JViewLegacy
 							switch ($name) {
 								case 'FileDateTime':
 									jimport( 'joomla.utilities.date');
-									$date		= new JDate($exif[$section][$name]);
+									$date		= new Date($exif[$section][$name]);
 									$exifValue 	= $date->format('d/m/Y, H:m');
 								break;
 
@@ -187,10 +191,10 @@ class PhocaGalleryViewInfo extends JViewLegacy
 								case 'IsColor':
 									switch((int)$exif[$section][$name]) {
 										case 0:
-											$exifValue = JText::_('COM_PHOCAGALLERY_NO');
+											$exifValue = Text::_('COM_PHOCAGALLERY_NO');
 										break;
 										default:
-											$exifValue = JText::_('COM_PHOCAGALLERY_YES');
+											$exifValue = Text::_('COM_PHOCAGALLERY_YES');
 										break;
 									}
 								break;
@@ -200,16 +204,16 @@ class PhocaGalleryViewInfo extends JViewLegacy
 								case 'ResolutionUnit':
 									switch((int)$exif[$section][$name]) {
 										case 2:
-											$exifValue = JText::_('COM_PHOCAGALLERY_INCH');
+											$exifValue = Text::_('COM_PHOCAGALLERY_INCH');
 										break;
 										case 3:
-											$exifValue = JText::_('COM_PHOCAGALLERY_CM');
+											$exifValue = Text::_('COM_PHOCAGALLERY_CM');
 										break;
 										case 4:
-											$exifValue = JText::_('COM_PHOCAGALLERY_MM');
+											$exifValue = Text::_('COM_PHOCAGALLERY_MM');
 										break;
 										case 5:
-											$exifValue = JText::_('COM_PHOCAGALLERY_MICRO');
+											$exifValue = Text::_('COM_PHOCAGALLERY_MICRO');
 										break;
 										case 0:
 										case 1:
@@ -222,32 +226,32 @@ class PhocaGalleryViewInfo extends JViewLegacy
 								case 'ExposureProgram':
 									switch((int)$exif[$section][$name]) {
 										case 1:
-											$exifValue = JText::_('COM_PHOCAGALLERY_MANUAL');
+											$exifValue = Text::_('COM_PHOCAGALLERY_MANUAL');
 										break;
 										case 2:
-											$exifValue = JText::_('COM_PHOCAGALLERY_NORMAL_PROGRAM');
+											$exifValue = Text::_('COM_PHOCAGALLERY_NORMAL_PROGRAM');
 										break;
 										case 3:
-											$exifValue = JText::_('COM_PHOCAGALLERY_APERTURE_PRIORITY');
+											$exifValue = Text::_('COM_PHOCAGALLERY_APERTURE_PRIORITY');
 										break;
 										case 4:
-											$exifValue = JText::_('COM_PHOCAGALLERY_SHUTTER_PRIORITY');
+											$exifValue = Text::_('COM_PHOCAGALLERY_SHUTTER_PRIORITY');
 										break;
 										case 5:
-											$exifValue = JText::_('COM_PHOCAGALLERY_CREATIVE_PROGRAM');
+											$exifValue = Text::_('COM_PHOCAGALLERY_CREATIVE_PROGRAM');
 										break;
 										case 6:
-											$exifValue = JText::_('COM_PHOCAGALLERY_ACTION_PROGRAM');
+											$exifValue = Text::_('COM_PHOCAGALLERY_ACTION_PROGRAM');
 										break;
 										case 7:
-											$exifValue = JText::_('COM_PHOCAGALLERY_PORTRAIT_MODE');
+											$exifValue = Text::_('COM_PHOCAGALLERY_PORTRAIT_MODE');
 										break;
 										case 8:
-											$exifValue = JText::_('COM_PHOCAGALLERY_LANDSCAPE_MODE');
+											$exifValue = Text::_('COM_PHOCAGALLERY_LANDSCAPE_MODE');
 										break;
 										case 0:
 										default:
-											$exifValue = JText::_('COM_PHOCAGALLERY_NOT_DEFINED');
+											$exifValue = Text::_('COM_PHOCAGALLERY_NOT_DEFINED');
 										break;
 									}
 								break;
@@ -255,30 +259,30 @@ class PhocaGalleryViewInfo extends JViewLegacy
 								case 'MeteringMode':
 									switch((int)$exif[$section][$name]) {
 										case 0:
-											$exifValue = JText::_('COM_PHOCAGALLERY_UNKNOWN');
+											$exifValue = Text::_('COM_PHOCAGALLERY_UNKNOWN');
 										break;
 										case 1:
-											$exifValue = JText::_('COM_PHOCAGALLERY_AVERAGE');
+											$exifValue = Text::_('COM_PHOCAGALLERY_AVERAGE');
 										break;
 										case 2:
-											$exifValue = JText::_('COM_PHOCAGALLERY_CENTERWEIGHTEDAVERAGE');
+											$exifValue = Text::_('COM_PHOCAGALLERY_CENTERWEIGHTEDAVERAGE');
 										break;
 										case 3:
-											$exifValue = JText::_('COM_PHOCAGALLERY_SPOT');
+											$exifValue = Text::_('COM_PHOCAGALLERY_SPOT');
 										break;
 										case 4:
-											$exifValue = JText::_('COM_PHOCAGALLERY_MULTISPOT');
+											$exifValue = Text::_('COM_PHOCAGALLERY_MULTISPOT');
 										break;
 										case 5:
-											$exifValue = JText::_('COM_PHOCAGALLERY_PATTERN');
+											$exifValue = Text::_('COM_PHOCAGALLERY_PATTERN');
 										break;
 										case 6:
-											$exifValue = JText::_('COM_PHOCAGALLERY_PARTIAL');
+											$exifValue = Text::_('COM_PHOCAGALLERY_PARTIAL');
 										break;
 
 										case 255:
 										default:
-											$exifValue = JText::_('COM_PHOCAGALLERY_OTHER');
+											$exifValue = Text::_('COM_PHOCAGALLERY_OTHER');
 										break;
 									}
 								break;
@@ -287,70 +291,70 @@ class PhocaGalleryViewInfo extends JViewLegacy
 								case 'LightSource':
 									switch((int)$exif[$section][$name]) {
 										case 0:
-											$exifValue = JText::_('COM_PHOCAGALLERY_UNKNOWN');
+											$exifValue = Text::_('COM_PHOCAGALLERY_UNKNOWN');
 										break;
 										case 1:
-											$exifValue = JText::_('COM_PHOCAGALLERY_DAYLIGHT');
+											$exifValue = Text::_('COM_PHOCAGALLERY_DAYLIGHT');
 										break;
 										case 2:
-											$exifValue = JText::_('COM_PHOCAGALLERY_FLUORESCENT');
+											$exifValue = Text::_('COM_PHOCAGALLERY_FLUORESCENT');
 										break;
 										case 3:
-											$exifValue = JText::_('COM_PHOCAGALLERY_TUNGSTEN');
+											$exifValue = Text::_('COM_PHOCAGALLERY_TUNGSTEN');
 										break;
 										case 4:
-											$exifValue = JText::_('COM_PHOCAGALLERY_FLASH');
+											$exifValue = Text::_('COM_PHOCAGALLERY_FLASH');
 										break;
 										case 9:
-											$exifValue = JText::_('COM_PHOCAGALLERY_FINEWEATHER');
+											$exifValue = Text::_('COM_PHOCAGALLERY_FINEWEATHER');
 										break;
 										case 10:
-											$exifValue = JText::_('COM_PHOCAGALLERY_CLOUDYWEATHER');
+											$exifValue = Text::_('COM_PHOCAGALLERY_CLOUDYWEATHER');
 										break;
 
 										case 11:
-											$exifValue = JText::_('COM_PHOCAGALLERY_SHADE');
+											$exifValue = Text::_('COM_PHOCAGALLERY_SHADE');
 										break;
 										case 12:
-											$exifValue = JText::_('COM_PHOCAGALLERY_DAYLIGHTFLUORESCENT');
+											$exifValue = Text::_('COM_PHOCAGALLERY_DAYLIGHTFLUORESCENT');
 										break;
 										case 13:
-											$exifValue = JText::_('COM_PHOCAGALLERY_DAYWHITEFLUORESCENT');
+											$exifValue = Text::_('COM_PHOCAGALLERY_DAYWHITEFLUORESCENT');
 										break;
 										case 14:
-											$exifValue = JText::_('COM_PHOCAGALLERY_COOLWHITEFLUORESCENT');
+											$exifValue = Text::_('COM_PHOCAGALLERY_COOLWHITEFLUORESCENT');
 										break;
 										case 15:
-											$exifValue = JText::_('COM_PHOCAGALLERY_WHITEFLUORESCENT');
+											$exifValue = Text::_('COM_PHOCAGALLERY_WHITEFLUORESCENT');
 										break;
 										case 17:
-											$exifValue = JText::_('COM_PHOCAGALLERY_STANDARDLIGHTA');
+											$exifValue = Text::_('COM_PHOCAGALLERY_STANDARDLIGHTA');
 										break;
 										case 18:
-											$exifValue = JText::_('COM_PHOCAGALLERY_STANDARDLIGHTB');
+											$exifValue = Text::_('COM_PHOCAGALLERY_STANDARDLIGHTB');
 										break;
 										case 19:
-											$exifValue = JText::_('COM_PHOCAGALLERY_STANDARDLIGHTC');
+											$exifValue = Text::_('COM_PHOCAGALLERY_STANDARDLIGHTC');
 										break;
 										case 20:
-											$exifValue = JText::_('COM_PHOCAGALLERY_D55');
+											$exifValue = Text::_('COM_PHOCAGALLERY_D55');
 										break;
 										case 21:
-											$exifValue = JText::_('COM_PHOCAGALLERY_D65');
+											$exifValue = Text::_('COM_PHOCAGALLERY_D65');
 										break;
 										case 22:
-											$exifValue = JText::_('COM_PHOCAGALLERY_D75');
+											$exifValue = Text::_('COM_PHOCAGALLERY_D75');
 										break;
 										case 23:
-											$exifValue = JText::_('COM_PHOCAGALLERY_D50');
+											$exifValue = Text::_('COM_PHOCAGALLERY_D50');
 										break;
 										case 24:
-											$exifValue = JText::_('COM_PHOCAGALLERY_ISOSTUDIOTUNGSTEN');
+											$exifValue = Text::_('COM_PHOCAGALLERY_ISOSTUDIOTUNGSTEN');
 										break;
 
 										case 255:
 										default:
-											$exifValue = JText::_('COM_PHOCAGALLERY_OTHERLIGHTSOURCE');
+											$exifValue = Text::_('COM_PHOCAGALLERY_OTHERLIGHTSOURCE');
 										break;
 									}
 								break;
@@ -359,27 +363,27 @@ class PhocaGalleryViewInfo extends JViewLegacy
 									switch((int)$exif[$section][$name]) {
 
 										case 2:
-											$exifValue = JText::_('COM_PHOCAGALLERY_ONE-CHIP_COLOR_AREA_SENSOR');
+											$exifValue = Text::_('COM_PHOCAGALLERY_ONE-CHIP_COLOR_AREA_SENSOR');
 										break;
 										case 3:
-											$exifValue = JText::_('COM_PHOCAGALLERY_TWO-CHIP_COLOR_AREA_SENSOR');
+											$exifValue = Text::_('COM_PHOCAGALLERY_TWO-CHIP_COLOR_AREA_SENSOR');
 										break;
 										case 4:
-											$exifValue = JText::_('COM_PHOCAGALLERY_THREE-CHIP_COLOR_AREA_SENSOR');
+											$exifValue = Text::_('COM_PHOCAGALLERY_THREE-CHIP_COLOR_AREA_SENSOR');
 										break;
 										case 5:
-											$exifValue = JText::_('COM_PHOCAGALLERY_COLOR_SEQUENTIAL_AREA_SENSOR');
+											$exifValue = Text::_('COM_PHOCAGALLERY_COLOR_SEQUENTIAL_AREA_SENSOR');
 										break;
 										case 7:
-											$exifValue = JText::_('COM_PHOCAGALLERY_TRILINEAR_SENSOR');
+											$exifValue = Text::_('COM_PHOCAGALLERY_TRILINEAR_SENSOR');
 										break;
 										case 8:
-											$exifValue = JText::_('COM_PHOCAGALLERY_COLOR_SEQUENTIAL_LINEAR_SENSOR');
+											$exifValue = Text::_('COM_PHOCAGALLERY_COLOR_SEQUENTIAL_LINEAR_SENSOR');
 										break;
 
 										case 1:
 										default:
-											$exifValue = JText::_('COM_PHOCAGALLERY_NOT_DEFINED');
+											$exifValue = Text::_('COM_PHOCAGALLERY_NOT_DEFINED');
 										break;
 									}
 								break;
@@ -388,12 +392,12 @@ class PhocaGalleryViewInfo extends JViewLegacy
 									switch((int)$exif[$section][$name]) {
 
 										case 1:
-											$exifValue = JText::_('COM_PHOCAGALLERY_CUSTOM_PROCESS');
+											$exifValue = Text::_('COM_PHOCAGALLERY_CUSTOM_PROCESS');
 										break;
 
 										case 0:
 										default:
-											$exifValue = JText::_('COM_PHOCAGALLERY_NORMAL_PROCESS');
+											$exifValue = Text::_('COM_PHOCAGALLERY_NORMAL_PROCESS');
 										break;
 									}
 								break;
@@ -402,16 +406,16 @@ class PhocaGalleryViewInfo extends JViewLegacy
 									switch((int)$exif[$section][$name]) {
 
 										case 1:
-											$exifValue = JText::_('COM_PHOCAGALLERY_MANUAL_EXPOSURE');
+											$exifValue = Text::_('COM_PHOCAGALLERY_MANUAL_EXPOSURE');
 										break;
 
 										case 2:
-											$exifValue = JText::_('COM_PHOCAGALLERY_AUTO_BRACKET');
+											$exifValue = Text::_('COM_PHOCAGALLERY_AUTO_BRACKET');
 										break;
 
 										case 0:
 										default:
-											$exifValue = JText::_('COM_PHOCAGALLERY_AUTO_EXPOSURE');
+											$exifValue = Text::_('COM_PHOCAGALLERY_AUTO_EXPOSURE');
 										break;
 									}
 								break;
@@ -420,12 +424,12 @@ class PhocaGalleryViewInfo extends JViewLegacy
 									switch((int)$exif[$section][$name]) {
 
 										case 1:
-											$exifValue = JText::_('COM_PHOCAGALLERY_MANUAL_WHITE_BALANCE');
+											$exifValue = Text::_('COM_PHOCAGALLERY_MANUAL_WHITE_BALANCE');
 										break;
 
 										case 0:
 										default:
-											$exifValue = JText::_('COM_PHOCAGALLERY_AUTO_WHITE_BALANCE');
+											$exifValue = Text::_('COM_PHOCAGALLERY_AUTO_WHITE_BALANCE');
 										break;
 									}
 								break;
@@ -435,18 +439,18 @@ class PhocaGalleryViewInfo extends JViewLegacy
 									switch((int)$exif[$section][$name]) {
 
 										case 1:
-											$exifValue = JText::_('COM_PHOCAGALLERY_LANDSCAPE');
+											$exifValue = Text::_('COM_PHOCAGALLERY_LANDSCAPE');
 										break;
 										case 2:
-											$exifValue = JText::_('COM_PHOCAGALLERY_PORTRAIT');
+											$exifValue = Text::_('COM_PHOCAGALLERY_PORTRAIT');
 										break;
 										case 3:
-											$exifValue = JText::_('COM_PHOCAGALLERY_NIGHT_SCENE');
+											$exifValue = Text::_('COM_PHOCAGALLERY_NIGHT_SCENE');
 										break;
 
 										case 0:
 										default:
-											$exifValue = JText::_('COM_PHOCAGALLERY_STANDARD');
+											$exifValue = Text::_('COM_PHOCAGALLERY_STANDARD');
 										break;
 									}
 								break;
@@ -455,22 +459,22 @@ class PhocaGalleryViewInfo extends JViewLegacy
 									switch((int)$exif[$section][$name]) {
 
 										case 1:
-											$exifValue = JText::_('COM_PHOCAGALLERY_LOW_GAIN_UP');
+											$exifValue = Text::_('COM_PHOCAGALLERY_LOW_GAIN_UP');
 										break;
 										case 2:
-											$exifValue = JText::_('COM_PHOCAGALLERY_HIGH_GAIN_UP');
+											$exifValue = Text::_('COM_PHOCAGALLERY_HIGH_GAIN_UP');
 										break;
 										case 3:
-											$exifValue = JText::_('COM_PHOCAGALLERY_LOW_GAIN_UP');
+											$exifValue = Text::_('COM_PHOCAGALLERY_LOW_GAIN_UP');
 										break;
 
 										case 4:
-											$exifValue = JText::_('COM_PHOCAGALLERY_HIGH_GAIN_UP');
+											$exifValue = Text::_('COM_PHOCAGALLERY_HIGH_GAIN_UP');
 										break;
 
 										case 0:
 										default:
-											$exifValue = JText::_('COM_PHOCAGALLERY_NONE');
+											$exifValue = Text::_('COM_PHOCAGALLERY_NONE');
 										break;
 									}
 								break;
@@ -479,10 +483,10 @@ class PhocaGalleryViewInfo extends JViewLegacy
 									switch((int)$exif[$section][$name]) {
 
 										case 1:
-											$exifValue = JText::_('COM_PHOCAGALLERY_SRGB');
+											$exifValue = Text::_('COM_PHOCAGALLERY_SRGB');
 										break;
 										case 'FFFF.H':
-											$exifValue = JText::_('COM_PHOCAGALLERY_UNCALIBRATED');
+											$exifValue = Text::_('COM_PHOCAGALLERY_UNCALIBRATED');
 										break;
 
 										case 0:
@@ -498,15 +502,15 @@ class PhocaGalleryViewInfo extends JViewLegacy
 									switch((int)$exif[$section][$name]) {
 
 										case 1:
-											$exifValue = JText::_('COM_PHOCAGALLERY_SOFT');
+											$exifValue = Text::_('COM_PHOCAGALLERY_SOFT');
 										break;
 										case 2:
-											$exifValue = JText::_('COM_PHOCAGALLERY_HARD');
+											$exifValue = Text::_('COM_PHOCAGALLERY_HARD');
 										break;
 
 										case 0:
 										default:
-											$exifValue = JText::_('COM_PHOCAGALLERY_NORMAL');
+											$exifValue = Text::_('COM_PHOCAGALLERY_NORMAL');
 										break;
 									}
 								break;
@@ -515,15 +519,15 @@ class PhocaGalleryViewInfo extends JViewLegacy
 									switch((int)$exif[$section][$name]) {
 
 										case 1:
-											$exifValue = JText::_('COM_PHOCAGALLERY_LOW_SATURATION');
+											$exifValue = Text::_('COM_PHOCAGALLERY_LOW_SATURATION');
 										break;
 										case 2:
-											$exifValue = JText::_('COM_PHOCAGALLERY_HIGH_SATURATION');
+											$exifValue = Text::_('COM_PHOCAGALLERY_HIGH_SATURATION');
 										break;
 
 										case 0:
 										default:
-											$exifValue = JText::_('COM_PHOCAGALLERY_NORMAL');
+											$exifValue = Text::_('COM_PHOCAGALLERY_NORMAL');
 										break;
 									}
 								break;
@@ -532,19 +536,19 @@ class PhocaGalleryViewInfo extends JViewLegacy
 									switch((int)$exif[$section][$name]) {
 
 										case 1:
-											$exifValue = JText::_('COM_PHOCAGALLERY_MACRO');
+											$exifValue = Text::_('COM_PHOCAGALLERY_MACRO');
 										break;
 										case 2:
-											$exifValue = JText::_('COM_PHOCAGALLERY_CLOSE_VIEW');
+											$exifValue = Text::_('COM_PHOCAGALLERY_CLOSE_VIEW');
 										break;
 
 										case 3:
-											$exifValue = JText::_('COM_PHOCAGALLERY_DISTANT_VIEW');
+											$exifValue = Text::_('COM_PHOCAGALLERY_DISTANT_VIEW');
 										break;
 
 										case 0:
 										default:
-											$exifValue = JText::_('COM_PHOCAGALLERY_UNKNOWN');
+											$exifValue = Text::_('COM_PHOCAGALLERY_UNKNOWN');
 										break;
 									}
 								break;
@@ -665,7 +669,7 @@ class PhocaGalleryViewInfo extends JViewLegacy
 
 							$this->t['infooutput'] .= '<tr '.$class.'>'
 							//.'<td>'. JText::_($vs) . '('.$section.' '.$name.')</td>'
-							.'<td>'. JText::_('COM_PHOCAGALLERY_'.strtoupper($vs)) . '</td>'
+							.'<td>'. Text::_('COM_PHOCAGALLERY_'.strtoupper($vs)) . '</td>'
 							.'<td>'.$exifValue. '</td>'
 							.'</tr>';
 						}
@@ -684,7 +688,7 @@ class PhocaGalleryViewInfo extends JViewLegacy
 
 	protected function _prepareDocument($item) {
 
-		$app		= JFactory::getApplication();
+		$app		= Factory::getApplication();
 		$menus		= $app->getMenu();
 		$pathway 	= $app->getPathway();
 		$this->params		= $app->getParams();
@@ -698,14 +702,14 @@ class PhocaGalleryViewInfo extends JViewLegacy
 		if ($menu) {
 			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
 		} else {
-			$this->params->def('page_heading', JText::_('JGLOBAL_ARTICLES'));
+			$this->params->def('page_heading', Text::_('JGLOBAL_ARTICLES'));
 		}
 
 		$title = $this->params->get('page_title', '');
 		if (empty($title)) {
 			$title = htmlspecialchars_decode($app->get('sitename'));
 		} else if ($app->get('sitename_pagetitles', 0) == 1) {
-			$title = JText::sprintf('JPAGETITLE', htmlspecialchars_decode($app->get('sitename')), $title);
+			$title = Text::sprintf('JPAGETITLE', htmlspecialchars_decode($app->get('sitename')), $title);
 
 			if (isset($item->title) && $item->title != '') {
 				$title = $title .' - ' .  $item->title;
@@ -717,7 +721,7 @@ class PhocaGalleryViewInfo extends JViewLegacy
 				$title = $title .' - ' .  $item->title;
 			}
 
-			$title = JText::sprintf('JPAGETITLE', $title, htmlspecialchars_decode($app->get('sitename')));
+			$title = Text::sprintf('JPAGETITLE', $title, htmlspecialchars_decode($app->get('sitename')));
 		}
 		$this->document->setTitle($title);
 
@@ -756,7 +760,7 @@ class PhocaGalleryViewInfo extends JViewLegacy
 		/*if (isset($this->category[0]->parentid)) {
 			if ($this->category[0]->parentid == 1) {
 			} else if ($this->category[0]->parentid > 0) {
-				$pathway->addItem($this->category[0]->parenttitle, JRoute::_(PhocaDocumentationHelperRoute::getCategoryRoute($this->category[0]->parentid, $this->category[0]->parentalias)));
+				$pathway->addItem($this->category[0]->parenttitle, Route::_(PhocaDocumentationHelperRoute::getCategoryRoute($this->category[0]->parentid, $this->category[0]->parentalias)));
 			}
 		}
 

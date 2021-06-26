@@ -9,6 +9,13 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Object\CMSObject;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Language\Text;
 
 class PhocaGalleryImageFront
 {
@@ -21,7 +28,7 @@ class PhocaGalleryImageFront
 		phocagalleryimport('phocagallery.image.image');
 		phocagalleryimport('phocagallery.path.path');
 		$path		= PhocaGalleryPath::getPath();
-		$imgBg 		= new JObject();
+		$imgBg 		= new CMSObject();
 
 		switch ($imgCatSize) {
 			case 4:
@@ -72,28 +79,32 @@ class PhocaGalleryImageFront
 		// if category is not accessable, display the key in the image:
 		$key = '';
 		if ((int)$rightDisplayKey == 0) {
-			$key = '-key';
+			//$key = '-key';
+			return false;
 		}
 		switch ($imgCategoriesSize) {
 			// user wants to display only icon folder (parameters) medium
 			case 3:
 			case 7:
-			$fileThumbnail 		= PhocaGalleryFileThumbnail::getThumbnailName($filename, 'medium');
-			$fileThumbnail->rel	= $path->image_rel_front . 'icon-folder-medium'.$key.'.png';
+				return false;
+				//$fileThumbnail 		= PhocaGalleryFileThumbnail::getThumbnailName($filename, 'medium');
+			//$fileThumbnail->rel	= $path->image_rel_front . 'icon-folder-medium'.$key.'.png';
 			break;
 			// user wants to display only icon folder (parameters) small
 			case 2:
 			case 6:
-			$fileThumbnail 		= PhocaGalleryFileThumbnail::getThumbnailName($filename, 'small');
-			$fileThumbnail->rel	= $path->image_rel_front . 'icon-folder-small-main'.$key.'.png';
+				return false;
+			//$fileThumbnail 		= PhocaGalleryFileThumbnail::getThumbnailName($filename, 'small');
+			//$fileThumbnail->rel	= $path->image_rel_front . 'icon-folder-small-main'.$key.'.png';
 			break;
 
 			// standard medium image next to category in categories view - if the file doesn't exist, it will be displayed folder icon
 			case 1:
 			case 5:
 			$fileThumbnail = PhocaGalleryFileThumbnail::getThumbnailName($filename, 'medium');
-			if (!JFile::exists($fileThumbnail->abs) || $rightDisplayKey == 0) {
-				$fileThumbnail->rel	= $path->image_rel_front . 'icon-folder-medium'.$key.'.png';
+			if (!File::exists($fileThumbnail->abs) || $rightDisplayKey == 0) {
+				return false;
+				//$fileThumbnail->rel	= $path->image_rel_front . 'icon-folder-medium'.$key.'.png';
 			}
 			break;
 
@@ -101,8 +112,9 @@ class PhocaGalleryImageFront
 			case 0:
 			case 4:
 			$fileThumbnail = PhocaGalleryFileThumbnail::getThumbnailName($filename, 'small');
-			if (!JFile::exists($fileThumbnail->abs) || $rightDisplayKey == 0) {
-				$fileThumbnail->rel	= $path->image_rel_front . 'icon-folder-small-main'.$key.'.png';
+			if (!File::exists($fileThumbnail->abs) || $rightDisplayKey == 0) {
+				return false;
+				//$fileThumbnail->rel	= $path->image_rel_front . 'icon-folder-small-main'.$key.'.png';
 			}
 			break;
 		}
@@ -122,7 +134,7 @@ class PhocaGalleryImageFront
 		$path		= PhocaGalleryPath::getPath();
 
 
-		$fileThumbnail =  new JObject;
+		$fileThumbnail =  new CMSObject;
 		$fileThumbnail->rel 	= '';
 		$fileThumbnail->extw 	= '';
 		$fileThumbnail->exth 	= '';
@@ -131,7 +143,7 @@ class PhocaGalleryImageFront
 		$exth = explode(',',$exth);
 
 
-		$paramsC 	= JComponentHelper::getParams('com_phocagallery');
+		$paramsC 	= ComponentHelper::getParams('com_phocagallery');
 
 
 		if (!isset($extw[0])) {$extw[0] = $paramsC->get( 'large_image_width', 640 );}
@@ -145,26 +157,31 @@ class PhocaGalleryImageFront
 		$key = '';
 		if ((int)$rightDisplayKey == 0) {
 			$key = '-key';
+			return false;
 		}
 
 		switch ($imgCategoriesSize) {
 			// user wants to display only icon folder (parameters) medium
 			case 3:
 			case 7:
-			$fileThumbnail->rel	= $path->image_rel_front . 'icon-folder-medium'.$key.'.png';
+			return false;
+				//$fileThumbnail->rel	= $path->image_rel_front . 'icon-folder-medium'.$key.'.png';
 
 			break;
 			// user wants to display only icon folder (parameters) small
 			case 2:
 			case 6:
-			$fileThumbnail->rel	= $path->image_rel_front . 'icon-folder-small-main'.$key.'.png';
-			break;
+				return false;
+			//$fileThumbnail->rel	= $path->image_rel_front . 'icon-folder-small-main'.$key.'.png';
+
+		break;
 
 			// standard medium image next to category in categories view - if the file doesn't exist, it will be displayed folder icon
 			case 1:
 			case 5:
 			if ($extm == '' || (int)$rightDisplayKey == 0) {
-				$fileThumbnail->rel		= $path->image_rel_front . 'icon-folder-medium'.$key.'.png';
+				return false;
+				//$fileThumbnail->rel		= $path->image_rel_front . 'icon-folder-medium'.$key.'.png';
 			} else {
 				$fileThumbnail->rel 	= $extm;
 				$fileThumbnail->extw 	= $extw[1];
@@ -177,7 +194,8 @@ class PhocaGalleryImageFront
 			case 0:
 			case 4:
 			if ($exts == '' || (int)$rightDisplayKey == 0) {
-				$fileThumbnail->rel		= $path->image_rel_front . 'icon-folder-small-main'.$key.'.png';
+				return false;
+				//$fileThumbnail->rel		= $path->image_rel_front . 'icon-folder-small-main'.$key.'.png';
 			}else {
 				$fileThumbnail->rel 	= $exts;
 				$fileThumbnail->extw 	= $extw[2];
@@ -198,7 +216,7 @@ class PhocaGalleryImageFront
 		phocagalleryimport('phocagallery.path.path');
 		phocagalleryimport('phocagallery.file.filethumbnail');
 
-		$paramsC = JComponentHelper::getParams('com_phocagallery') ;
+		$paramsC = ComponentHelper::getParams('com_phocagallery') ;
 
 		$path						= PhocaGalleryPath::getPath();
 		$fileThumbnail				= PhocaGalleryFileThumbnail::getThumbnailName($filename, $size);
@@ -207,7 +225,7 @@ class PhocaGalleryImageFront
 
 
 		//Thumbnail_file doesn't exists or user wants to display folder icon or if category is not accessable, display the key in the image:
-		if ((int)$rightDisplayKey == 0 || !JFile::exists($fileThumbnail->abs) ||  $displayCategoryIconImage != 1) {
+		if ((int)$rightDisplayKey == 0 || !File::exists($fileThumbnail->abs) ||  $displayCategoryIconImage != 1) {
 				$fileThumbnail->rel 				= false;
 				$fileThumbnail->linkthumbnailpath	= false;
 				$fileThumbnail->extid				= 0;
@@ -226,7 +244,7 @@ class PhocaGalleryImageFront
 	*//*
 	public static function displayBackFolder ($size, $rightDisplayKey) {
 
-		$fileThumbnail = new JObject;
+		$fileThumbnail = new CMSObject;
 
 		// if category is not accessable, display the key in the image:
 		$key = '';
@@ -238,7 +256,7 @@ class PhocaGalleryImageFront
 		phocagalleryimport('phocagallery.path.path');
 		$path				= PhocaGalleryPath::getPath();
 		$fileThumbnail->abs = '';
-		$paramsC 			= JComponentHelper::getParams('com_phocagallery') ;
+		$paramsC 			= ComponentHelper::getParams('com_phocagallery') ;
 
 		if ( $paramsC->get( 'image_background_shadow' ) != 'None' ) {
 			$fileThumbnail->rel	= $path->image_rel_front . 'icon-up-images'.$key.'.png';
@@ -258,11 +276,11 @@ class PhocaGalleryImageFront
 		phocagalleryimport('phocagallery.image.image');
 		phocagalleryimport('phocagallery.path.path');
 
-		$paramsC = JComponentHelper::getParams('com_phocagallery') ;
+		$paramsC = ComponentHelper::getParams('com_phocagallery') ;
 		$path				= PhocaGalleryPath::getPath();
 
 
-		$fileThumbnail = new JObject();
+		$fileThumbnail = new CMSObject();
 		$fileThumbnail->extm				= $extM;
 		$fileThumbnail->exts				= $extS;
 		$fileThumbnail->linkthumbnailpath	= $extS; // in case external image doesn't exist or the category is locked
@@ -371,7 +389,7 @@ class PhocaGalleryImageFront
 
 
 		//Thumbnail_file doesn't exists
-		if (!JFile::exists($fileThumbnail->abs)) {
+		if (!File::exists($fileThumbnail->abs)) {
 			switch ($size) {
 				case 'large':
 				$fileThumbnail->rel	= $path->image_rel_front . 'phoca_thumb_l_no_image.png';
@@ -392,8 +410,8 @@ class PhocaGalleryImageFront
 
 	public static function getCategoryImages($categoryid, $categoryImageOrdering = '') {
 
-		$db 	=JFactory::getDBO();
-		$user 	= JFactory::getUser();
+		$db 	=Factory::getDBO();
+		$user 	= Factory::getUser();
 		$image 	= '';
 
 		// We need to get a list of all subcategories in the given category
@@ -443,8 +461,8 @@ class PhocaGalleryImageFront
 	 */
 	public static function getRandomImageRecursive($categoryid, $categoryImageOrdering = '', $extImage = 0, $extImageSize = 1) {
 
-		$db 	=JFactory::getDBO();
-		$user 	= JFactory::getUser();
+		$db 	=Factory::getDBO();
+		$user 	= Factory::getUser();
 		$image 	= new stdClass();
 
 		// We need to get a list of all subcategories in the given category
@@ -533,9 +551,9 @@ class PhocaGalleryImageFront
     }
 
 	public static function getRandomCategory($parentid, $ordering = ' ORDER BY RAND()') {
-        $db 	=JFactory::getDBO();
+        $db 	=Factory::getDBO();
 
-		$groups = JFactory::getUser()->getAuthorisedViewLevels();
+		$groups = Factory::getUser()->getAuthorisedViewLevels();
 		if (count($groups)) {
 			$access = ' AND a.access IN(' . implode(',', $groups) . ')';
 		} else {
@@ -604,7 +622,7 @@ class PhocaGalleryImageFront
 		if (isset($images[0]->notaccess) && $images[0]->notaccess == 1) {
 			$stNA = 'width: '.($w ).'px; height: '.($h ).'px; margin: 0 auto;';
 			$o .= '<div style="text-align: center;'.$stNA.'">';
-			$o .= '<div class="pg-multi-img" style="margin: 0 auto;'.$stNA.'" ><img src="'.JURI::base(true).'/media/com_phocagallery/images/icon-folder-medium-key.png" style="margin: 0 auto;'.$stNA.'" alt="" /></div>';
+			$o .= '<div class="pg-multi-img" style="margin: 0 auto;'.$stNA.'" ><img src="'.Uri::base(true).'/media/com_phocagallery/images/icon-folder-medium-key.png" style="margin: 0 auto;'.$stNA.'" alt="" /></div>';
 			$o .= '</div>';
 			return $o;
 		}
@@ -642,7 +660,7 @@ class PhocaGalleryImageFront
 
 	public static function getMosaicFields($a, $images, $size = 0, $extImg = 0, $w = 100, $h = 100) {
 
-		$paramsC 	= JComponentHelper::getParams('com_phocagallery');
+		$paramsC 	= ComponentHelper::getParams('com_phocagallery');
 		$alt_value	= $paramsC->get( 'alt_value', 1 );
 
 		if ($size == 1) {
@@ -691,8 +709,8 @@ class PhocaGalleryImageFront
 				$o['w1']= (int)$i[1][1] * 2;
 				$o['w2']= (int)$i[1][1];
 
-				$o['b1']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[0][0].'" alt="'.$altValue0.'" /></span>';
-				$o['b2']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[1][0].'" alt="'.$altValue0.'" /></span>';
+				$o['b1']= '<span class="pg-multi-img"><img src="'.Uri::base(true).'/'. $i[0][0].'" alt="'.$altValue0.'" /></span>';
+				$o['b2']= '<span class="pg-multi-img"><img src="'.Uri::base(true).'/'. $i[1][0].'" alt="'.$altValue0.'" /></span>';
 			}
 			return $o;
 			break;
@@ -729,8 +747,8 @@ class PhocaGalleryImageFront
 				$o['w1']= (int)$i[1][1] * 2;
 				$o['w2']= (int)$i[1][1];
 
-				$o['b1']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[0][0].'" alt="'.$altValue0.'" /></span>';
-				$o['b2']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[1][0].'" alt="'.$altValue1.'" /></span>';
+				$o['b1']= '<span class="pg-multi-img"><img src="'.Uri::base(true).'/'. $i[0][0].'" alt="'.$altValue0.'" /></span>';
+				$o['b2']= '<span class="pg-multi-img"><img src="'.Uri::base(true).'/'. $i[1][0].'" alt="'.$altValue1.'" /></span>';
 			}
 			return $o;
 			break;
@@ -775,9 +793,9 @@ class PhocaGalleryImageFront
 				$o['w1']= (int)$i[2][1] * 2;
 				$o['w2']= (int)$i[2][1];
 
-				$o['b1']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[0][0].'" alt="'.$altValue0.'" /></span>';
-				$o['b2']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[1][0].'" alt="'.$altValue1.'" /></span>'.
-						  '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[2][0].'" alt="'.$altValue2.'" /></span>';
+				$o['b1']= '<span class="pg-multi-img"><img src="'.Uri::base(true).'/'. $i[0][0].'" alt="'.$altValue0.'" /></span>';
+				$o['b2']= '<span class="pg-multi-img"><img src="'.Uri::base(true).'/'. $i[1][0].'" alt="'.$altValue1.'" /></span>'.
+						  '<span class="pg-multi-img"><img src="'.Uri::base(true).'/'. $i[2][0].'" alt="'.$altValue2.'" /></span>';
 			}
 			return $o;
 			break;
@@ -824,9 +842,9 @@ class PhocaGalleryImageFront
 				$o['w2']= (int)$i[0][1] * 2;
 
 
-				$o['b1']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[0][0].'" alt="'.$altValue0.'" /></span>';
-				$o['b2']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[1][0].'" alt="'.$altValue1.'" /></span>'.
-					  '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[2][0].'" alt="'.$altValue2.'" /></span>';
+				$o['b1']= '<span class="pg-multi-img"><img src="'.Uri::base(true).'/'. $i[0][0].'" alt="'.$altValue0.'" /></span>';
+				$o['b2']= '<span class="pg-multi-img"><img src="'.Uri::base(true).'/'. $i[1][0].'" alt="'.$altValue1.'" /></span>'.
+					  '<span class="pg-multi-img"><img src="'.Uri::base(true).'/'. $i[2][0].'" alt="'.$altValue2.'" /></span>';
 			}
 			return $o;
 			break;
@@ -878,10 +896,10 @@ class PhocaGalleryImageFront
 				$o['w2']= (int)$i[0][1] * 2;
 
 
-				$o['b1']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[0][0].'" alt="'.$altValue0.'" /></span>';
-				$o['b2']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[1][0].'" alt="'.$altValue1.'" /></span>'.
-						  '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[2][0].'" alt="'.$altValue2.'" /></span>'.
-						  '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[3][0].'" alt="'.$altValue3.'" /></span>';
+				$o['b1']= '<span class="pg-multi-img"><img src="'.Uri::base(true).'/'. $i[0][0].'" alt="'.$altValue0.'" /></span>';
+				$o['b2']= '<span class="pg-multi-img"><img src="'.Uri::base(true).'/'. $i[1][0].'" alt="'.$altValue1.'" /></span>'.
+						  '<span class="pg-multi-img"><img src="'.Uri::base(true).'/'. $i[2][0].'" alt="'.$altValue2.'" /></span>'.
+						  '<span class="pg-multi-img"><img src="'.Uri::base(true).'/'. $i[3][0].'" alt="'.$altValue3.'" /></span>';
 			}
 			return $o;
 			break;
@@ -939,11 +957,11 @@ class PhocaGalleryImageFront
 				$o['w2']= (int)$i[0][1] * 2;
 
 
-				$o['b1']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[0][0].'" alt="'.$altValue0.'" /></span>';
-				$o['b2']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[1][0].'" alt="'.$altValue1.'" /></span>'.
-						  '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[2][0].'" alt="'.$altValue2.'" /></span>'.
-						  '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[3][0].'" alt="'.$altValue3.'" /></span>'.
-						  '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[4][0].'" alt="'.$altValue4.'" /></span>';
+				$o['b1']= '<span class="pg-multi-img"><img src="'.Uri::base(true).'/'. $i[0][0].'" alt="'.$altValue0.'" /></span>';
+				$o['b2']= '<span class="pg-multi-img"><img src="'.Uri::base(true).'/'. $i[1][0].'" alt="'.$altValue1.'" /></span>'.
+						  '<span class="pg-multi-img"><img src="'.Uri::base(true).'/'. $i[2][0].'" alt="'.$altValue2.'" /></span>'.
+						  '<span class="pg-multi-img"><img src="'.Uri::base(true).'/'. $i[3][0].'" alt="'.$altValue3.'" /></span>'.
+						  '<span class="pg-multi-img"><img src="'.Uri::base(true).'/'. $i[4][0].'" alt="'.$altValue4.'" /></span>';
 			}
 			return $o;
 			break;
@@ -997,10 +1015,10 @@ class PhocaGalleryImageFront
 				$o['w2']= (int)$i[0][1] * 2;
 
 
-				$o['b1']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[0][0].'" alt="'.$altValue0.'" /></span>';
-				$o['b2']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[1][0].'" alt="'.$altValue1.'" /></span>'.
-						  '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[2][0].'" alt="'.$altValue2.'" /></span>'.
-						  '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[3][0].'" alt="'.$altValue3.'" /></span>';
+				$o['b1']= '<span class="pg-multi-img"><img src="'.Uri::base(true).'/'. $i[0][0].'" alt="'.$altValue0.'" /></span>';
+				$o['b2']= '<span class="pg-multi-img"><img src="'.Uri::base(true).'/'. $i[1][0].'" alt="'.$altValue1.'" /></span>'.
+						  '<span class="pg-multi-img"><img src="'.Uri::base(true).'/'. $i[2][0].'" alt="'.$altValue2.'" /></span>'.
+						  '<span class="pg-multi-img"><img src="'.Uri::base(true).'/'. $i[3][0].'" alt="'.$altValue3.'" /></span>';
 			}
 			return $o;
 			break;
@@ -1013,7 +1031,7 @@ class PhocaGalleryImageFront
 
 		$f = '';
 		if ((int)$id > 0) {
-			$db 	= JFactory::getDBO();
+			$db 	= Factory::getDBO();
 			$query = ' SELECT a.filename, a.extid, a.exts, a.extm, a.extw, a.exth'
 					.' FROM #__phocagallery AS a'
 					.' WHERE a.id = '.(int)$id
@@ -1032,13 +1050,13 @@ class PhocaGalleryImageFront
 
 
 		$thumbLink		= PhocaGalleryFileThumbnail::getThumbnailName($item->filename, 'large');
-		$imgLinkOrig	= JURI::base(true) . '/' . PhocaGalleryFile::getFileOriginal($item->filename, 1);
+		$imgLinkOrig	= Uri::base(true) . '/' . PhocaGalleryFile::getFileOriginal($item->filename, 1);
 
 
 		if ($t['detail_window'] == 7) {
-			$siteLink = JRoute::_('index.php?option=com_phocagallery&view=detail&catid=' . $item->catslug . '&id=' . $item->slug . '&Itemid=' . $t['itemid']);
+			$siteLink = Route::_('index.php?option=com_phocagallery&view=detail&catid=' . $item->catslug . '&id=' . $item->slug . '&Itemid=' . $t['itemid']);
 		} else {
-			$siteLink = JRoute::_('index.php?option=com_phocagallery&view=detail&catid=' . $item->catslug . '&id=' . $item->slug . '&tmpl=component' . '&Itemid=' . $t['itemid']);
+			$siteLink = Route::_('index.php?option=com_phocagallery&view=detail&catid=' . $item->catslug . '&id=' . $item->slug . '&tmpl=component' . '&Itemid=' . $t['itemid']);
 		}
 		$imgLink = $thumbLink->rel;
 
@@ -1180,8 +1198,8 @@ class PhocaGalleryImageFront
 				$detailAlt = '';
 			}
 		} else {
-			$detailAlt 		= JText::_('COM_PHOCAGALLERY_IMAGE_DETAIL');
-			$detailTitle 	= JText::_('COM_PHOCAGALLERY_IMAGE_DETAIL');
+			$detailAlt 		= Text::_('COM_PHOCAGALLERY_IMAGE_DETAIL');
+			$detailTitle 	= Text::_('COM_PHOCAGALLERY_IMAGE_DETAIL');
 		}
 		$item->oimgaltdetail 		= $detailAlt;
 		$item->oimgtitledetail 	= $detailTitle;

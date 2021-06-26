@@ -9,6 +9,12 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Object\CMSObject;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Filesystem\File;
 jimport('joomla.application.component.model');
 phocagalleryimport('phocagallery.pagination.paginationusersubcat');
 phocagalleryimport('phocagallery.pagination.paginationuserimage');
@@ -29,7 +35,7 @@ class PhocagalleryModelUser extends JModelLegacy
 	function __construct() {
 		parent::__construct();
 
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		// SubCategory
 		$limit_subcat		= $app->getUserStateFromRequest( $this->_context_subcat.'.list.limitsubcat', 'limitsubcat', 20, 'int' );
 		$limitstart_subcat 	= $app->input->get('limitstartsubcat', 0, 'int');
@@ -46,7 +52,7 @@ class PhocagalleryModelUser extends JModelLegacy
 	}
 
 	function getDataSubcat($userId) {
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		if (empty($this->_data_subcat)) {
 			$query = $this->_buildQuerySubCat($userId);
 			$this->_data_subcat = $this->_getList( $query );// We need all data because of tree
@@ -142,7 +148,7 @@ class PhocagalleryModelUser extends JModelLegacy
 
 
 	function _buildContentOrderBySubCat() {
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$filter_order		= $app->getUserStateFromRequest( $this->_context_subcat.'.filter_order',	'filter_order_subcat',	'a.ordering', 'cmd' );
 		$filter_order_Dir	= $app->getUserStateFromRequest( $this->_context_subcat.'.filter_order_Dir',	'filter_order_Dir_subcat',	'',	'word' );
 		if ($filter_order == 'a.ordering'){
@@ -154,7 +160,7 @@ class PhocagalleryModelUser extends JModelLegacy
 	}
 
 	function _buildContentOrderByImage() {
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$filter_order		= $app->getUserStateFromRequest( $this->_context_image.'.filter_order',	'filter_order_image',	'a.ordering', 'cmd' );
 		$filter_order_Dir	= $app->getUserStateFromRequest( $this->_context_image.'.filter_order_Dir',	'filter_order_Dir_image',	'',	'word' );
 
@@ -167,7 +173,7 @@ class PhocagalleryModelUser extends JModelLegacy
 	}
 
 	function _buildContentWhereSubCat($userId) {
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$filter_published		= $app->getUserStateFromRequest( $this->_context_subcat.'.filter_published','filter_published_subcat','',	'word' );
 		$filter_catid		= $app->getUserStateFromRequest( $this->_context_subcat.'.filter_catid','filter_catid_subcat',0,'int' );
 		$filter_order		= $app->getUserStateFromRequest( $this->_context_subcat.'.filter_order','filter_order_subcat','a.ordering','cmd' );
@@ -203,7 +209,7 @@ class PhocagalleryModelUser extends JModelLegacy
 	}
 
 	function _buildContentWhereImage($userId) {
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$filter_published		= $app->getUserStateFromRequest( $this->_context_image.'.filter_published','filter_published_image','','word' );
 		$filter_catid		= $app->getUserStateFromRequest( $this->_context_image.'.filter_catid','filter_catid_image',0,'int' );
 		$filter_order		= $app->getUserStateFromRequest( $this->_context_image.'.filter_order','filter_order_image','a.ordering', 'cmd' );
@@ -248,7 +254,7 @@ class PhocagalleryModelUser extends JModelLegacy
 
 			if ($key->parent_id == $id && $currentId != $id && $currentId != $key->id ) {
 
-				$tree[$iCT] 					= new JObject();
+				$tree[$iCT] 					= new CMSObject();
 
 				// Ordering MUST be solved here
 				if ($countItemsInCat > 0) {
@@ -430,7 +436,7 @@ class PhocagalleryModelUser extends JModelLegacy
 	 */
 	 function publishsubcat($id = 0, $publish = 1) {
 
-		$user 	= JFactory::getUser();
+		$user 	= Factory::getUser();
 		$query = 'UPDATE #__phocagallery_categories AS c'
 			. ' SET c.published = '.(int) $publish
 			. ' WHERE c.id = '.(int)$id
@@ -450,7 +456,7 @@ class PhocagalleryModelUser extends JModelLegacy
 	 */
 	 function publishimage($id = 0, $publish = 1) {
 
-		$user 	= JFactory::getUser();
+		$user 	= Factory::getUser();
 		$query = 'UPDATE #__phocagallery AS a'
 			. ' LEFT JOIN #__phocagallery_categories AS cc ON cc.id = a.catid '
 			. ' SET a.published = '.(int) $publish
@@ -569,7 +575,7 @@ class PhocagalleryModelUser extends JModelLegacy
 	 */
 	function delete($id = 0, &$errorMsg = '') {
 
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 
 		$result = false;
 		if ((int)$id > 0) {
@@ -649,12 +655,12 @@ class PhocagalleryModelUser extends JModelLegacy
 			if (count( $err_cat ) || count( $err_img )) {
 				if (count( $err_cat )) {
 					$cids_cat = implode( ", ", $err_cat );
-					$msg .= JText::sprintf( 'COM_PHOCAGALLERY_ERROR_DELETE_CONTAIN_CAT', $cids_cat );
+					$msg .= Text::sprintf( 'COM_PHOCAGALLERY_ERROR_DELETE_CONTAIN_CAT', $cids_cat );
 				}
 
 				if (count( $err_img )) {
 					$cids_img = implode( ", ", $err_img );
-					$msg .= JText::sprintf( 'COM_PHOCAGALLERY_ERROR_DELETE_CONTAIN_IMG', $cids_img );
+					$msg .= Text::sprintf( 'COM_PHOCAGALLERY_ERROR_DELETE_CONTAIN_IMG', $cids_img );
 				}
 				if ($msg != '') {
 					$errorMsg = $msg;
@@ -828,6 +834,8 @@ class PhocagalleryModelUser extends JModelLegacy
 		//$data['access']	= 1;
 		$row = $this->getTable('phocagalleryc', 'Table');
 
+
+
 		if(isset($data['id']) && $data['id'] > 0) {
 			if (!$row->load($data['id'])) {
 				$this->setError($this->_db->getErrorMsg());
@@ -862,6 +870,8 @@ class PhocagalleryModelUser extends JModelLegacy
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
+
+
 		return $row->id;
 	}
 
@@ -960,8 +970,8 @@ class PhocagalleryModelUser extends JModelLegacy
 
 			if ($returnFrontMessage == 'Success') {
 				//$dispatcher = JDispatcher::getInstance();
-				JPluginHelper::importPlugin('phocagallery');
-				$results = \JFactory::getApplication()->triggerEvent('onStoreNewImage', array($row->id, $data['title']) );
+				PluginHelper::importPlugin('phocagallery');
+				$results = Factory::getApplication()->triggerEvent('onStoreNewImage', array($row->id, $data['title']) );
 				return true;
 			} else {
 				return false;
@@ -1036,8 +1046,8 @@ class PhocagalleryModelUser extends JModelLegacy
 		$pathAvatarAbs[]	= $path->avatar_abs  .'thumbs/phoca_thumb_s_'. $avatar;
 
 		foreach ($pathAvatarAbs as $value) {
-			if (JFile::exists($value)){
-				JFile::delete($value);
+			if (File::exists($value)){
+				File::delete($value);
 			}
 		}
 		return true;

@@ -14,6 +14,7 @@ use Joomla\CMS\Layout\FileLayout;
 
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
 $layoutBI 	= new FileLayout('box_image', null, array('component' => 'com_phocagallery'));
 
@@ -27,13 +28,13 @@ if ($this->t['detail_window'] == 14) {
 
 
 	if ($this->t['displaymaincatstat']) {
-		echo '<h4>'.JText::_('COM_PHOCAGALLERY_CATEGORY').'</h4>'
+		echo '<h4>'.Text::_('COM_PHOCAGALLERY_CATEGORY').'</h4>'
 		.'<table>'
-		.'<tr><td>'.JText::_('COM_PHOCAGALLERY_NR_PUBLISHED_IMG_CAT') .': </td>'
+		.'<tr><td>'.Text::_('COM_PHOCAGALLERY_NR_PUBLISHED_IMG_CAT') .': </td>'
 		.'<td>'.$this->t['numberimgpub'].'</td></tr>'
-		.'<tr><td>'.JText::_('COM_PHOCAGALLERY_NR_UNPUBLISHED_IMG_CAT') .': </td>'
+		.'<tr><td>'.Text::_('COM_PHOCAGALLERY_NR_UNPUBLISHED_IMG_CAT') .': </td>'
 		.'<td>'.$this->t['numberimgunpub'].'</td></tr>'
-		.'<tr><td>'.JText::_('COM_PHOCAGALLERY_CATEGORY_VIEWED') .': </td>'
+		.'<tr><td>'.Text::_('COM_PHOCAGALLERY_CATEGORY_VIEWED') .': </td>'
 		.'<td>'.$this->t['categoryviewed'].' x</td></tr>'
 		.'</table>';
 	}
@@ -43,7 +44,7 @@ if ($this->t['displaymostviewedcatstat']) {
 
 
 
-	echo '<h4>'.JText::_('COM_PHOCAGALLERY_MOST_VIEWED_IMG_CAT').'</h4>';
+	echo '<h4>'.Text::_('COM_PHOCAGALLERY_MOST_VIEWED_IMG_CAT').'</h4>';
 
 	echo '<div id="pg-msnr-container" class="pg-photoswipe pg-msnr-container pg-category-items-box" itemscope itemtype="http://schema.org/ImageGallery">' . "\n";
 
@@ -94,7 +95,7 @@ if ($this->t['displaymostviewedcatstat']) {
 if ($this->t['displaylastaddedcatstat']) {
 
 
-	echo '<h4>'.JText::_('COM_PHOCAGALLERY_LAST_ADDED_IMG_CAT').'</h4>';
+	echo '<h4>'.Text::_('COM_PHOCAGALLERY_LAST_ADDED_IMG_CAT').'</h4>';
 
 	echo '<div id="pg-msnr-container" class="pg-photoswipe pg-msnr-container pg-category-items-box" itemscope itemtype="http://schema.org/ImageGallery">' . "\n";
 
@@ -127,7 +128,7 @@ if ($this->t['displaylastaddedcatstat']) {
             echo '<div class="pg-item-box-title image">'. "\n";
             echo '<svg class="ph-si ph-si-image"><use xlink:href="#ph-si-image"></use></svg>'. "\n";
             echo $item->title;
-            echo '<div class="pg-item-box-stats-value">'.JHtml::Date($item->date, "d. m. Y").' <small>x</small></div>';
+            echo '<div class="pg-item-box-stats-value">'.HTMLHelper::Date($item->date, "d. m. Y").' <small>x</small></div>';
             echo '</div>'. "\n";
 
             echo '</div>';
@@ -144,7 +145,7 @@ if ($this->t['displaylastaddedcatstat']) {
 if ($this->t['displaylastaddedcatstat']) {
 
 
-	echo '<h4>'.JText::_('COM_PHOCAGALLERY_LAST_ADDED_IMG_CAT').'</h4>';
+	echo '<h4>'.Text::_('COM_PHOCAGALLERY_LAST_ADDED_IMG_CAT').'</h4>';
 
 	if (!empty($this->t['lastaddedimg'])) {
 
@@ -179,9 +180,9 @@ if ($this->t['displaylastaddedcatstat']) {
 
 							echo ' >';
 							if ($extImage) {
-								echo Joomla\CMS\HTML\HTMLHelper::_( 'image', $value->linkthumbnailpath, $value->altvalue, array('width' => $correctImageRes['width'], 'height' => $correctImageRes['height'], 'class' => 'pg-image', 'itemprop' => "thumbnail"));
+								echo HTMLHelper::_( 'image', $value->linkthumbnailpath, $value->altvalue, array('width' => $correctImageRes['width'], 'height' => $correctImageRes['height'], 'class' => 'pg-image', 'itemprop' => "thumbnail"));
 							} else {
-								echo Joomla\CMS\HTML\HTMLHelper::_( 'image', $value->linkthumbnailpath, $value->altvalue, array('class' => 'pg-image', 'itemprop' => "thumbnail") );
+								echo HTMLHelper::_( 'image', $value->linkthumbnailpath, $value->altvalue, array('class' => 'pg-image', 'itemprop' => "thumbnail") );
 							}
 							?></a><?php
 
@@ -212,9 +213,9 @@ if ($this->t['displaylastaddedcatstat']) {
 			}
 
 			echo '<div class="detail" style="margin-top:2px;text-align:left">';
-			//echo Joomla\CMS\HTML\HTMLHelper::_('image', 'media/com_phocagallery/images/icon-date.png', JText::_('COM_PHOCAGALLERY_IMAGE_DETAIL'));
-			echo PhocaGalleryRenderFront::renderIcon('calendar', 'media/com_phocagallery/images/icon-date.png', JText::_('COM_PHOCAGALLERY_IMAGE_DETAIL'));
-			echo '&nbsp;&nbsp; '.JHtml::Date($value->date, "d. m. Y");
+			//echo JHtml::_('image', 'media/com_phocagallery/images/icon-date.png', JText::_('COM_PHOCAGALLERY_IMAGE_DETAIL'));
+			echo PhocaGalleryRenderFront::renderIcon('calendar', 'media/com_phocagallery/images/icon-date.png', Text::_('COM_PHOCAGALLERY_IMAGE_DETAIL'));
+			echo '&nbsp;&nbsp; '.HTMLHelper::Date($value->date, "d. m. Y");
 			echo '</div>';
 			echo '<div class="ph-cb"></div>';
 			echo '</div>';

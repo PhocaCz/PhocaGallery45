@@ -15,13 +15,18 @@ jimport('joomla.html.html.grid');
 jimport('joomla.html.html.jgrid');
 */
 defined('_JEXEC') or die;
-if (! class_exists('JHtmlGrid')) {
-	require_once( JPATH_SITE.'/libraries/joomla/html/html/grid.php' );
+
+use Joomla\CMS\HTML\Helpers\Grid;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+if (! class_exists('HTMLHelperGrid')) {
+	require_once( JPATH_SITE.'/libraries/src/HTML/Helpers/Grid.php' );
 }
 
 
 
-class PhocaGalleryGrid extends JHtmlGrid
+class PhocaGalleryGrid extends Grid
 {
 
 	public static function id($rowNum, $recId, $checkedOut = false, $name = 'cid', $stub = 'cb', $title = '', $formId = null)
@@ -33,7 +38,7 @@ class PhocaGalleryGrid extends JHtmlGrid
 		else
 		{
 			return '<input type="checkbox" id="cb' . $rowNum . '" name="' . $name . '[]" value="' . $recId
-				. '" onclick="Joomla.isChecked(this.checked, \'undefined\');" title="' . JText::sprintf('JGRID_CHECKBOX_ROW_N', ($rowNum + 1)) . '" />';
+				. '" onclick="Joomla.isChecked(this.checked, \'undefined\');" title="' . Text::sprintf('JGRID_CHECKBOX_ROW_N', ($rowNum + 1)) . '" />';
 			//return '<input type="checkbox" id="cb' . $rowNum . '" name="' . $name . '[]" value="' . $recId
 			//	. '"  title="' . JText::sprintf('JGRID_CHECKBOX_ROW_N', ($rowNum + 1)) . '" />';
 		}
@@ -64,8 +69,6 @@ class PhocaGalleryGrid extends JHtmlGrid
 
 	public static function sort($title, $order, $direction = 'asc', $selected = 0, $task = null, $new_direction = 'asc', $tip = '', $form = '', $suffix = '')
 	{
-		Joomla\CMS\HTML\HTMLHelper::_('behavior.core');
-		Joomla\CMS\HTML\HTMLHelper::_('bootstrap.tooltip');
 
 		$direction = strtolower($direction);
 		$icon = array('arrow-up-3', 'arrow-down-3');
@@ -81,7 +84,7 @@ class PhocaGalleryGrid extends JHtmlGrid
 		}
 
 		$html = '<a href="#" onclick="Joomla.tableOrderingPhoca(\'' . $order . '\',\'' . $direction . '\',\'' . $task . '\',\'' . $form . '\',\'' . $suffix . '\');return false;"'
-			. ' class="hasTooltip" title="' . JHtml::tooltipText(($tip ? $tip : $title), 'JGLOBAL_CLICK_TO_SORT_THIS_COLUMN') . '">';
+			. ' class="hasTooltip" title="' . HTMLHelper::tooltipText(($tip ? $tip : $title), 'JGLOBAL_CLICK_TO_SORT_THIS_COLUMN') . '">';
 
 		if (isset($title['0']) && $title['0'] == '<')
 		{
@@ -89,7 +92,7 @@ class PhocaGalleryGrid extends JHtmlGrid
 		}
 		else
 		{
-			$html .= JText::_($title);
+			$html .= Text::_($title);
 		}
 
 		if ($order == $selected)
@@ -132,7 +135,7 @@ $o .= '</script>'."\n";
 
 
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->addCustomTag($o);
 	}
 }

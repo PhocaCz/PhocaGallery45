@@ -8,16 +8,19 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 $task		= 'phocagalleryco';
 
-//Joomla\CMS\HTML\HTMLHelper::_('behavior.tooltip');
-//Joomla\CMS\HTML\HTMLHelper::_('behavior.formvalidation');
-Joomla\CMS\HTML\HTMLHelper::_('behavior.keepalive');
-//Joomla\CMS\HTML\HTMLHelper::_('formbehavior.chosen', 'select');
+//JHtml::_('behavior.tooltip');
+//JHtml::_('behavior.formvalidation');
+JHtml::_('behavior.keepalive');
+//JHtml::_('formbehavior.chosen', 'select');
 
 $r 			= $this->r;
-$app		= JFactory::getApplication();
+$app		= Factory::getApplication();
 $option 	= $app->input->get('option');
 $OPT		= strtoupper($option);
 
@@ -38,8 +41,8 @@ echo $r->startForm($option, $task, $this->item->id, 'adminForm', 'adminForm');
 // First Column
 echo '<div class="span10 form-horizontal">';
 $tabs = array (
-'general' 		=> JText::_($OPT.'_GENERAL_OPTIONS'),
-'publishing' 	=> JText::_($OPT.'_PUBLISHING_OPTIONS'));
+'general' 		=> Text::_($OPT.'_GENERAL_OPTIONS'),
+'publishing' 	=> Text::_($OPT.'_PUBLISHING_OPTIONS'));
 echo $r->navigation($tabs);
 
 echo $r->startTabs();

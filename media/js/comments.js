@@ -57,7 +57,7 @@
 		}
 		range.select();
 	}
-	countChars();
+	pgCountChars();
 	delete selectionStart;
 	delete selectionEnd;
 }
@@ -81,7 +81,7 @@ function pasteSmiley( smiley ) {
 	} else {
 		pe.value += smiley;
 	}
-	countChars();
+	pgCountChars();
 	pe.focus();
 }
 

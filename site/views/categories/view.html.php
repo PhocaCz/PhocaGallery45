@@ -8,6 +8,11 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\PluginHelper;
 jimport( 'joomla.application.component.view');
 jimport( 'joomla.filesystem.file' );
 phocagalleryimport('phocagallery.access.access');
@@ -19,7 +24,7 @@ phocagalleryimport('phocagallery.image.imagefront');
 phocagalleryimport('phocagallery.ordering.ordering');
 phocagalleryimport('phocagallery.render.rendermaposm');
 
-class PhocaGalleryViewCategories extends JViewLegacy
+class PhocaGalleryViewCategories extends HtmlView
 {
 	public 		$t;
 	protected 	$params;
@@ -27,15 +32,15 @@ class PhocaGalleryViewCategories extends JViewLegacy
 
 	public function display($tpl = null) {
 
-		$app 						= JFactory::getApplication();
-		$user 						= JFactory::getUser();
+		$app 						= Factory::getApplication();
+		$user 						= Factory::getUser();
 		$uri 						= \Joomla\CMS\Uri\Uri::getInstance();
 		$path						= PhocaGalleryPath::getPath();
 		$this->params				= $app->getParams();
 		$this->tGeo					= array();
 		$this->t					= array();
 		$this->itemId				= $app->input->get('Itemid', 0, 'int');
-		$document					= JFactory::getDocument();
+		$document					= Factory::getDocument();
 		$library 					= PhocaGalleryLibrary::getLibrary();
 		$this->t['action']			= $uri->toString();
 
@@ -243,7 +248,8 @@ class PhocaGalleryViewCategories extends JViewLegacy
 				$sizeString = PhocaGalleryImageFront::getSizeString($this->t['image_categories_size']);
 				$pathAvatarAbs	= $path->avatar_abs  .'thumbs/phoca_thumb_'.$sizeString.'_'. $this->categories[$key]->avatar;
 				$pathAvatarRel	= $path->avatar_rel . 'thumbs/phoca_thumb_'.$sizeString.'_'. $this->categories[$key]->avatar;
-				if (JFile::exists($pathAvatarAbs)){
+				if (File::exists($pathAvatarAbs)){
+
 					$this->categories[$key]->linkthumbnailpath	=  $pathAvatarRel;
 					$this->categories[$key]->rightdisplaykey				= $rightDisplayKey;
 					$displayAvatar = 1;
@@ -251,6 +257,7 @@ class PhocaGalleryViewCategories extends JViewLegacy
 			}
 
 			if ($displayAvatar == 0) {
+
 				if ($extCategory) {
 
 
@@ -266,17 +273,34 @@ class PhocaGalleryViewCategories extends JViewLegacy
 						}
 						$fileThumbnail	= PhocaGalleryImageFront::displayCategoriesExtImgOrFolder($imagePic->exts,$imagePic->extm, $imagePic->extw,$imagePic->exth, $this->t['image_categories_size'], $rightDisplayKey);
 
-						$this->categories[$key]->linkthumbnailpath	= $fileThumbnail->rel;
-						$this->categories[$key]->extw				= $fileThumbnail->extw;
-						$this->categories[$key]->exth				= $fileThumbnail->exth;
-						$this->categories[$key]->extpic				= $fileThumbnail->extpic;
+						if ($rightDisplayKey == 0) {
+								$this->categories[$key]->rightdisplaykey = 0;// Lock folder will be displayed
+								$this->categories[$key]->linkthumbnailpath = '';
+							} else if (!$fileThumbnail) {
+								$this->categories[$key]->linkthumbnailpath = '';// Standard folder will be displayed
+							} else {
+								$this->categories[$key]->linkthumbnailpath	= $fileThumbnail->rel;
+								$this->categories[$key]->extw				= $fileThumbnail->extw;
+								$this->categories[$key]->exth				= $fileThumbnail->exth;
+								$this->categories[$key]->extpic				= $fileThumbnail->extpic;
+							}
+
 					} else {
 						$fileThumbnail		= PhocaGalleryImageFront::displayCategoriesExtImgOrFolder($this->categories[$key]->exts,$this->categories[$key]->extm, $this->categories[$key]->extw, $this->categories[$key]->exth, $this->t['image_categories_size'], $rightDisplayKey);
 
-						$this->categories[$key]->linkthumbnailpath	= $fileThumbnail->rel;
-						$this->categories[$key]->extw				= $fileThumbnail->extw;
-						$this->categories[$key]->exth				= $fileThumbnail->exth;
-						$this->categories[$key]->extpic				= $fileThumbnail->extpic;
+						if ($rightDisplayKey == 0) {
+								$this->categories[$key]->rightdisplaykey = 0;// Lock folder will be displayed
+								$this->categories[$key]->linkthumbnailpath = '';
+							} else if (!$fileThumbnail) {
+								$this->categories[$key]->linkthumbnailpath = '';// Standard folder will be displayed
+							} else {
+								$this->categories[$key]->linkthumbnailpath	= $fileThumbnail->rel;
+								$this->categories[$key]->extw				= $fileThumbnail->extw;
+								$this->categories[$key]->exth				= $fileThumbnail->exth;
+								$this->categories[$key]->extpic				= $fileThumbnail->extpic;
+							}
+
+
 					}
 
 
@@ -293,16 +317,34 @@ class PhocaGalleryViewCategories extends JViewLegacy
 
 						if (isset($selectedImg->filename) && ($selectedImg->filename != '' && $selectedImg->filename != '-')) {
 							$fileThumbnail	= PhocaGalleryImageFront::displayCategoriesImageOrFolder($selectedImg->filename, $this->t['image_categories_size'], $rightDisplayKey);
-							$this->categories[$key]->filename = $selectedImg->filename;
-							$this->categories[$key]->linkthumbnailpath   = $fileThumbnail->rel;
+
+							if ($rightDisplayKey == 0) {
+								$this->categories[$key]->rightdisplaykey = 0;// Lock folder will be displayed
+								$this->categories[$key]->linkthumbnailpath = '';
+							} else if (!$fileThumbnail) {
+								$this->categories[$key]->linkthumbnailpath = '';// Standard folder will be displayed
+							} else {
+								$this->categories[$key]->filename          = $selectedImg->filename;
+								$this->categories[$key]->linkthumbnailpath = $fileThumbnail->rel;
+							}
+
 
 						} else if (isset($selectedImg->exts) && isset($selectedImg->extm) && $selectedImg->exts != '' && $selectedImg->extm != '') {
 							$fileThumbnail		= PhocaGalleryImageFront::displayCategoriesExtImgOrFolder($selectedImg->exts, $selectedImg->extm, $selectedImg->extw, $selectedImg->exth, $this->t['image_categories_size'], $rightDisplayKey);
 
-							$this->categories[$key]->linkthumbnailpath	= $fileThumbnail->rel;
-							$this->categories[$key]->extw				= $fileThumbnail->extw;
-							$this->categories[$key]->exth				= $fileThumbnail->exth;
-							$this->categories[$key]->extpic				= $fileThumbnail->extpic;
+
+
+							if ($rightDisplayKey == 0) {
+								$this->categories[$key]->rightdisplaykey = 0;// Lock folder will be displayed
+								$this->categories[$key]->linkthumbnailpath = '';
+							} else if (!$fileThumbnail) {
+								$this->categories[$key]->linkthumbnailpath = '';// Standard folder will be displayed
+							} else {
+								$this->categories[$key]->linkthumbnailpath	= $fileThumbnail->rel;
+								$this->categories[$key]->extw				= $fileThumbnail->extw;
+								$this->categories[$key]->exth				= $fileThumbnail->exth;
+								$this->categories[$key]->extpic				= $fileThumbnail->extpic;
+							}
 
 						}
 
@@ -312,7 +354,17 @@ class PhocaGalleryViewCategories extends JViewLegacy
 							$this->categories[$key]->filename	= PhocaGalleryImageFront::getRandomImageRecursive($this->categories[$key]->id, $categoriesImageOrdering);
 						}
 						$fileThumbnail	= PhocaGalleryImageFront::displayCategoriesImageOrFolder($this->categories[$key]->filename, $this->t['image_categories_size'], $rightDisplayKey);
-						$this->categories[$key]->linkthumbnailpath	= $fileThumbnail->rel;
+
+						if ($rightDisplayKey == 0) {
+							$this->categories[$key]->rightdisplaykey = 0;// Lock folder will be displayed
+							$this->categories[$key]->linkthumbnailpath = '';
+						} else if (!$fileThumbnail) {
+							$this->categories[$key]->linkthumbnailpath = '';// Standard folder will be displayed
+						} else {
+							$this->categories[$key]->linkthumbnailpath = $fileThumbnail->rel;
+						}
+
+
 
 					}
 
@@ -376,6 +428,11 @@ class PhocaGalleryViewCategories extends JViewLegacy
 
 
 
+
+
+
+
+
 		$this->_prepareDocument();
 
 
@@ -411,7 +468,7 @@ class PhocaGalleryViewCategories extends JViewLegacy
 
 	protected function _prepareDocument() {
 
-		$app		= JFactory::getApplication();
+		$app		= Factory::getApplication();
 		$menus		= $app->getMenu();
 		$pathway 	= $app->getPathway();
 		$title 		= null;
@@ -423,7 +480,7 @@ class PhocaGalleryViewCategories extends JViewLegacy
 		/*if ($menu) {
 			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
 		} else {
-			$this->params->def('page_heading', JText::_('JGLOBAL_ARTICLES'));
+			$this->params->def('page_heading', Text::_('JGLOBAL_ARTICLES'));
 		}*/
 
 		if ($menu && $this->params->get('display_menu_link_title', 1) == 1) {
@@ -434,9 +491,9 @@ class PhocaGalleryViewCategories extends JViewLegacy
 		if (empty($title)) {
 			$title = htmlspecialchars_decode($app->get('sitename'));
 		} else if ($app->get('sitename_pagetitles', 0) == 1) {
-			$title = JText::sprintf('JPAGETITLE', htmlspecialchars_decode($app->get('sitename')), $title);
+			$title = Text::sprintf('JPAGETITLE', htmlspecialchars_decode($app->get('sitename')), $title);
 		} else if ($app->get('sitename_pagetitles', 0) == 2) {
-			$title = JText::sprintf('JPAGETITLE', $title, htmlspecialchars_decode($app->get('sitename')));
+			$title = Text::sprintf('JPAGETITLE', $title, htmlspecialchars_decode($app->get('sitename')));
 		}
 
 		$this->document->setTitle($title);
@@ -458,8 +515,8 @@ class PhocaGalleryViewCategories extends JViewLegacy
 		// Features added by Bernard Gilly - alphaplug.com
 		// load external plugins
 		//$dispatcher = JDispatcher::getInstance();
-		JPluginHelper::importPlugin('phocagallery');
-		$results = \JFactory::getApplication()->triggerEvent('onViewCategories', array() );
+		PluginHelper::importPlugin('phocagallery');
+		$results = $app->triggerEvent('onViewCategories', array() );
 	}
 }
 ?>

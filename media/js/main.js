@@ -157,7 +157,7 @@ function pgPasteTag(tag, closingTag, prependText, appendText) {
 		}
 		range.select();
 	}
-	countChars();
+	pgCountChars();
 	delete selectionStart;
 	delete selectionEnd;
 }
@@ -181,6 +181,6 @@ function pgPasteSmiley( smiley ) {
 	} else {
 		pe.value += smiley;
 	}
-	countChars();
+	pgCountChars();
 	pe.focus();
 }
